@@ -3,3 +3,7 @@ django-admin.py startproject main_app
 # Move the directory structure so that the manage.py comes to the top
 venv/bin/python manage.py startapp steam_trap
 venv/bin/python manage.py startapp clients
+
+
+venv/bin/python manage.py makemigrations
+venv/bin/python manage.py migrate
