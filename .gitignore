@@ -46,6 +46,7 @@ docs/_build/
 
 # Configuration
 .env
+venv
 .pypirc
 
 # Vagrant
