@@ -4,16 +4,17 @@ from django.contrib.auth.models import User
 
 class ClientSerializer(serializers.HyperlinkedModelSerializer):
 	owner = serializers.ReadOnlyField(source='owner.username')
+	start_date = serializers.ReadOnlyField()
 
 	class Meta:
 		model = Client
-		fields = ('url', 'client_name', 'country', 'start_date',
-				  'customer_site', 'owner')
+		fields = ('url', 'client_name', 'country', 'customer_site', 'owner',
+				  'start_date')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-	clients = serializers.HyperlinkedRelatedField(many=True, view_name='client-detail', read_only=True)
+	client = serializers.HyperlinkedRelatedField(many=True, view_name='client-detail', read_only=True)
 
 	class Meta:
 		model = User
-		fields = ('url', 'username', 'clients')
+		fields = ('url', 'username', 'client')

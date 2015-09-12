@@ -24,6 +24,7 @@ class Client(models.Model):
 		return self.client_name
 
 	def save(self, *args, **kwargs):
+		# TODO: add owner
 		self.start_date = datetime.datetime.utcnow()
 		super(Client, self).save(*args, **kwargs)
 
