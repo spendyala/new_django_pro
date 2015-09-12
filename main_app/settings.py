@@ -38,6 +38,7 @@ INSTALLED_APPS = (
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'rest_framework',  # Rest Framework
+	'static_html',  # HTML Files goes here
 	'clients',
 	'steam_trap'
 )
@@ -103,3 +104,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/'
+
+# comment the static path when running python manage.py collectstatic
+STATICFILES_DIRS = (
+	os.path.join(BASE_DIR, 'static'),
+)
