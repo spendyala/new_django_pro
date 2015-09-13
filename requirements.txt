@@ -1,7 +1,9 @@
 arrow
 django
+django-angular
 djangorestframework
 markdown
 django-filter
 pygments
+pysqlite
 httpie

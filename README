@@ -9,6 +9,32 @@ venv/bin/python manage.py makemigrations
 venv/bin/python manage.py migrate
 venv/bin/python manage.py createsuperuser
 
+apt-get install sqlite3 libsqlite3-dev
+
 admin:admin
 http --form POST http://127.0.0.1:8000/clients/
 http --json POST http://127.0.0.1:8000/clients/
+
+
+# TODO: Fix the Directory path for CSS JS and other static files.
+<div ng-controller="clientListController">
+	<div class="container-fluid">
+		<table class="table table-striped">
+			<tr>
+				<th>Client Name</th>
+				<th>Country</th>
+				<th>Customer Site</th>
+				<th>Start Date</th>
+			</tr>
+			{% for id, client_name, country, customer_site, start_date in clients_list %}
+			<tr>
+				<td><a href="/client/details/{{id}}/">{{client_name}}</td>
+				<td>{{country}}</td>
+				<td>{{customer_site}}</td>
+				<td>{{start_date}}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+</div>

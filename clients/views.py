@@ -18,6 +18,8 @@ class ClientViewSet(viewsets.ModelViewSet):
 		"""
 		queryset = Client.objects.all()
 		serializer_class = ClientSerializer
+		# import pdb; pdb.set_trace()
+
 		permission_classes = (permissions.IsAuthenticatedOrReadOnly,
 												  IsOwnerOrReadOnly,)
 

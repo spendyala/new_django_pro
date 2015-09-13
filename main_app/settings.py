@@ -37,6 +37,7 @@ INSTALLED_APPS = (
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'djangular',  # Django angular
 	'rest_framework',  # Rest Framework
 	'static_html',  # HTML Files goes here
 	'clients',
