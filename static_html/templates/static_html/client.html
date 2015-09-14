@@ -1,41 +1,65 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<html lang="en">
-
+<html>
 <head>
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
 
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
-
-	<title>SB Admin - Bootstrap Admin Template</title>
-
-	<!-- Bootstrap Core CSS -->
-	<link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/bootstrap.min.css" %}">
-	<link rel="stylesheep" type="text/css" href="{% static "vfd_app/css/bootstrap-rtl.min.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/sb-admin.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/plugins/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/plugins/font-awesome.min.cs" %}">
-	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
-
+	<script src="{% static "clients/js/jquery.js"%}"></script>
+	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+	<script src="{% static "clients/js/angular.js"%}"></script>
+	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+	<script>
+		var app_1 = angular.module("app_client", ['ui.bootstrap']);
+		app_1.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+		}]);
+		app_1.controller("clientListController", ['$scope','$http', function($scope,$http){
+			$scope.load_clients_list = function(){
+				$http({method: 'GET', url: "/m_client/clients/?format=json"}).
+					 success(function(data){
+						 $scope.client_list = data;
+				}).error(function(data){});
+			};
+			$http({method: 'GET', url: "/m_client/clients/?format=json"}).
+				 success(function(data){
+					 $scope.client_list = data;
+			}).error(function(data){});
+		}]);
+		app_1.controller("clientAddController", ['$scope', '$http', function($scope, $http){
+			$scope.client_json = {'client_name':'',
+								  'country':'',
+								  'site_location':''};
+			$scope.submit_details = function(){
+				$scope.client_json.client_name = $("#client_name").val();
+				$scope.client_json.country = $("#country").val();
+				$scope.client_json.customer_site = $("#site_location").val();
+				$http({method: 'POST',
+					   url: '/m_client/clients/',
+					//    data: JSON.stringify($scope.client_json)}).
+					   data: $scope.client_json}).
+				success(function(data){
+					console.log(data)
+				}).
+				error(function(data){
+				});
+				$('#add_new_client').modal('hide');
+			}
+		}]);
+	</script>
 </head>
-
-<body>
+<body ng-app="app_client">
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/">Home</a>
-				<a class="navbar-brand" href="/clients">Clients</a>
+				<a class="navbar-brand" href="/client">Clients</a>
 				<!-- <a class="navbar-brand" href="/vfd_app">VFD App</a>
 				<a class="navbar-brand" href="/premium_efficiency_app">Premium Efficiency App</a>
 				<a class="navbar-brand" href="/chiller_app">Chiller App</a> -->
@@ -45,39 +69,34 @@
 	<div id="page-wrapper">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-12">
-					<div ng-app="">
-						<p>Input something in the input box:</p>
-						<p>Name: <input type="text" ng-model="name"></p>
-						<p ng-bind="name"></p>
-					</div>
+				<div class="col-lg-12" ng-app="app_client_list">
 					<h1 class="page-header">
 						Clients List
 					</h1>
 					<p>
 						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_client">+ Client</button>
 					</p>
-				</div>
-				{% if clients_list %}
-					<div class="container-fluid">
-						<table class="table table-striped">
-							<tr>
-								<th>Client Name</th>
-								<th>Country</th>
-								<th>Customer Site</th>
-								<th>Start Date</th>
-							</tr>
-							{% for id, client_name, country, customer_site, start_date in clients_list %}
-							<tr>
-								<td><a href="/client/details/{{id}}/">{{client_name}}</td>
-								<td>{{country}}</td>
-								<td>{{customer_site}}</td>
-								<td>{{start_date}}</td>
-							</tr>
-							{% endfor %}
-						</table>
+					<div ng-controller="clientListController">
+						<div class="container-fluid">
+							<table class="table table-striped">
+								<tr>
+									<th>Client Name</th>
+									<th>Country</th>
+									<th>Customer Site</th>
+									<th>Start Date</th>
+								</tr>
+								{% verbatim %}
+									<tr ng-repeat="x in client_list">
+										<td><a href="{{ x.url }}">{{ x.client_name }}</td>
+										<td>{{ x.country }}</td>
+										<td>{{ x.customer_site }}</td>
+										<td>{{ x.start_date }}</td>
+									</tr>
+								{% endverbatim %}
+							</table>
+						</div>
 					</div>
-				{% endif%}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -88,21 +107,21 @@
 				<div class="modal-header">
 					<h4 class="modal-title">Add New Client</h4>
 				</div>
-				<form class="form-horizontal" action="/client/details/add/" method="post" name="save_client_details">
+				<form class="form-horizontal" ng-controller="clientAddController" role="form">
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="form-group form-group-sm">
 						  <label class="col-sm-4 control-label">Client Name</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" onchange="set_save_client()" name="client_name" value="{{client_name}}">
+							<input class="form-control" type="text" id="client_name" name="client_name">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
 						  <label class="col-sm-4 control-label">Country</label>
 						  <div class="col-sm-6">
-							  <select onchange="set_save_client()" name="country" class="col-sm-6">
-								{% for id, name in country_dict %}
-								   <option {% if id == 'US' %} selected {% endif %} value="{{id}}">{{ name }}</option>
+							  <select class="form-control col-sm-6" id="country" name="country">
+								{% for country_id, name in countries_list %}
+								   <option {% if country_id == 'US' %} selected {% endif %} value="{{ country_id }}">{{ name }}</option>
 								{% endfor %}
 							  </select>
 						  </div>
@@ -110,31 +129,21 @@
 						<div class="form-group form-group-sm">
 						  <label class="col-sm-4 control-label">Site Location</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" onchange="set_save_client()" name="customer_site" value="{{customer_site}}">
+							<input class="form-control" type="text" id="site_location" name="site_location">
 						  </div>
 						</div>
+						<div class="form-group form-group-sm">
+							<div class="col-sm-4">
+								<input type="submit" value="Save" class="btn btn-default" ng-click="submit_details()">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
 					</div>
-					<input id="save_client_app" name="save_client_app" type="text" value="0" hidden/>
-					<input type="submit" value="Save" class="btn btn-default">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <input id="save_client_app" name="save_client_app" type="text" value="0" hidden/> -->
+
 				</form>
 			</div>
 		</div>
 	</div>
-
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="{% static "vfd_app/js/bootstrap.min.js" %}"></script>
-	<script src="{% static "vfd_app/js/raphael.min.js" %}"></script>
-	<script src="{% static "vfd_app/js/morris.min.js" %}"></script>
-	<script src="{% static "vfd_app/js/morris-data.js" %}"></script>
-	<script type="text/javascript">
-	  function set_save_client() {
-		element = document.getElementById('save_client_app');
-		element.value = '1';
-	  }
-	</script>
 </body>
-
 </html>

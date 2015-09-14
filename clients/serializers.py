@@ -14,7 +14,9 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-	client = serializers.HyperlinkedRelatedField(many=True, view_name='client-detail', read_only=True)
+	client = serializers.HyperlinkedRelatedField(many=True,
+												 view_name='client-detail',
+												 read_only=True)
 
 	class Meta:
 		model = User
