@@ -1,13 +1,10 @@
 from django.db import models
 
-from django.db import models
 from django.utils import timezone
 import arrow
 import datetime
 
 from clients.models import Client
-
-ISO3166_CHOICES = ISO3166.ISO3166
 
 
 class SteamTrap(models.Model):
@@ -15,20 +12,18 @@ class SteamTrap(models.Model):
 	start_date = models.DateTimeField('Registered Date')
 	hours_of_operation = models.IntegerField('Hours of Operation', default=8760)
 	boiler_efficiency = models.FloatField('Boiler Efficiency %', default=80.0)
-	steam_trap_number = models.CharField('Failed Trap #', default='')
-	location_description = models.CharField('Location/Description', default='')
-	pressure_in_psig = mdoels.FloatField('Pressure (psig)', default=100)
-
+	steam_trap_number = models.CharField('Failed Trap #', default='',
+										 max_length=127)
+	location_description = models.CharField('Location/Description', default='',
+											max_length=255)
+	pressure_in_psig = models.FloatField('Pressure (psig)', default=100)
+	owner = models.ForeignKey('auth.User', related_name='steam_trap')
 
 	def absolute_pressure_psia(self):
 		if self.pressure_in_psig:
 			return round(self.pressure_in_psig + 14.696, 3)
 		else:
 			return 0
-
-
-	customer_site = models.CharField('Customer Site', max_length=256, default='')
-	owner = models.ForeignKey('auth.User', related_name='client')
 
 	def was_recent(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days=1)
@@ -37,12 +32,12 @@ class SteamTrap(models.Model):
 	was_recent.short_description = 'Recently Joined?'
 
 	def __str__(self):
-		return self.client_name
+		return self.steam_trap_number
 
 	def save(self, *args, **kwargs):
 		# TODO: add owner
 		self.start_date = datetime.datetime.utcnow()
-		super(Client, self).save(*args, **kwargs)
+		super(SteamTrap, self).save(*args, **kwargs)
 
 	class Meta:
-		ordering = ('client_name',)
+		ordering = ('steam_trap_number',)
