@@ -1,4 +1,4 @@
-gauge_pressure,temperature_in_F,sensible_btu_per_lb,latent_btu_per_lb,total
+gauge_pressure,temperature_in_f,sensible_btu_per_lb,latent_btu_per_lb,total
 0,212,180,970,1150
 1,215,183,968,1151
 2,219,187,965,1153

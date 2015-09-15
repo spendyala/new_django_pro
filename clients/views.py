@@ -19,10 +19,10 @@ class ClientViewSet(viewsets.ModelViewSet):
 		queryset = Client.objects.all()
 		serializer_class = ClientSerializer
 		permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-												  IsOwnerOrReadOnly,)
+												  IsOwnerOrReadOnly)
 
 		def perform_create(self, serializer):
-				serializer.save(owner=self.request.user)
+			serializer.save(owner=self.request.user)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

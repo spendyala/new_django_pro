@@ -86,6 +86,18 @@ DATABASES = {
 	}
 }
 
+# REST Framework
+REST_FRAMEWORK = {
+	# 'PAGINATE_BY': 100,
+	# 'PAGINATE_BY_PARAM': 'page_size',
+	'DEFAULT_RENDERER_CLASSES': (
+		'rest_framework.renderers.JSONRenderer',
+	),
+	'DEFAULT_PARSER_CLASSES': (
+		'rest_framework.parsers.JSONParser',
+	)
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

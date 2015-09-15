@@ -18,6 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
 	url(r'^admin/', include(admin.site.urls)),
-	url(r'^m_client/', include('clients.urls')),
+	url(r'^api_client/', include('clients.urls')),
+	url(r'^api_steam_trap/', include('steam_trap.urls')),
 	url(r'^(|/)', include('static_html.urls', namespace='static_html')),
 ]
