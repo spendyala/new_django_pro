@@ -32,7 +32,7 @@
 					 $scope.steam_trap_list = data;
 			}).error(function(data){});
 		}]);
-		app_1.controller("clientAddController", ['$scope', '$http', function($scope, $http){
+		app_1.controller("steamTrapAddController", ['$scope', '$http', function($scope, $http){
 			$scope.client_json = {'client_name':'',
 								  'country':'',
 								  'site_location':''};
@@ -60,6 +60,7 @@
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/">Home</a>
 				<a class="navbar-brand" href="/client">Clients</a>
+				<a class="navbar-brand" href="/steam_trap">Steam Trap</a>
 				<!-- <a class="navbar-brand" href="/vfd_app">VFD App</a>
 				<a class="navbar-brand" href="/premium_efficiency_app">Premium Efficiency App</a>
 				<a class="navbar-brand" href="/chiller_app">Chiller App</a> -->
@@ -127,7 +128,7 @@
 				<div class="modal-header">
 					<h4 class="modal-title">Add New Client</h4>
 				</div>
-				<form class="form-horizontal" ng-controller="clientAddController" role="form">
+				<form class="form-horizontal" ng-controller="steamTrapAddController" role="form">
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="form-group form-group-sm">

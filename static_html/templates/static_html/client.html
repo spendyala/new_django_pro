@@ -21,12 +21,6 @@
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
 		app_1.controller("clientListController", ['$scope','$http', function($scope,$http){
-			$scope.load_clients_list = function(){
-				$http({method: 'GET', url: "/api_client/clients/"}).
-					 success(function(data){
-						 $scope.client_list = data;
-				}).error(function(data){});
-			};
 			$http({method: 'GET', url: "/api_client/clients/"}).
 				 success(function(data){
 					 $scope.client_list = data;
@@ -42,10 +36,10 @@
 				$scope.client_json.customer_site = $("#site_location").val();
 				$http({method: 'POST',
 					   url: '/api_client/clients/',
-					//    data: JSON.stringify($scope.client_json)}).
+					//    data: JSON.stringify($scope.client_json)).
 					   data: $scope.client_json}).
 				success(function(data){
-					console.log(data)
+					window.location.reload()
 				}).
 				error(function(data){
 				});
@@ -60,6 +54,7 @@
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/">Home</a>
 				<a class="navbar-brand" href="/client">Clients</a>
+				<a class="navbar-brand" href="/steam_trap">Steam Trap</a>
 				<!-- <a class="navbar-brand" href="/vfd_app">VFD App</a>
 				<a class="navbar-brand" href="/premium_efficiency_app">Premium Efficiency App</a>
 				<a class="navbar-brand" href="/chiller_app">Chiller App</a> -->
@@ -87,7 +82,7 @@
 								</tr>
 								{% verbatim %}
 									<tr ng-repeat="x in client_list">
-										<td><a href="{{ x.url }}">{{ x.client_name }}</td>
+										<td><a href="/client_details/{{ x.id }}">{{ x.client_name }}</a></td>
 										<td>{{ x.country }}</td>
 										<td>{{ x.customer_site }}</td>
 										<td>{{ x.start_date }}</td>

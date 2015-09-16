@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
+
+	<script src="{% static "clients/js/jquery.js"%}"></script>
+	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+	<script src="{% static "clients/js/angular.js"%}"></script>
+	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+	<script>
+		var app_1 = angular.module("app_client", ['ui.bootstrap']);
+		app_1.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+		}]);
+		app_1.controller("clientModifyController", ['$scope','$http', function($scope,$http){
+			$scope.client_json = {'id': {{client_id}},
+								  'client_name':'',
+								  'country':'',
+								  'site_location':''};
+			$scope.submit_details = function(){
+				$scope.client_json.client_name = $("#client_name").val();
+				$scope.client_json.country = $("#country").val();
+				$scope.client_json.customer_site = $("#customer_site").val();
+				$http({method: 'PUT',
+					   url: '/api_client/clients/{{client_id}}/',
+					   data: $scope.client_json}).
+				success(function(data){
+					window.location.href = '/client/';
+				}).
+				error(function(data){
+				});
+				$('#add_new_client').modal('hide');
+			}
+		}]);
+	</script>
+</head>
+<body ng-app="app_client">
+	<div id="wrapper">
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">Home</a>
+				<a class="navbar-brand" href="/client">Clients</a>
+				<a class="navbar-brand" href="/steam_trap">Steam Trap</a>
+				<!-- <a class="navbar-brand" href="/vfd_app">VFD App</a>
+				<a class="navbar-brand" href="/premium_efficiency_app">Premium Efficiency App</a>
+				<a class="navbar-brand" href="/chiller_app">Chiller App</a> -->
+			</div>
+		</nav>
+	</div>
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12" ng-app="app_client_list">
+					<form class="form-horizontal" ng-controller="clientModifyController" role="form">
+					{% csrf_token %}
+						<div class="container-fluid">
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Client ID</label>
+							  <div class="col-sm-8">
+								<label class="col-sm-5 bg-success">{{ client_id }}</label>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Start Date</label>
+							  <div class="col-sm-8">
+								<label class="col-sm-5 bg-success">{{ start_date }}</label>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Client Name</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="client_name" name="client_name" value={{ client_name }}>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Country</label>
+							  <div class="col-sm-6">
+								  <select class="form-control col-sm-4" id="country" name="country">
+									{% for country_id_key, name in countries_list %}
+									   <option {% if country_id_key == country_id %} selected {% endif %} value="{{ country_id_key }}">{{ name }}</option>
+									{% endfor %}
+								  </select>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Site Location</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="customer_site" name="site_location" value={{ customer_site }}>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+								<div class="col-sm-6 control-label">
+									<input type="submit" value="Save" class="btn btn-default" ng-click="submit_details()">
+								</div>
+							</div>
+						</div>
+						<!-- <input id="save_client_app" name="save_client_app" type="text" value="0" hidden/> -->
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
