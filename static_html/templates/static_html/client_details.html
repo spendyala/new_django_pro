@@ -7,10 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
-	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
-
 	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
 	<script src="{% static "clients/js/angular.js"%}"></script>
 	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
 	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
@@ -37,7 +34,16 @@
 				}).
 				error(function(data){
 				});
-				$('#add_new_client').modal('hide');
+			}
+
+			$scope.submit_delete = function(){
+				$http({method: 'DELETE',
+					   url: '/api_client/clients/{{client_id}}/'}).
+				success(function(data){
+					window.location.href = '/client/';
+				}).
+				error(function(data){
+				});
 			}
 		}]);
 	</script>
@@ -58,7 +64,7 @@
 	<div id="page-wrapper">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-12" ng-app="app_client_list">
+				<div class="col-lg-12">
 					<form class="form-horizontal" ng-controller="clientModifyController" role="form">
 					{% csrf_token %}
 						<div class="container-fluid">
@@ -98,12 +104,11 @@
 							</div>
 							<div class="form-group form-group-sm">
 								<div class="col-sm-6 control-label">
-									<input type="submit" value="Save" class="btn btn-default" ng-click="submit_details()">
+									<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+									<input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
 								</div>
 							</div>
 						</div>
-						<!-- <input id="save_client_app" name="save_client_app" type="text" value="0" hidden/> -->
-
 					</form>
 				</div>
 			</div>

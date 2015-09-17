@@ -32,24 +32,35 @@
 					 $scope.steam_trap_list = data;
 			}).error(function(data){});
 		}]);
-		app_1.controller("steamTrapAddController", ['$scope', '$http', function($scope, $http){
-			$scope.client_json = {'client_name':'',
-								  'country':'',
-								  'site_location':''};
+		app_1.controller("steamTrapAddController", ['$scope',
+													'$http',
+													function($scope, $http){
+			$scope.steam_trap_json = {'client': '',
+									  'steam_trap_number':'',
+									  'location_description':'',
+									  'pressure_in_psig':100,
+									  'hours_of_operation':8760,
+									  'boiler_efficiency':80,
+									  'trap_pipe_size':0.5,
+									  'therm_rate':0};
 			$scope.submit_details = function(){
-				$scope.client_json.client_name = $("#client_name").val();
-				$scope.client_json.country = $("#country").val();
-				$scope.client_json.customer_site = $("#site_location").val();
+				$scope.steam_trap_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.steam_trap_json.steam_trap_number = $("#steam_trap_number").val();
+				$scope.steam_trap_json.location_description = $("#location_description").val();
+				$scope.steam_trap_json.pressure_in_psig = $("#pressure_in_psig").val();
+				$scope.steam_trap_json.hours_of_operation = $("#hours_of_operation").val();
+				$scope.steam_trap_json.boiler_efficiency = $("#boiler_efficiency").val();
+				$scope.steam_trap_json.trap_pipe_size = $("#trap_pipe_size").val();
+				$scope.steam_trap_json.therm_rate = $("#therm_rate").val();
 				$http({method: 'POST',
-					   url: '/api_client/clients/',
-					//    data: JSON.stringify($scope.client_json)}).
-					   data: $scope.client_json}).
+					   url: '/api_steam_trap/steam_trap/',
+					   data: $scope.steam_trap_json}).
 				success(function(data){
-					console.log(data)
+					window.location.reload();
 				}).
 				error(function(data){
 				});
-				$('#add_new_client').modal('hide');
+				$('#add_new_steam_trap').modal('hide');
 			}
 		}]);
 	</script>
@@ -82,7 +93,6 @@
 							<table class="table table-striped">
 								<tr>
 									<th>Failed Trap #</th>
-									<th>Location / Description</th>
 									<th>Pressure (psig)</th>
 									<th>Absolute Pressure (psia)</th>
 									<th>Trap Pipe Size (inch)</th>
@@ -98,8 +108,7 @@
 								</tr>
 								{% verbatim %}
 									<tr ng-repeat="x in steam_trap_list">
-										<td><a href="{{ x.url }}">{{ x.steam_trap_number }}</td>
-										<td>{{x.location_description}}</td>
+										<td><a href="/steam_trap_details/{{ x.id }}">{{ x.steam_trap_number }}</a></td>
 										<td>{{ x.pressure_in_psig }}</td>
 										<td>{{ x.absolute_pressure_psia }}</td>
 										<td>{{x.trap_pipe_size}}</td>
@@ -126,36 +135,75 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Add New Client</h4>
+					<h4 class="modal-title">Add New Steam Trap</h4>
 				</div>
 				<form class="form-horizontal" ng-controller="steamTrapAddController" role="form">
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Client Name</label>
+						  <label class="col-sm-4 control-label">Client</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="client_name" name="client_name">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Country</label>
-						  <div class="col-sm-6">
-							  <select class="form-control col-sm-6" id="country" name="country">
-								{% for country_id, name in countries_list %}
-								   <option {% if country_id == 'US' %} selected {% endif %} value="{{ country_id }}">{{ name }}</option>
+							  <select class="form-control col-sm-6" id="client" name="client">
+								{% for client_id, client_name in clients_list %}
+								   <option {% if client_id == 'US' %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
 								{% endfor %}
 							  </select>
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Site Location</label>
+						  <label class="col-sm-4 control-label">Failed Trap #</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="site_location" name="site_location">
+							<input class="form-control" type="text" id="steam_trap_number" name="steam_trap_number">
+						  </div>
+						</div>
+
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Hours of Operation</label>
+						  <div class="col-sm-3">
+							<input class="form-control" type="text" id="hours_of_operation" name="hours_of_operation" value="8760">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Boiler Efficiency %</label>
+						  <div class="col-sm-3">
+							<input class="form-control" type="text" id="boiler_efficiency" name="boiler_efficiency" value="80">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Location/Description</label>
+						  <div class="col-sm-8">
+							<input class="form-control" type="text" id="location_description" name="location_description">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Pressure (psig)</label>
+						  <div class="col-sm-4">
+							<select class="form-control col-sm-6" id="pressure_in_psig" name="pressure_in_psig">
+								{% for pressure_in_psig_val  in pressure_in_psig_list %}
+								   <option {% if pressure_in_psig_val == 100 %} selected {% endif %} value="{{ pressure_in_psig_val }}">{{ pressure_in_psig_val }}</option>
+								{% endfor %}
+							  </select>
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Trap Pipe Size (inch)</label>
+						  <div class="col-sm-4">
+							  <select class="form-control col-sm-6" id="trap_pipe_size" name="trap_pipe_size">
+								  {% for trap_pipe_size_val  in trap_pipe_size_list %}
+									 <option {% if trap_pipe_size_val == 0.5 %} selected {% endif %} value="{{ trap_pipe_size_val }}">{{ trap_pipe_size_val }}</option>
+								  {% endfor %}
+							  </select>
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Therms Rate $</label>
+						  <div class="col-sm-4">
+							<input class="form-control" type="text" id="therm_rate" name="therm_rate">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
 							<div class="col-sm-4">
-								<input type="submit" value="Save" class="btn btn-default" ng-click="submit_details()">
+								<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							</div>
 						</div>
