@@ -40,14 +40,14 @@ class SteamTrap(models.Model):
 		return STEAM_TRAP_CHOICES[self.pressure_in_psig]
 
 	def get_steam_loss_pph(self):
-		return round(self.absolute_pressure_psia() *
+		return round(24.24 * self.absolute_pressure_psia() *
 					 pow(TRAP_SIZE_CHOICES[self.trap_pipe_size], 2), 6)
 
 	def get_gas_usage_therms_per_hour(self):
 		return float(self.get_steam_loss_pph() *
 					 self.get_steam_energy_btu_per_lb() *
 					 (1.0/self.boiler_efficiency) *
-					 10 * (1.0/1000000.0))
+					 10 * (1.0/10000.0))
 
 	def absolute_pressure_psia(self):
 		if self.pressure_in_psig:
