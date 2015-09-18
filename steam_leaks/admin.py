@@ -1,23 +1,21 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import SteamTrap  # , Comments
+from .models import SteamLeak  # , Comments
 
 
-class SteamLeaksAdmin(admin.ModelAdmin):
+class SteamLeakAdmin(admin.ModelAdmin):
 
-	list_display = ('steam_trap_number', 'boiler_efficiency', 'was_recent')
+	list_display = ('steam_leak_number', 'boiler_efficiency', 'was_recent')
 	list_filter = ['client']
 	fieldsets = [('None', {'fields': ['client',
 									  'start_date',
-									  'steam_trap_number',
-									  'hours_of_operation',
-									  'boiler_efficiency',
+									  'steam_leak_number',
 									  'location_description',
 									  'pressure_in_psig',
-									  'trap_pipe_size']})]
-	# fieldsets = [(None, {'fields': ['client_name']}),
-	# 			 ('More information', {'fields': ['country', 'customer_site'],
-	# 								   'classes': ['collapse']})]
+									  'size_leak_in_inch',
+									  'hours_of_operation',
+									  'boiler_efficiency',
+									  'therm_rate']})]
 
-admin.site.register(SteamTrap, SteamTrapAdmin)
+admin.site.register(SteamLeak, SteamLeakAdmin)

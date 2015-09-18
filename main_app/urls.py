@@ -20,5 +20,6 @@ urlpatterns = [
 	url(r'^admin/', include(admin.site.urls)),
 	url(r'^api_client/', include('clients.urls')),
 	url(r'^api_steam_trap/', include('steam_trap.urls')),
+	url(r'^api_steam_leak/', include('steam_leaks.urls')),
 	url(r'^(|/)', include('static_html.urls', namespace='static_html')),
 ]

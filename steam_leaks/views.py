@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from steam_trap.models import SteamTrap
-from steam_trap.serializers import SteamTrapSerializer
+from steam_leaks.models import SteamLeak
+from steam_leaks.serializers import SteamLeakSerializer
 # from clients.serializers import UserSerializer
 from django.contrib.auth.models import User
 
@@ -12,13 +12,13 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 # Create your views here.
-class SteamTrapViewSet(viewsets.ModelViewSet):
+class SteamLeakViewSet(viewsets.ModelViewSet):
 		"""
 		This viewset automatically provides `list`, `create`, `retrieve`,
 		`update` and `destroy` actions.
 		"""
-		queryset = SteamTrap.objects.all()
-		serializer_class = SteamTrapSerializer
+		queryset = SteamLeak.objects.all()
+		serializer_class = SteamLeakSerializer
 		permission_classes = (permissions.IsAuthenticatedOrReadOnly,
 												  IsOwnerOrReadOnly)
 

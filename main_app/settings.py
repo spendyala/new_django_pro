@@ -41,7 +41,8 @@ INSTALLED_APPS = (
 	'rest_framework',  # Rest Framework
 	'static_html',  # HTML Files goes here
 	'clients',
-	'steam_trap'
+	'steam_trap',
+	'steam_leaks'
 )
 
 MIDDLEWARE_CLASSES = (

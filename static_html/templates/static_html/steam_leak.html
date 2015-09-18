@@ -15,57 +15,57 @@
 	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
 	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
 	<script>
-		var app_1 = angular.module("app_steam_trap", ['ui.bootstrap']);
+		var app_1 = angular.module("app_steam_leak", ['ui.bootstrap']);
 		app_1.config(['$httpProvider', function($httpProvider) {
 			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
-		app_1.controller("steamTrapListController", ['$scope','$http', function($scope,$http){
+		app_1.controller("steamLeakListController", ['$scope','$http', function($scope,$http){
 			$scope.load_clients_list = function(){
-				$http({method: 'GET', url: "/api_steam_trap/steam_trap/"}).
+				$http({method: 'GET', url: "/api_steam_leak/steam_leak/"}).
 					 success(function(data){
-						 $scope.steam_trap_list = data;
+						 $scope.steam_leak_list = data;
 				}).error(function(data){});
 			};
-			$http({method: 'GET', url: "/api_steam_trap/steam_trap/"}).
+			$http({method: 'GET', url: "/api_steam_leak/steam_leak/"}).
 				 success(function(data){
-					 $scope.steam_trap_list = data;
+					 $scope.steam_leak_list = data;
 			}).error(function(data){});
 		}]);
-		app_1.controller("steamTrapAddController", ['$scope',
+		app_1.controller("steamLeakAddController", ['$scope',
 													'$http',
 													function($scope, $http){
-			$scope.steam_trap_json = {'client': '',
-									  'steam_trap_number':'',
+			$scope.steam_leak_json = {'client': '',
+									  'steam_leak_number':'',
 									  'location_description':'',
 									  'pressure_in_psig':100,
 									  'hours_of_operation':8760,
 									  'boiler_efficiency':80,
-									  'trap_pipe_size':0.5,
+									  'size_leak_in_inch':0.5,
 									  'therm_rate':0};
 			$scope.submit_details = function(){
-				$scope.steam_trap_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.steam_trap_json.steam_trap_number = $("#steam_trap_number").val();
-				$scope.steam_trap_json.location_description = $("#location_description").val();
-				$scope.steam_trap_json.pressure_in_psig = $("#pressure_in_psig").val();
-				$scope.steam_trap_json.hours_of_operation = $("#hours_of_operation").val();
-				$scope.steam_trap_json.boiler_efficiency = $("#boiler_efficiency").val();
-				$scope.steam_trap_json.trap_pipe_size = $("#trap_pipe_size").val();
-				$scope.steam_trap_json.therm_rate = $("#therm_rate").val();
+				$scope.steam_leak_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.steam_leak_json.steam_leak_number = $("#steam_leak_number").val();
+				$scope.steam_leak_json.location_description = $("#location_description").val();
+				$scope.steam_leak_json.pressure_in_psig = $("#pressure_in_psig").val();
+				$scope.steam_leak_json.hours_of_operation = $("#hours_of_operation").val();
+				$scope.steam_leak_json.boiler_efficiency = $("#boiler_efficiency").val();
+				$scope.steam_leak_json.size_leak_in_inch = $("#trap_pipe_size").val();
+				$scope.steam_leak_json.therm_rate = $("#therm_rate").val();
 				$http({method: 'POST',
-					   url: '/api_steam_trap/steam_trap/',
-					   data: $scope.steam_trap_json}).
+					   url: '/api_steam_leak/steam_leak/',
+					   data: $scope.steam_leak_json}).
 				success(function(data){
 					window.location.reload();
 				}).
 				error(function(data){
 				});
-				$('#add_new_steam_trap').modal('hide');
+				$('#add_new_steam_leak').modal('hide');
 			}
 		}]);
 	</script>
 </head>
-<body ng-app="app_steam_trap">
+<body ng-app="app_steam_leak">
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
@@ -84,20 +84,19 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						 Steam Trap List
+						 Steam Leak List
 					</h1>
 					<p>
-						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_steam_trap">+ Steam Trap</button>
+						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_steam_leak">+ Steam Trap</button>
 					</p>
-					<div ng-controller="steamTrapListController">
+					<div ng-controller="steamLeakListController">
 						<div class="container-fluid">
 							<table class="table table-striped">
 								<tr>
-									<th>Failed Trap #</th>
+									<th>Leak #</th>
 									<th>Pressure (psig)</th>
 									<th>Absolute Pressure (psia)</th>
-									<th>Trap Pipe Size (inch)</th>
-									<th>Size Trap orifice(inch)</th>
+									<th>Size Leak (inch)</th>
 									<th>Steam Loss (pph)</th>
 									<th>Boiler Efficiency</th>
 									<th>Steam Energy (Btu/lb)</th>
@@ -108,12 +107,11 @@
 									<th>Cost / Year</th>
 								</tr>
 								{% verbatim %}
-									<tr ng-repeat="x in steam_trap_list">
-										<td><a href="/steam_trap_details/{{ x.id }}">{{ x.steam_trap_number }}</a></td>
+									<tr ng-repeat="x in steam_leak_list">
+										<td><a href="/steam_leak_details/{{ x.id }}">{{ x.steam_leak_number }}</a></td>
 										<td>{{ x.pressure_in_psig }}</td>
 										<td>{{ x.absolute_pressure_psia }}</td>
-										<td>{{x.trap_pipe_size}}</td>
-										<td>{{x.size_trap_orifice}}</td>
+										<td>{{x.size_leak_in_inch}}</td>
 										<td>{{x.get_steam_loss_pph}}</td>
 										<td>{{x.boiler_efficiency}}</td>
 										<td>{{x.get_steam_energy_btu_per_lb}}</td>
@@ -132,13 +130,13 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="add_new_steam_trap" role="dialog">
+	<div class="modal fade" id="add_new_steam_leak" role="dialog">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Add New Steam Trap</h4>
+					<h4 class="modal-title">Add New Steam Leak</h4>
 				</div>
-				<form class="form-horizontal" ng-controller="steamTrapAddController" role="form">
+				<form class="form-horizontal" ng-controller="steamLeakAddController" role="form">
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="form-group form-group-sm">
@@ -152,9 +150,9 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Failed Trap #</label>
+						  <label class="col-sm-4 control-label">Leak #</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="steam_trap_number" name="steam_trap_number">
+							<input class="form-control" type="text" id="steam_leak_number" name="steam_leak_number">
 						  </div>
 						</div>
 
@@ -187,13 +185,9 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Trap Pipe Size (inch)</label>
+						  <label class="col-sm-4 control-label">Size Leak (inch)</label>
 						  <div class="col-sm-4">
-							  <select class="form-control col-sm-6" id="trap_pipe_size" name="trap_pipe_size">
-								  {% for trap_pipe_size_val  in trap_pipe_size_list %}
-									 <option {% if trap_pipe_size_val == 0.5 %} selected {% endif %} value="{{ trap_pipe_size_val }}">{{ trap_pipe_size_val }}</option>
-								  {% endfor %}
-							  </select>
+							<input class="form-control" type="text" id="size_leak_in_inch" name="size_leak_in_inch">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">

@@ -35,19 +35,18 @@ class SteamTrap(models.Model):
 	therm_rate = models.FloatField('Therms Rate $', default=0.0)
 	owner = models.ForeignKey('auth.User', related_name='steam_trap')
 
-
 	def get_steam_energy_btu_per_lb(self):
 		return STEAM_TRAP_CHOICES[self.pressure_in_psig]
 
 	def get_steam_loss_pph(self):
 		return round(24.24 * self.absolute_pressure_psia() *
-					 pow(TRAP_SIZE_CHOICES[self.trap_pipe_size], 2), 6)
+					 pow(TRAP_SIZE_CHOICES[self.trap_pipe_size], 2), 2)
 
 	def get_gas_usage_therms_per_hour(self):
-		return float(self.get_steam_loss_pph() *
+		return round(float(self.get_steam_loss_pph() *
 					 self.get_steam_energy_btu_per_lb() *
 					 (1.0/self.boiler_efficiency) *
-					 10 * (1.0/10000.0))
+					 10 * (1.0/10000.0)), 2)
 
 	def absolute_pressure_psia(self):
 		if self.pressure_in_psig:
@@ -59,12 +58,12 @@ class SteamTrap(models.Model):
 		return TRAP_SIZE_CHOICES[self.trap_pipe_size]
 
 	def get_cost_per_hour(self):
-		return float(self.get_gas_usage_therms_per_hour() *
-					 self.therm_rate)
+		return round(float(self.get_gas_usage_therms_per_hour() *
+					 self.therm_rate), 2)
 
 	def get_cost_per_year(self):
-		return float(self.hours_of_operation *
-					 self.get_cost_per_hour())
+		return round(float(self.hours_of_operation *
+					 self.get_cost_per_hour()), 2)
 
 	def was_recent(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days=1)

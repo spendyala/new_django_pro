@@ -12,35 +12,35 @@
 	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
 	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
 	<script>
-		var app_1 = angular.module("app_steam_trap", ['ui.bootstrap']);
+		var app_1 = angular.module("app_steam_leak", ['ui.bootstrap']);
 		app_1.config(['$httpProvider', function($httpProvider) {
 			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
-		app_1.controller("steamTrapModifyController", ['$scope','$http', function($scope,$http){
-			$scope.steam_trap_json = {'id': {{steam_trap_obj.id}},
+		app_1.controller("steamLeakModifyController", ['$scope','$http', function($scope,$http){
+			$scope.steam_leak_json = {'id': {{steam_leak_obj.id}},
 									  'client': '',
-									  'steam_trap_number': '',
+									  'steam_leak_number': '',
 									  'location_description': '',
 									  'pressure_in_psig': 100,
 									  'hours_of_operation': 8760,
 									  'boiler_efficiency': 80,
-									  'trap_pipe_size': 0.5,
+									  'size_leak_in_inch': 0.5,
 									  'therm_rate': 0};
 			$scope.submit_details = function(){
-				$scope.steam_trap_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.steam_trap_json.steam_trap_number = $("#steam_trap_number").val();
-				$scope.steam_trap_json.location_description = $("#location_description").val();
-				$scope.steam_trap_json.pressure_in_psig = $("#pressure_in_psig").val();
-				$scope.steam_trap_json.hours_of_operation = $("#hours_of_operation").val();
-				$scope.steam_trap_json.boiler_efficiency = $("#boiler_efficiency").val();
-				$scope.steam_trap_json.trap_pipe_size = $("#trap_pipe_size").val();
-				$scope.steam_trap_json.therm_rate = $("#therm_rate").val();
+				$scope.steam_leak_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.steam_leak_json.steam_leak_number = $("#steam_leak_number").val();
+				$scope.steam_leak_json.location_description = $("#location_description").val();
+				$scope.steam_leak_json.pressure_in_psig = $("#pressure_in_psig").val();
+				$scope.steam_leak_json.hours_of_operation = $("#hours_of_operation").val();
+				$scope.steam_leak_json.boiler_efficiency = $("#boiler_efficiency").val();
+				$scope.steam_leak_json.size_leak_in_inch = $("#size_leak_in_inch").val();
+				$scope.steam_leak_json.therm_rate = $("#therm_rate").val();
 				$http({method: 'PUT',
-					   url: '/api_steam_trap/steam_trap/{{steam_trap_obj.id}}/',
-					   data: $scope.steam_trap_json}).
+					   url: '/api_steam_leak/steam_leak/{{steam_leak_obj.id}}/',
+					   data: $scope.steam_leak_json}).
 				success(function(data){
-					window.location.href = '/steam_trap/';
+					window.location.href = '/steam_leak/';
 				}).
 				error(function(data){
 				});
@@ -48,9 +48,9 @@
 
 			$scope.submit_delete = function(){
 				$http({method: 'DELETE',
-					   url: '/api_steam_trap/steam_trap/{{steam_trap_obj.id}}/'}).
+					   url: '/api_steam_leak/steam_leak/{{steam_leak_obj.id}}/'}).
 				success(function(data){
-					window.location.href = '/steam_trap/';
+					window.location.href = '/steam_leak/';
 				}).
 				error(function(data){
 				});
@@ -59,7 +59,7 @@
 		}]);
 	</script>
 </head>
-<body ng-app="app_steam_trap">
+<body ng-app="app_steam_leak">
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			<div class="navbar-header">
@@ -77,19 +77,19 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-lg-12">
-					<form class="form-horizontal" ng-controller="steamTrapModifyController" role="form">
+					<form class="form-horizontal" ng-controller="steamLeakModifyController" role="form">
 					{% csrf_token %}
 						<div class="container-fluid">
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">ID</label>
 							  <div class="col-sm-4">
-								<label class="col-sm-5 bg-success">{{ steam_trap_obj.id }}</label>
+								<label class="col-sm-5 bg-success">{{ steam_leak_obj.id }}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Start Date</label>
 							  <div class="col-sm-8">
-								<label class="col-sm-5 bg-success">{{ steam_trap_obj.start_date }}</label>
+								<label class="col-sm-5 bg-success">{{ steam_leak_obj.start_date }}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -97,21 +97,21 @@
 							  <div class="col-sm-4">
 								  <select class="form-control col-sm-6" id="client" name="client">
 									{% for client_id, client_name in clients_list %}
-									   <option {% if client_id == steam_trap_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+									   <option {% if client_id == steam_leak_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
 									{% endfor %}
 								  </select>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Failed Trap #</label>
+							  <label class="col-sm-4 control-label">Leak #</label>
 							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="steam_trap_number" name="steam_trap_number" value={{steam_trap_obj.steam_trap_number}}>
+								<input class="form-control" type="text" id="steam_leak_number" name="steam_leak_number" value={{steam_leak_obj.steam_leak_number}}>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Location/Description</label>
 							  <div class="col-sm-8">
-								<input class="form-control" type="text" id="location_description" name="location_description" value="{{steam_trap_obj.location_description}}">
+								<input class="form-control" type="text" id="location_description" name="location_description" value="{{steam_leak_obj.location_description}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -119,7 +119,7 @@
 							  <div class="col-sm-4">
 								<select class="form-control col-sm-6" id="pressure_in_psig" name="pressure_in_psig">
 									{% for pressure_in_psig_val  in pressure_in_psig_list %}
-									   <option {% if pressure_in_psig_val == steam_trap_obj.pressure_in_psig %} selected {% endif %} value="{{ pressure_in_psig_val }}">{{ pressure_in_psig_val }}</option>
+									   <option {% if pressure_in_psig_val == steam_leak_obj.pressure_in_psig %} selected {% endif %} value="{{ pressure_in_psig_val }}">{{ pressure_in_psig_val }}</option>
 									{% endfor %}
 								  </select>
 							  </div>
@@ -131,19 +131,9 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Trap Pipe Size (inch)</label>
+							  <label class="col-sm-4 control-label">Size Leak (inch)</label>
 							  <div class="col-sm-4">
-								  <select class="form-control col-sm-6" id="trap_pipe_size" name="trap_pipe_size">
-									  {% for trap_pipe_size_val  in trap_pipe_size_list %}
-										 <option {% if trap_pipe_size_val == steam_trap_obj.trap_pipe_size %} selected {% endif %} value="{{ trap_pipe_size_val }}">{{ trap_pipe_size_val }}</option>
-									  {% endfor %}
-								  </select>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Size Trap orifice(inch)</label>
-							  <div class="col-sm-4">
-								<label class="col-sm-5 bg-success">{{ size_trap_orifice }}</label>
+								  <input class="form-control" type="text" id="size_leak_in_inch" name="size_leak_in_inch" value="{{steam_leak_obj.size_leak_in_inch}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -155,7 +145,7 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Boiler Efficiency %</label>
 							  <div class="col-sm-3">
-								<input class="form-control" type="text" id="boiler_efficiency" name="boiler_efficiency" value="{{steam_trap_obj.boiler_efficiency}}">
+								<input class="form-control" type="text" id="boiler_efficiency" name="boiler_efficiency" value="{{steam_leak_obj.boiler_efficiency}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -173,7 +163,7 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Therms Rate $</label>
 							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="therm_rate" name="therm_rate" value="{{steam_trap_obj.therm_rate}}">
+								<input class="form-control" type="text" id="therm_rate" name="therm_rate" value="{{steam_leak_obj.therm_rate}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -185,7 +175,7 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Hours of Operation</label>
 							  <div class="col-sm-3">
-								<input class="form-control" type="text" id="hours_of_operation" name="hours_of_operation" value="{{steam_trap_obj.hours_of_operation}}">
+								<input class="form-control" type="text" id="hours_of_operation" name="hours_of_operation" value="{{steam_leak_obj.hours_of_operation}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
