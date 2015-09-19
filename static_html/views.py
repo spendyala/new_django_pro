@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.contrib import auth
+from django.core.context_processors import csrf
 
 from clients.ISO3166 import ISO3166
 from clients.models import Client
@@ -12,18 +14,22 @@ import json
 
 
 def set_render_object(request, file_name=None, content=None):
+	if not content:
+		content={}
+	content.update({'username': request.user.username})
+
 	return render(request, 'static_html/%s.html' % (file_name, ), content)
 
 # Clients
-def client(request, file_name=None, id=None):
-	if id:
+def client(request, file_name=None, rec_id=None):
+	if rec_id:
 		return render(request, 'static_html/404.html')
 	data = {}
 	data['countries_list'] = ISO3166
 	return set_render_object(request, file_name=file_name, content=data)
 
-def client_details(request, file_name=None, id=None):
-	if not id:
+def client_details(request, file_name=None, rec_id=None):
+	if not rec_id:
 		return render(request, 'static_html/404.html')
 
 	try:
@@ -39,8 +45,8 @@ def client_details(request, file_name=None, id=None):
 		return render(request, 'static_html/404.html')
 
 # Steam Trap
-def steam_trap(request, file_name=None, id=None):
-	if id:
+def steam_trap(request, file_name=None, rec_id=None):
+	if rec_id:
 		return render(request, 'static_html/404.html')
 	try:
 		clients_obj = Client.objects.all()
@@ -56,8 +62,8 @@ def steam_trap(request, file_name=None, id=None):
 		return render(request, 'static_html/404.html')
 
 
-def steam_trap_details(request, file_name=None, id=None):
-	if not id:
+def steam_trap_details(request, file_name=None, rec_id=None):
+	if not rec_id:
 		return render(request, 'static_html/404.html')
 
 	try:
@@ -83,8 +89,8 @@ def steam_trap_details(request, file_name=None, id=None):
 		return render(request, 'static_html/404.html')
 
 # Steam Leak
-def steam_leak(request, file_name=None, id=None):
-	if id:
+def steam_leak(request, file_name=None, rec_id=None):
+	if rec_id:
 		return render(request, 'static_html/404.html')
 	try:
 		clients_obj = Client.objects.all()
@@ -99,8 +105,8 @@ def steam_leak(request, file_name=None, id=None):
 		return render(request, 'static_html/404.html')
 
 
-def steam_leak_details(request, file_name=None, id=None):
-	if not id:
+def steam_leak_details(request, file_name=None, rec_id=None):
+	if not rec_id:
 		return render(request, 'static_html/404.html')
 
 	try:
@@ -123,30 +129,60 @@ def steam_leak_details(request, file_name=None, id=None):
 		return render(request, 'static_html/404.html')
 
 
-# Login
-def login(request, file_name=None, id=None):
-	if id:
-		return render(request, 'static_html/login.html')
+# Login and Logout
+def login(request, file_name=None, rec_id=None):
+	# if rec_id:
+	# 	return render(request, 'static_html/login.html')
 	data = {}
 	return set_render_object(request, file_name=file_name, content=data)
 
+def logout(request, file_name=None, rec_id=None):
+	# Logout
+	auth.logout(request)
+	return set_render_object(request, file_name='login', content={})
+
+def authenticate_user(request, path):
+	print path
+	if path.replace('/', ''):
+		return render(request, 'static_html/login.html')
+	if request.method == 'POST':
+		login_data = json.loads(request.body)
+		user = auth.authenticate(username=login_data['username'],
+								 password=login_data['password'])
+		if user and user.is_authenticated():
+			auth.login(request, user)
+			content = {}
+			content.update(csrf(request))
+			return set_render_object(request,
+									 file_name='index',
+									 content=content)
+	return set_render_object(request, file_name='index')
+
+
 # Add every new Page, This is there to avoid hacking
-VIEW_METHODS = {'client': client,
+VIEW_METHODS = { #'authenticate_user': authenticate_user,
+				'client': client,
 				'client_details': client_details,
 				'login': login,
+				'logout': logout,
 				'steam_trap': steam_trap,
 				'steam_trap_details': steam_trap_details,
 				'steam_leak': steam_leak,
 				'steam_leak_details': steam_leak_details}
 
 # Create your views here.
-def index(request, file_name=None, id=None):
+def index(request, file_name=None, rec_id=None):
+	if not request.user.is_authenticated():
+		# return HttpResponseRedirect('/login/')
+		return login(request, file_name='login')
 	if not file_name:
-		return render(request, 'static_html/index.html')
+		content = {}
+		content.update(csrf(request))
+		return set_render_object(request, file_name='index', content=content)
 	else:
 		method_obj = VIEW_METHODS.get(file_name)
 		if method_obj:
-			return method_obj(request, file_name, id)
+			return method_obj(request, file_name, rec_id)
 		else:
 			# return HttpResponse(json.dumps({'Error': 'Page Not found 404'}))
 			return render(request, 'static_html/404.html')

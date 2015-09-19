@@ -17,8 +17,9 @@
 	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/plugins/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/plugins/font-awesome.min.cs" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<!-- <link rel="stylesheet" type="text/css" href="{% static "static_html/css/plugins/morris.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/plugins/font-awesome.min.cs" %}"> -->
 
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,6 +41,11 @@
 				<!-- <a class="navbar-brand" href="/vfd_app">VFD App</a>
 				<a class="navbar-brand" href="/premium_efficiency_app">Premium Efficiency App</a>
 				<a class="navbar-brand" href="/chiller_app">Chiller App</a> -->
+
+			</div>
+			<div class="pull-right">
+				<span class="navbar-brand">{{ username }}</span>
+				<a class="navbar-brand" href="/logout">Logout</a>
 			</div>
 		</nav>
 	</div>
@@ -167,8 +173,8 @@ Easy to maintain, we can add additional resources like Main Memory (RAM), Harddi
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="{% static "static_html/js/bootstrap.min.js" %}"></script>
 	<script src="{% static "static_html/js/raphael.min.js" %}"></script>
-	<script src="{% static "static_html/js/morris.min.js" %}"></script>
-	<script src="{% static "static_html/js/morris-data.js" %}"></script>
+	<!-- <script src="{% static "static_html/js/morris.min.js" %}"></script>
+	<script src="{% static "static_html/js/morris-data.js" %}"></script> -->
 </body>
 
 </html>

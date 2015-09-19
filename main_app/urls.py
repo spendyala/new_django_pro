@@ -21,5 +21,7 @@ urlpatterns = [
 	url(r'^api_client/', include('clients.urls')),
 	url(r'^api_steam_trap/', include('steam_trap.urls')),
 	url(r'^api_steam_leak/', include('steam_leaks.urls')),
+	url(r'^authenticate_user(|/)$', 'static_html.views.authenticate_user'),
+	# url(r'^login(|/)$', 'main_app.views.login'),
 	url(r'^(|/)', include('static_html.urls', namespace='static_html')),
 ]
