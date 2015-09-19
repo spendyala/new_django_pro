@@ -33,7 +33,7 @@ def client_details(request, file_name=None, rec_id=None):
 		return render(request, 'static_html/404.html')
 
 	try:
-		client_obj = Client.objects.get(id=id)
+		client_obj = Client.objects.get(id=rec_id)
 		data = {'client_id': client_obj.id,
 				'client_name': client_obj.client_name,
 				'country_id': client_obj.country,
@@ -75,7 +75,7 @@ def steam_trap_details(request, file_name=None, rec_id=None):
 		data = {'clients_list': clients_list,
 				'pressure_in_psig_list': pressure_in_psig_list,
 				'trap_pipe_size_list': trap_pipe_size_list}
-		steam_trap_obj = SteamTrap.objects.get(id=id)
+		steam_trap_obj = SteamTrap.objects.get(id=rec_id)
 		data['steam_trap_obj'] = steam_trap_obj
 		data['get_steam_energy_btu_per_lb'] = steam_trap_obj.get_steam_energy_btu_per_lb()
 		data['get_steam_loss_pph'] = steam_trap_obj.get_steam_loss_pph()
@@ -116,7 +116,7 @@ def steam_leak_details(request, file_name=None, rec_id=None):
 
 		data = {'clients_list': clients_list,
 				'pressure_in_psig_list': pressure_in_psig_list}
-		steam_leak_obj = SteamLeak.objects.get(id=id)
+		steam_leak_obj = SteamLeak.objects.get(id=rec_id)
 		data['steam_leak_obj'] = steam_leak_obj
 		data['get_steam_energy_btu_per_lb'] = steam_leak_obj.get_steam_energy_btu_per_lb()
 		data['get_steam_loss_pph'] = steam_leak_obj.get_steam_loss_pph()
