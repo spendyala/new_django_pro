@@ -42,7 +42,8 @@ INSTALLED_APPS = (
 	'static_html',  # HTML Files goes here
 	'clients',
 	'steam_trap',
-	'steam_leaks'
+	'steam_leaks',
+	'boiler_blowdown'
 )
 
 MIDDLEWARE_CLASSES = (
