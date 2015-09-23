@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 {% load staticfiles %}
+
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
@@ -51,20 +53,7 @@
 <body ng-app="app_client">
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="/">Home</a>
-				<a class="navbar-brand" href="/client">Clients</a>
-				<a class="navbar-brand" href="/steam_trap">Steam Trap</a>
-				<a class="navbar-brand" href="/steam_leak">Steam Leak</a>
-				<!-- <a class="navbar-brand" href="/vfd_app">VFD App</a>
-				<a class="navbar-brand" href="/premium_efficiency_app">Premium Efficiency App</a>
-				<a class="navbar-brand" href="/chiller_app">Chiller App</a> -->
-
-			</div>
-			<div class="pull-right">
-				<span class="navbar-brand">{{ username }}</span>
-				<a class="navbar-brand" href="/logout">Logout</a>
-			</div>
+			{% include "static_html/urls.html" %}
 		</nav>
 	</div>
 	<div id="page-wrapper">

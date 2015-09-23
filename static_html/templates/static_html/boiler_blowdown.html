@@ -15,57 +15,51 @@
 	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
 	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
 	<script>
-		var app_1 = angular.module("app_steam_leak", ['ui.bootstrap']);
+		var app_1 = angular.module("app_boiler_blowdown", ['ui.bootstrap']);
 		app_1.config(['$httpProvider', function($httpProvider) {
 			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
-		app_1.controller("steamLeakListController", ['$scope','$http', function($scope,$http){
-			$scope.load_clients_list = function(){
-				$http({method: 'GET', url: "/api_steam_leak/steam_leak/"}).
-					 success(function(data){
-						 $scope.steam_leak_list = data;
-				}).error(function(data){});
-			};
-			$http({method: 'GET', url: "/api_steam_leak/steam_leak/"}).
+		app_1.controller("boilerBlowdownListController", ['$scope','$http', function($scope,$http){
+			$http({method: 'GET', url: "/api_boiler_blowdown/boiler_blowdown/"}).
 				 success(function(data){
-					 $scope.steam_leak_list = data;
+					 $scope.boiler_blowdown_list = data;
 			}).error(function(data){});
 		}]);
-		app_1.controller("steamLeakAddController", ['$scope',
+		app_1.controller("boilerBlowdownAddController", ['$scope',
 													'$http',
 													function($scope, $http){
-			$scope.steam_leak_json = {'client': '',
-									  'steam_leak_number':'',
+			$scope.boiler_blowdown_json = {'client': '',
+									  'boiler_blowdown_number':'',
 									  'location_description':'',
 									  'pressure_in_psig':100,
 									  'hours_of_operation':8760,
 									  'boiler_efficiency':80,
-									  'size_leak_in_inch':0.5,
+									  'trap_pipe_size':0.5,
 									  'therm_rate':0};
 			$scope.submit_details = function(){
-				$scope.steam_leak_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.steam_leak_json.steam_leak_number = $("#steam_leak_number").val();
-				$scope.steam_leak_json.location_description = $("#location_description").val();
-				$scope.steam_leak_json.pressure_in_psig = $("#pressure_in_psig").val();
-				$scope.steam_leak_json.hours_of_operation = $("#hours_of_operation").val();
-				$scope.steam_leak_json.boiler_efficiency = $("#boiler_efficiency").val();
-				$scope.steam_leak_json.size_leak_in_inch = $("#trap_pipe_size").val();
-				$scope.steam_leak_json.therm_rate = $("#therm_rate").val();
+				$scope.boiler_blowdown_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.boiler_blowdown_json.boiler_blowdown_number = $("#boiler_blowdown_number").val();
+				$scope.boiler_blowdown_json.location_description = $("#location_description").val();
+				$scope.boiler_blowdown_json.pressure_in_psig = $("#pressure_in_psig").val();
+				$scope.boiler_blowdown_json.hours_of_operation = $("#hours_of_operation").val();
+				$scope.boiler_blowdown_json.boiler_efficiency = $("#boiler_efficiency").val();
+				$scope.boiler_blowdown_json.trap_pipe_size = $("#trap_pipe_size").val();
+				$scope.boiler_blowdown_json.therm_rate = $("#therm_rate").val();
 				$http({method: 'POST',
-					   url: '/api_steam_leak/steam_leak/',
-					   data: $scope.steam_leak_json}).
+					   url: '/api_boiler_blowdown/boiler_blowdown/',
+					   data: $scope.boiler_blowdown_json}).
 				success(function(data){
 					window.location.reload();
 				}).
 				error(function(data){
 				});
-				$('#add_new_steam_leak').modal('hide');
+				$('#add_new_boiler_blowdown').modal('hide');
 			}
 		}]);
 	</script>
 </head>
-<body ng-app="app_steam_leak">
+<body ng-app="app_boiler_blowdown">
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			{% include "static_html/urls.html" %}
@@ -76,34 +70,32 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						 Steam Leak List
+						 Boiler Blowdown List
 					</h1>
 					<p>
-						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_steam_leak">+ Steam Leak</button>
+						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_boiler_blowdown">+ Boiler Blowdown</button>
 					</p>
-					<div ng-controller="steamLeakListController">
+					<div ng-controller="boilerBlowdownListController">
 						<div class="container-fluid">
 							<table class="table table-striped">
 								<tr>
-									<th>Leak #</th>
-									<th>Pressure (psig)</th>
-									<th>Absolute Pressure (psia)</th>
-									<th>Size Leak (inch)</th>
-									<th>Steam Loss (pph)</th>
-									<th>Boiler Efficiency</th>
-									<th>Steam Energy (Btu/lb)</th>
-									<th>Gas Usage (Therms/hour)</th>
-									<th>Therm Rate</th>
-									<th>Cost / Hour</th>
-									<th>Hours of Operation</th>
-									<th>Cost / Year</th>
+									<th>Boiler Blowdown</th>
+									<th>Client</th>
+									<th>Gas Rate</th>
+									<th>Water Rate</th>
+									<th>Makeup Water Temperature</th>
+									<th>Total Gas Savings</th>
+									<th>Total Water Savings</th>
+									<th>Total Gas and Water Savings</th>
+									<th>Total Savings</th>
 								</tr>
 								{% verbatim %}
-									<tr ng-repeat="x in steam_leak_list">
-										<td><a href="/steam_leak_details/{{ x.id }}">{{ x.steam_leak_number }}</a></td>
+									<tr ng-repeat="x in boiler_blowdown_list">
+										<td><a href="/boiler_blowdown_details/{{ x.id }}">{{ x.boiler_blowdown_number }}</a></td>
 										<td>{{ x.pressure_in_psig }}</td>
 										<td>{{ x.absolute_pressure_psia }}</td>
-										<td>{{x.size_leak_in_inch}}</td>
+										<td>{{x.trap_pipe_size}}</td>
+										<td>{{x.size_trap_orifice}}</td>
 										<td>{{x.get_steam_loss_pph}}</td>
 										<td>{{x.boiler_efficiency}}</td>
 										<td>{{x.get_steam_energy_btu_per_lb}}</td>
@@ -122,13 +114,13 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="add_new_steam_leak" role="dialog">
+	<div class="modal fade" id="add_new_boiler_blowdown" role="dialog">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Add New Steam Leak</h4>
+					<h4 class="modal-title">Add New Boiler Blowdown</h4>
 				</div>
-				<form class="form-horizontal" ng-controller="steamLeakAddController" role="form">
+				<form class="form-horizontal" ng-controller="boilerBlowdownAddController" role="form">
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="form-group form-group-sm">
@@ -142,9 +134,9 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Leak #</label>
+						  <label class="col-sm-4 control-label">Failed Trap #</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="steam_leak_number" name="steam_leak_number">
+							<input class="form-control" type="text" id="boiler_blowdown_number" name="boiler_blowdown_number">
 						  </div>
 						</div>
 
@@ -177,9 +169,13 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Size Leak (inch)</label>
+						  <label class="col-sm-4 control-label">Trap Pipe Size (inch)</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="size_leak_in_inch" name="size_leak_in_inch">
+							  <select class="form-control col-sm-6" id="trap_pipe_size" name="trap_pipe_size">
+								  {% for trap_pipe_size_val  in trap_pipe_size_list %}
+									 <option {% if trap_pipe_size_val == 0.5 %} selected {% endif %} value="{{ trap_pipe_size_val }}">{{ trap_pipe_size_val }}</option>
+								  {% endfor %}
+							  </select>
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
@@ -195,8 +191,6 @@
 							</div>
 						</div>
 					</div>
-					<!-- <input id="save_client_app" name="save_client_app" type="text" value="0" hidden/> -->
-
 				</form>
 			</div>
 		</div>

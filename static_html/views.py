@@ -8,6 +8,7 @@ from clients.models import Client
 
 from steam_trap.models import SteamTrap, STEAM_TRAP_CHOICES, TRAP_SIZE_CHOICES
 from steam_leaks.models import SteamLeak
+from boiler_blowdown.models import BoilerBlowdown
 
 import datetime
 import json
@@ -129,6 +130,21 @@ def steam_leak_details(request, file_name=None, rec_id=None):
 		return render(request, 'static_html/404.html')
 
 
+# Boiler Blowdown
+# Steam Leak
+def boiler_blowdown(request, file_name=None, rec_id=None):
+	if rec_id:
+		return render(request, 'static_html/404.html')
+	try:
+		clients_obj = Client.objects.all()
+		clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+		data = {'clients_list': clients_list}
+		return set_render_object(request, file_name=file_name, content=data)
+	except Exception as err:
+		return render(request, 'static_html/404.html')
+
+
 # Login and Logout
 def login(request, file_name=None, rec_id=None):
 	# if rec_id:
@@ -165,6 +181,7 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'client_details': client_details,
 				'login': login,
 				'logout': logout,
+				'boiler_blowdown': boiler_blowdown,
 				'steam_trap': steam_trap,
 				'steam_trap_details': steam_trap_details,
 				'steam_leak': steam_leak,

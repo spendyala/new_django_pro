@@ -33,22 +33,7 @@
 <body>
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="/">Home</a>
-				<a class="navbar-brand" href="/client">Clients</a>
-				<a class="navbar-brand" href="/steam_trap">Steam Trap</a>
-				<a class="navbar-brand" href="/steam_leak">Steam Leak</a>
-				<a class="navbar-brand" href="http://127.0.0.1:8080/vfd_app/">VFD</a>
-				<a class="navbar-brand" href="http://127.0.0.1:8080/chiller_app/">Chiller App</a>
-				<!-- <a class="navbar-brand" href="/vfd_app">VFD App</a>
-				<a class="navbar-brand" href="/premium_efficiency_app">Premium Efficiency App</a>
-				<a class="navbar-brand" href="/chiller_app">Chiller App</a> -->
-
-			</div>
-			<div class="pull-right">
-				<span class="navbar-brand">{{ username }}</span>
-				<a class="navbar-brand" href="/logout">Logout</a>
-			</div>
+			{% include "static_html/urls.html" %}
 		</nav>
 	</div>
 	<div id="page-wrapper">
