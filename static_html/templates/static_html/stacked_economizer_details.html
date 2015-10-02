@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<script src="{% static "clients/js/jquery.js"%}"></script>
+	<script src="{% static "clients/js/angular.js"%}"></script>
+	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+	<script>
+		var app_1 = angular.module("app_stacked_economizer", ['ui.bootstrap']);
+		app_1.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+		}]);
+		app_1.controller("stackedEconomizerModifyController", ['$scope','$http', function($scope,$http){
+			$scope.stacked_economizer_json = {'client': '',
+									  'boiler_stacked_economizer':'',
+									  'gas_rate':0,
+									  'hours_of_operations':0,
+									  'boiler_size_hp':0,
+									  'initial_stack_gas_temp_f':0,
+									  'average_fire_rate':0};
+			$scope.submit_details = function(){
+				$scope.stacked_economizer_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.stacked_economizer_json.boiler_stacked_economizer = $("#boiler_stacked_economizer").val();
+				$scope.stacked_economizer_json.gas_rate = $("#gas_rate").val();
+				$scope.stacked_economizer_json.hours_of_operations = $("#hours_of_operations").val();
+				$scope.stacked_economizer_json.boiler_size_hp = $("#boiler_size_hp").val();
+				$scope.stacked_economizer_json.initial_stack_gas_temp_f = $("#initial_stack_gas_temp_f").val();
+				$scope.stacked_economizer_json.average_fire_rate = $("#average_fire_rate").val();
+				$http({method: 'PUT',
+					   url: '/api_stacked_economizer/stacked_economizer/{{stacked_economizer_obj.id}}/',
+					   data: $scope.stacked_economizer_json}).
+				success(function(data){
+					window.location.href = '/stacked_economizer/';
+				}).
+				error(function(data){
+				});
+			}
+
+			$scope.submit_delete = function(){
+				$http({method: 'DELETE',
+					   url: '/api_stacked_economizer/stacked_economizer/{{stacked_economizer_obj.id}}/'}).
+				success(function(data){
+					window.location.href = '/stacked_economizer/';
+				}).
+				error(function(data){
+				});
+			}
+		}]);
+	</script>
+</head>
+<body ng-app="app_stacked_economizer">
+	<div id="wrapper">
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			{% include "static_html/urls.html" %}
+		</nav>
+	</div>
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<form class="form-horizontal" ng-controller="stackedEconomizerModifyController" role="form">
+					{% csrf_token %}
+						<div class="container-fluid">
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Client</label>
+							  <div class="col-sm-4">
+								  <select class="form-control col-sm-6" id="client" name="client">
+									{% for client_id, client_name in clients_list %}
+									   <option {% if client_id == 'US' %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+									{% endfor %}
+								  </select>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Stacked Economizer</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="boiler_stacked_economizer" name="boiler_stacked_economizer" value="{{stacked_economizer_obj.boiler_stacked_economizer}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Gas Rate</label>
+							  <div class="col-sm-4">
+								<input class="form-control control-label" type="text" id="gas_rate" name="gas_rate" value="{{stacked_economizer_obj.gas_rate}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Hours of Operation</label>
+							  <div class="col-sm-4">
+								<input class="form-control control-label" type="text" id="hours_of_operations" name="hours_of_operations" value="{{stacked_economizer_obj.hours_of_operations}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-md bg-info">
+								<label class="col-md-offset-4 col-md-8 ">Stacked Economizer</label>
+							</div>
+							<div class="form-group form-group-sm">
+								<label class="col-sm-offset-4 col-sm-3">
+									Existing Blowdown
+								</label>
+							</div>
+
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Boiler Size (HP)</label>
+							  <div class="col-sm-3">
+								<input class="form-control control-label" type="text" id="boiler_size_hp" name="boiler_size_hp" value="{{stacked_economizer_obj.boiler_size_hp}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Boiler size, MMBtu/hr</label>
+							  <div class="col-sm-3">
+								<label class="col-sm-12 bg-success control-label">{{ get_boiler_size_mmbtu_per_hr }}</label>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Initial Stack Gas Temp (F)</label>
+							  <div class="col-sm-3">
+								<input class="form-control control-label" type="text" id="initial_stack_gas_temp_f" name="initial_stack_gas_temp_f" value="{{stacked_economizer_obj.initial_stack_gas_temp_f}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Average Fire Rate</label>
+							  <div class="col-sm-3">
+								<input class="form-control control-label" type="text" id="average_fire_rate" name="average_fire_rate" value="{{stacked_economizer_obj.average_fire_rate}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Recoverable Heat, MMBtu/hr</label>
+							  <div class="col-sm-3">
+								<label class="col-sm-12 bg-success control-label">{{ get_recoverable_heat_mmbtu_per_hr }}</label>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Recoverable Heat, Therms/yr</label>
+							  <div class="col-sm-3">
+								<label class="col-sm-12 bg-success control-label">{{ get_recoverable_heat_therms_per_year }}</label>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Savings</label>
+							  <div class="col-sm-3">
+								<label class="col-sm-12 bg-success control-label">{{ get_savings }}</label>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+								<div class="col-sm-6 control-label">
+									<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+									<input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

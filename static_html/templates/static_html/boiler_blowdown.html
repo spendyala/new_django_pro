@@ -30,22 +30,40 @@
 													'$http',
 													function($scope, $http){
 			$scope.boiler_blowdown_json = {'client': '',
-									  'boiler_blowdown_number':'',
-									  'location_description':'',
-									  'pressure_in_psig':100,
-									  'hours_of_operation':8760,
-									  'boiler_efficiency':80,
-									  'trap_pipe_size':0.5,
-									  'therm_rate':0};
+									  'boiler_blowdown_name':'',
+									  'gas_rate':0,
+									  'water_rate':0,
+									  'makeup_water_temperature':0,
+									  'existing_blowdown_frequency_per_day':0,
+									  'existing_blowdown_rate_gpm':0,
+									  'existing_blowdown_duration_mins':0,
+									  'existing_days_of_operation':0,
+									  'existing_discharge_temp_in_f':0,
+									  'proposed_blowdown_frequency_per_day':0,
+									  'proposed_blowdown_rate_gpm':0,
+									  'proposed_blowdown_duration_mins':0,
+									  'proposed_days_of_operation':0,
+									  'proposed_discharge_temp_in_f':0,
+									  'existing_heat_recovery_efficiency_perc':0,
+									  'proposed_heat_recovery_efficiency_perc':0};
 			$scope.submit_details = function(){
 				$scope.boiler_blowdown_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.boiler_blowdown_json.boiler_blowdown_number = $("#boiler_blowdown_number").val();
-				$scope.boiler_blowdown_json.location_description = $("#location_description").val();
-				$scope.boiler_blowdown_json.pressure_in_psig = $("#pressure_in_psig").val();
-				$scope.boiler_blowdown_json.hours_of_operation = $("#hours_of_operation").val();
-				$scope.boiler_blowdown_json.boiler_efficiency = $("#boiler_efficiency").val();
-				$scope.boiler_blowdown_json.trap_pipe_size = $("#trap_pipe_size").val();
-				$scope.boiler_blowdown_json.therm_rate = $("#therm_rate").val();
+				$scope.boiler_blowdown_json.boiler_blowdown_name = $("#boiler_blowdown_name").val();
+				$scope.boiler_blowdown_json.gas_rate = $("#gas_rate").val();
+				$scope.boiler_blowdown_json.water_rate = $("#water_rate").val();
+				$scope.boiler_blowdown_json.makeup_water_temperature = $("#makeup_water_temperature").val();
+				$scope.boiler_blowdown_json.existing_blowdown_frequency_per_day = $("#existing_blowdown_frequency_per_day").val();
+				$scope.boiler_blowdown_json.existing_blowdown_rate_gpm = $("#existing_blowdown_rate_gpm").val();
+				$scope.boiler_blowdown_json.existing_blowdown_duration_mins = $("#existing_blowdown_duration_mins").val();
+				$scope.boiler_blowdown_json.existing_days_of_operation = $("#existing_days_of_operation").val();
+				$scope.boiler_blowdown_json.existing_discharge_temp_in_f = $("#existing_discharge_temp_in_f").val();
+				$scope.boiler_blowdown_json.proposed_blowdown_frequency_per_day = $("#proposed_blowdown_frequency_per_day").val();
+				$scope.boiler_blowdown_json.proposed_blowdown_rate_gpm = $("#proposed_blowdown_rate_gpm").val();
+				$scope.boiler_blowdown_json.proposed_blowdown_duration_mins = $("#proposed_blowdown_duration_mins").val();
+				$scope.boiler_blowdown_json.proposed_days_of_operation = $("#proposed_days_of_operation").val();
+				$scope.boiler_blowdown_json.proposed_discharge_temp_in_f = $("#proposed_discharge_temp_in_f").val();
+				$scope.boiler_blowdown_json.existing_heat_recovery_efficiency_perc = $("#existing_heat_recovery_efficiency_perc").val();
+				$scope.boiler_blowdown_json.proposed_heat_recovery_efficiency_perc = $("#proposed_heat_recovery_efficiency_perc").val();
 				$http({method: 'POST',
 					   url: '/api_boiler_blowdown/boiler_blowdown/',
 					   data: $scope.boiler_blowdown_json}).
@@ -80,30 +98,18 @@
 							<table class="table table-striped">
 								<tr>
 									<th>Boiler Blowdown</th>
-									<th>Client</th>
+									<!-- <th>Client</th> -->
 									<th>Gas Rate</th>
 									<th>Water Rate</th>
 									<th>Makeup Water Temperature</th>
-									<th>Total Gas Savings</th>
-									<th>Total Water Savings</th>
-									<th>Total Gas and Water Savings</th>
-									<th>Total Savings</th>
 								</tr>
 								{% verbatim %}
 									<tr ng-repeat="x in boiler_blowdown_list">
-										<td><a href="/boiler_blowdown_details/{{ x.id }}">{{ x.boiler_blowdown_number }}</a></td>
-										<td>{{ x.pressure_in_psig }}</td>
-										<td>{{ x.absolute_pressure_psia }}</td>
-										<td>{{x.trap_pipe_size}}</td>
-										<td>{{x.size_trap_orifice}}</td>
-										<td>{{x.get_steam_loss_pph}}</td>
-										<td>{{x.boiler_efficiency}}</td>
-										<td>{{x.get_steam_energy_btu_per_lb}}</td>
-										<td>{{x.get_gas_usage_therms_per_hour}}</td>
-										<td>{{x.therm_rate}}</td>
-										<td>{{x.get_cost_per_hour}}</td>
-										<td>{{x.hours_of_operation}}</td>
-										<td>{{x.get_cost_per_year}}</td>
+										<td><a href="/boiler_blowdown_details/{{ x.id }}">{{ x.boiler_blowdown_name }}</a></td>
+										<!-- <td>{{ x.client }}</td> -->
+										<td>{{ x.gas_rate }}</td>
+										<td>{{ x.water_rate }}</td>
+										<td>{{ x.makeup_water_temperature }}</td>
 									</tr>
 								{% endverbatim %}
 							</table>
@@ -134,54 +140,98 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Failed Trap #</label>
+						  <label class="col-sm-4 control-label">Boiler Blowdown Reduction and Recovery</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="boiler_blowdown_number" name="boiler_blowdown_number">
+							<input class="form-control" type="text" id="boiler_blowdown_name" name="boiler_blowdown_name">
 						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Gas Rate</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="gas_rate" name="gas_rate">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Water Rate</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="water_rate" name="water_rate">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Makeup Water Temperature</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="makeup_water_temperature" name="makeup_water_temperature">
+						  </div>
+						</div>
+						<div class="form-group form-group-md bg-info">
+							<label class="col-md-offset-4 col-md-8 ">Reduce Blowdown Flowrate</label>
+						</div>
+						<div class="form-group form-group-sm">
+							<label class="col-sm-offset-4 col-sm-3">
+								Existing Blowdown
+							</label>
+							<label class="col-sm-3">
+								Proposed Blowdown
+							</label>
 						</div>
 
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Hours of Operation</label>
+						  <label class="col-sm-4 control-label">Blowdown Frequency (Per Day)</label>
 						  <div class="col-sm-3">
-							<input class="form-control" type="text" id="hours_of_operation" name="hours_of_operation" value="8760">
+							<input class="form-control control-label" type="text" id="existing_blowdown_frequency_per_day" name="existing_blowdown_frequency_per_day" value="0">
 						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Boiler Efficiency %</label>
 						  <div class="col-sm-3">
-							<input class="form-control" type="text" id="boiler_efficiency" name="boiler_efficiency" value="80">
+							<input class="form-control control-label" type="text" id="proposed_blowdown_frequency_per_day" name="proposed_blowdown_frequency_per_day" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Location/Description</label>
-						  <div class="col-sm-8">
-							<input class="form-control" type="text" id="location_description" name="location_description">
+						  <label class="col-sm-4 control-label">Blowdown Rate (GPM)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_blowdown_rate_gpm" name="existing_blowdown_rate_gpm" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_blowdown_rate_gpm" name="proposed_blowdown_rate_gpm" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Pressure (psig)</label>
-						  <div class="col-sm-4">
-							<select class="form-control col-sm-6" id="pressure_in_psig" name="pressure_in_psig">
-								{% for pressure_in_psig_val  in pressure_in_psig_list %}
-								   <option {% if pressure_in_psig_val == 100 %} selected {% endif %} value="{{ pressure_in_psig_val }}">{{ pressure_in_psig_val }}</option>
-								{% endfor %}
-							  </select>
+						  <label class="col-sm-4 control-label">Blowdown Duration (minutes)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_blowdown_duration_mins" name="existing_blowdown_duration_mins" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_blowdown_duration_mins" name="proposed_blowdown_duration_mins" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Trap Pipe Size (inch)</label>
-						  <div class="col-sm-4">
-							  <select class="form-control col-sm-6" id="trap_pipe_size" name="trap_pipe_size">
-								  {% for trap_pipe_size_val  in trap_pipe_size_list %}
-									 <option {% if trap_pipe_size_val == 0.5 %} selected {% endif %} value="{{ trap_pipe_size_val }}">{{ trap_pipe_size_val }}</option>
-								  {% endfor %}
-							  </select>
+						  <label class="col-sm-4 control-label">Days of Operation</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_days_of_operation" name="existing_days_of_operation" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_days_of_operation" name="proposed_days_of_operation" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Therms Rate $</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="therm_rate" name="therm_rate">
+						  <label class="col-sm-4 control-label">Discharge Temp (F)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_discharge_temp_in_f" name="existing_discharge_temp_in_f" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_discharge_temp_in_f" name="proposed_discharge_temp_in_f" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-md bg-info">
+							<label class="col-md-offset-4 col-md-8">
+								Provide Blowdown Heat Recovery
+							</label>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Heat Recovery Efficiency</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_heat_recovery_efficiency_perc" name="existing_heat_recovery_efficiency_perc" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_heat_recovery_efficiency_perc" name="proposed_heat_recovery_efficiency_perc" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">

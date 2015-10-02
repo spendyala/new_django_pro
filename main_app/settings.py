@@ -43,7 +43,8 @@ INSTALLED_APPS = (
 	'clients',
 	'steam_trap',
 	'steam_leaks',
-	'boiler_blowdown'
+	'boiler_blowdown',
+	'stacked_economizer'
 )
 
 MIDDLEWARE_CLASSES = (

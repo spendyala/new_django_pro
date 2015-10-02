@@ -22,6 +22,7 @@ urlpatterns = [
 	url(r'^api_steam_trap/', include('steam_trap.urls')),
 	url(r'^api_steam_leak/', include('steam_leaks.urls')),
 	url(r'^api_boiler_blowdown/', include('boiler_blowdown.urls')),
+	url(r'^api_stacked_economizer/', include('stacked_economizer.urls')),
 	url(r'^authenticate_user(|/)$', 'static_html.views.authenticate_user'),
 	# url(r'^login(|/)$', 'main_app.views.login'),
 	url(r'^(|/)', include('static_html.urls', namespace='static_html')),

@@ -71,9 +71,12 @@ class BoilerBlowdown(models.Model):
 	def get_existing_energy_loss_therm(self):
 		return round(self.get_existing_blowdown_energy_loss_btuh()/100000.0, 2)
 
+	def get_existing_blowdown_energy_loss_therm(self):
+		return self.get_existing_energy_loss_therm()
+
 	def get_existing_overflow_cost(self):
 		return round(self.get_existing_blowdown_energy_loss_therm() *
-					 self.water_rate, 2)
+					 self.gas_rate, 2)
 
 	def get_existing_makeup_water_quantity(self):
 		return self.get_existing_annual_quantity_gals()
@@ -86,15 +89,12 @@ class BoilerBlowdown(models.Model):
 		return round(self.get_existing_overflow_cost() +
 					 self.get_existing_makeup_water_cost(), 2)
 
-	def get_existing_blowdown_energy_loss_therms(self):
-		return self.get_existing_blowdown_energy_loss_therms()
-
 	def get_existing_blowdown_energy_recovery_therms(self):
-		return round(self.get_existing_blowdown_energy_loss_therms() *
+		return round(self.get_existing_blowdown_energy_loss_therm() *
 					 (self.existing_heat_recovery_efficiency_perc/100), 2)
 
 	def get_existing_total(self):
-		return round(self.get_existing_blowdown_energy_loss_therms() *
+		return round(self.get_existing_blowdown_energy_recovery_therms() *
 					 self.gas_rate, 2)
 
 	# Proposed
@@ -120,7 +120,7 @@ class BoilerBlowdown(models.Model):
 
 	def get_proposed_overflow_cost(self):
 		return round(self.get_proposed_blowdown_energy_loss_therm() *
-					 self.water_rate, 2)
+					 self.gas_rate, 2)
 
 	def get_proposed_makeup_water_quantity(self):
 		return self.get_proposed_annual_quantity_gals()
@@ -133,15 +133,15 @@ class BoilerBlowdown(models.Model):
 		return round(self.get_proposed_overflow_cost() +
 					 self.get_proposed_makeup_water_cost(), 2)
 
-	def get_proposed_blowdown_energy_loss_therms(self):
-		return self.get_proposed_blowdown_energy_loss_therms()
+	def get_proposed_blowdown_energy_loss_therm(self):
+		return self.get_proposed_energy_loss_therm()
 
 	def get_proposed_blowdown_energy_recovery_therms(self):
-		return round(self.get_proposed_blowdown_energy_loss_therms() *
+		return round(self.get_proposed_blowdown_energy_loss_therm() *
 					 (self.proposed_heat_recovery_efficiency_perc/100), 2)
 
 	def get_proposed_total(self):
-		return round(self.get_proposed_blowdown_energy_loss_therms() *
+		return round(self.get_proposed_blowdown_energy_recovery_therms() *
 					 self.gas_rate, 2)
 
 	def get_savings_gas(self):

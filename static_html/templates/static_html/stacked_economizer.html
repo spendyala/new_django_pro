@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
+
+	<script src="{% static "clients/js/jquery.js"%}"></script>
+	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+	<script src="{% static "clients/js/angular.js"%}"></script>
+	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+	<script>
+		var app_1 = angular.module("app_stacked_economizer", ['ui.bootstrap']);
+		app_1.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+		}]);
+		app_1.controller("stackedEconomizerListController", ['$scope','$http', function($scope,$http){
+			$http({method: 'GET', url: "/api_stacked_economizer/stacked_economizer/"}).
+				 success(function(data){
+					 $scope.stacked_economizer_list = data;
+			}).error(function(data){});
+		}]);
+		app_1.controller("stackedEconomizerAddController", ['$scope',
+													'$http',
+													function($scope, $http){
+			$scope.stacked_economizer_json = {'client': '',
+									  'boiler_stacked_economizer':'',
+									  'gas_rate':0,
+									  'hours_of_operations':0,
+									  'boiler_size_hp':0,
+									  'initial_stack_gas_temp_f':0,
+									  'average_fire_rate':0};
+			$scope.submit_details = function(){
+				$scope.stacked_economizer_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.stacked_economizer_json.boiler_stacked_economizer = $("#boiler_stacked_economizer").val();
+				$scope.stacked_economizer_json.gas_rate = $("#gas_rate").val();
+				$scope.stacked_economizer_json.hours_of_operations = $("#hours_of_operations").val();
+				$scope.stacked_economizer_json.boiler_size_hp = $("#boiler_size_hp").val();
+				$scope.stacked_economizer_json.initial_stack_gas_temp_f = $("#initial_stack_gas_temp_f").val();
+				$scope.stacked_economizer_json.average_fire_rate = $("#average_fire_rate").val();
+				$http({method: 'POST',
+					   url: '/api_stacked_economizer/stacked_economizer/',
+					   data: $scope.stacked_economizer_json}).
+				success(function(data){
+					window.location.reload();
+				}).
+				error(function(data){
+				});
+				$('#add_new_stacked_economizer').modal('hide');
+			}
+		}]);
+	</script>
+</head>
+<body ng-app="app_stacked_economizer">
+	<div id="wrapper">
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			{% include "static_html/urls.html" %}
+		</nav>
+	</div>
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">
+						 Stacked Economizer List
+					</h1>
+					<p>
+						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_stacked_economizer">+ Stacked Economizer</button>
+					</p>
+					<div ng-controller="stackedEconomizerListController">
+						<div class="container-fluid">
+							<table class="table table-striped">
+								<tr>
+									<th>Stacked Economizer</th>
+									<!-- <th>Client</th> -->
+									<th>Hours of Operation</th>
+									<th>Boiler Size (HP)</th>
+									<th>Initial Stack Gas Temp (F)</th>
+									<th>Average Fire Rate</th>
+								</tr>
+								{% verbatim %}
+									<tr ng-repeat="x in stacked_economizer_list">
+										<td><a href="/stacked_economizer_details/{{ x.id }}">{{ x.boiler_stacked_economizer }}</a></td>
+										<!-- <td>{{ x.client }}</td> -->
+										<td>{{ x.hours_of_operations }}</td>
+										<td>{{ x.boiler_size_hp }}</td>
+										<td>{{ x.initial_stack_gas_temp_f }}</td>
+										<td>{{ x.average_fire_rate }}</td>
+									</tr>
+								{% endverbatim %}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="add_new_stacked_economizer" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Add New Stacked Economizer</h4>
+				</div>
+				<form class="form-horizontal" ng-controller="stackedEconomizerAddController" role="form">
+				{% csrf_token %}
+					<div class="container-fluid">
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Client</label>
+						  <div class="col-sm-4">
+							  <select class="form-control col-sm-6" id="client" name="client">
+								{% for client_id, client_name in clients_list %}
+								   <option {% if client_id == 'US' %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+								{% endfor %}
+							  </select>
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Stacked Economizer</label>
+						  <div class="col-sm-4">
+							<input class="form-control" type="text" id="boiler_stacked_economizer" name="boiler_stacked_economizer">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Gas Rate</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="gas_rate" name="gas_rate">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Hours of Operation</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="hours_of_operations" name="hours_of_operations">
+						  </div>
+						</div>
+						<div class="form-group form-group-md bg-info">
+							<label class="col-md-offset-4 col-md-8 ">Stacked Economizer</label>
+						</div>
+						<div class="form-group form-group-sm">
+							<label class="col-sm-offset-4 col-sm-3">
+								Existing Blowdown
+							</label>
+						</div>
+
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Boiler Size (HP)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="boiler_size_hp" name="boiler_size_hp" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Initial Stack Gas Temp (F)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="initial_stack_gas_temp_f" name="initial_stack_gas_temp_f" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Average Fire Rate</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="average_fire_rate" name="average_fire_rate" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+							<div class="col-sm-4">
+								<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
