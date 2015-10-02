@@ -6,8 +6,14 @@ import datetime
 
 from clients.models import Client
 
+COMPRESSOR_TYPE = [('REC', 'Reciprocating'),
+				   ('ROS', 'Rotary Screw'),
+				   ('ROC', 'Rotary Centrifugal')]
 
-class StackedEconomizer(models.Model):
+VFD_CONTROL_TYPE = [(1, 'YES'),
+					(2, 'NO')]
+
+class AirCompressor(models.Model):
 	start_date = models.DateTimeField('Registered Date')
 	client = models.ForeignKey(Client)
 	air_compressor = models.CharField('Air Compressor',
@@ -19,37 +25,84 @@ class StackedEconomizer(models.Model):
 	customer_site = models.CharField('Customer Site',
 									  default='',
 									  max_length=128)
-	project_name = models.CharField('Project Name,
+	project_name = models.CharField('Project Name',
 									 default='',
 									 max_length=128)
 	electric_utility_rate = models.FloatField('Electric Utility Rate (per kWh)',
 											  default=0)
-	hours_of_operations = models.FloatField('Hours of Operation', default=8760)
-	boiler_size_hp = models.FloatField('Boiler Size (HP)',
-										 default=1000)
-	initial_stack_gas_temp_f = models.FloatField('Initial Stack Gas Temp (F)',
-									   default=500)
-	average_fire_rate = models.FloatField('Average Fire Rate', default=0)
-	owner = models.ForeignKey('auth.User', related_name='stacked_economizer')
+	compressor_name = models.CharField('Compressor Name',
+									   default='',
+									   max_length=128)
+	manufacturer = models.CharField('Manufacturer',
+									default='',
+									max_length=128)
+	model_info = models.CharField('Model #',
+								  default='',
+								  max_length=128)
+	serial_info = models.CharField('Serial #',
+								   default='',
+								   max_length=128)
+	compressor_type = models.CharField('Compressor Type',
+									   choices=COMPRESSOR_TYPE,
+									   max_length=256,
+									   default='REC')
+	vfd_speed_control = models.CharField('VFD Speed Control',
+									   choices=VFD_CONTROL_TYPE,
+									   max_length=256,
+									   default=0)
+	# Inputs
+	nameplate_horsepower = models.FloatField('Nameplate Horsepower (HP)', default=0)
+	nameplate_max_flow = models.FloatField('Nameplate Maximum Flow (CFM)',
+										   default=0)
+	measured_actual_flow = models.FloatField('Measured Actual Flow (GPM)',
+											 default=0)
+	measured_line_pressure = models.FloatField('Measured Line Pressure (PSI)',
+											   default=0)
+	annual_hours_of_operation = models.FloatField('Annual Hours of Operation (Hours)',
+												  default=0)
+	reduce_line_pressure_to = models.FloatField('Reduced Line Pressure: To (PSI)',
+												default=0)
+	owner = models.ForeignKey('auth.User', related_name='air_compressor')
 
-	def get_boiler_size_mmbtu_per_hr(self):
-		return round(self.boiler_size_hp *
-					 0.0334714, 3)
+	def get_hourly_kwh_consumed(self):
+		return round((self.nameplate_horsepower * 0.746)/0.9, 3)
 
-	def get_recoverable_heat_mmbtu_per_hr(self):
+	def get_hourly_cost_of_operation(self):
+		return round(self.get_hourly_kwh_consumed() *
+					 self.electric_utility_rate, 2)
+
+	def get_annual_cost_of_operation(self):
 		return round(
-			self.get_boiler_size_mmbtu_per_hr() *
-			(pow(self.initial_stack_gas_temp_f, 2.3)/ 18500000.0) *
-			self.average_fire_rate / 100.0, 3)
+			self.get_hourly_cost_of_operation() *
+			self.annual_hours_of_operation, 2)
 
-	def get_recoverable_heat_therms_per_year(self):
-		return round(
-			self.get_recoverable_heat_mmbtu_per_hr() * 10.0 *
-			self.hours_of_operations, 3)
+	def get_reduced_line_pressure_from(self):
+		return 112.0
 
-	def get_savings(self):
-		return round(
-			self.get_recoverable_heat_therms_per_year() * self.gas_rate, 3)
+	def get_proposed_pressure_decrease(self):
+		return round(self.get_reduced_line_pressure_from() -
+					 self.reduce_line_pressure_to, 2)
+
+	def get_estimated_ann_savings_per_2_psi_reduction(self):
+		return round(self.get_annual_cost_of_operation() * 0.01, 2)
+
+	def get_annual_cost_before_psi_setback(self):
+		return self.get_annual_cost_of_operation()
+
+	def get_annual_cost_after_psi_setback(self):
+		return round(self.get_annual_cost_of_operation() -
+					 ((self.get_proposed_pressure_decrease()/ 2.0)*
+					  self.get_estimated_ann_savings_per_2_psi_reduction()))
+
+	def get_annual_savings_after_psi_setback(self):
+		return round(self.get_annual_cost_before_psi_setback()-
+					 self.get_annual_cost_after_psi_setback())
+
+	def get_estimated_air_leak_25_percent_of_costs(self):
+		return round(self.get_annual_cost_of_operation() * 0.25)
+
+	def get_estimated_air_leak_40_percent_of_costs(self):
+		return round(self.get_annual_cost_of_operation() * 0.4)
 
 	def was_recent(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days=1)
@@ -58,12 +111,12 @@ class StackedEconomizer(models.Model):
 	was_recent.short_description = 'Recently Joined?'
 
 	def __str__(self):
-		return self.boiler_stacked_economizer
+		return self.air_compressor
 
 	def save(self, *args, **kwargs):
 		# TODO: add owner
 		self.start_date = datetime.datetime.utcnow()
-		super(StackedEconomizer, self).save(*args, **kwargs)
+		super(AirCompressor, self).save(*args, **kwargs)
 
 	class Meta:
-		ordering = ('boiler_stacked_economizer',)
+		ordering = ('air_compressor',)

@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from stacked_economizer.models import StackedEconomizer
-from stacked_economizer.serializers import StackedEconomizerSerializer
+from air_compressors.models import AirCompressor
+from air_compressors.serializers import AirCompressorSerializer
 # from clients.serializers import UserSerializer
 from django.contrib.auth.models import User
 
@@ -12,13 +12,13 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 # Create your views here.
-class StackedEconomizerViewSet(viewsets.ModelViewSet):
+class AirCompressorViewSet(viewsets.ModelViewSet):
 		"""
 		This viewset automatically provides `list`, `create`, `retrieve`,
 		`update` and `destroy` actions.
 		"""
-		queryset = StackedEconomizer.objects.all()
-		serializer_class = StackedEconomizerSerializer
+		queryset = AirCompressor.objects.all()
+		serializer_class = AirCompressorSerializer
 		permission_classes = (permissions.IsAuthenticatedOrReadOnly,
 												  IsOwnerOrReadOnly)
 

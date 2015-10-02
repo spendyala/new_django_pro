@@ -44,7 +44,8 @@ INSTALLED_APPS = (
 	'steam_trap',
 	'steam_leaks',
 	'boiler_blowdown',
-	'stacked_economizer'
+	'stacked_economizer',
+	'air_compressors'
 )
 
 MIDDLEWARE_CLASSES = (

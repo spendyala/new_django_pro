@@ -26,8 +26,7 @@ class StackedEconomizer(models.Model):
 		return round(self.boiler_size_hp * 0.0334714, 3)
 
 	def get_recoverable_heat_mmbtu_per_hr(self):
-		return round(
-			self.get_boiler_size_mmbtu_per_hr() *
+		return round(self.get_boiler_size_mmbtu_per_hr() *
 			round((pow(self.initial_stack_gas_temp_f, 2.3)/ 18500000.0) *
 			self.average_fire_rate, 2) / 100.0, 3)
 
