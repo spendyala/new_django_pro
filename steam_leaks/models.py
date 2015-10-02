@@ -53,7 +53,7 @@ class SteamLeak(models.Model):
 		return round(float(self.get_steam_loss_pph() *
 					 self.get_steam_energy_btu_per_lb() *
 					 (1.0/self.boiler_efficiency) *
-					 10 * (1.0/10000.0)), 2)
+					 10 * (1.0/10000.0)), 3)
 
 	def get_cost_per_hour(self):
 		return round(float(self.get_gas_usage_therms_per_hour() *

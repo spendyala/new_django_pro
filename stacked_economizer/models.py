@@ -23,14 +23,13 @@ class StackedEconomizer(models.Model):
 	owner = models.ForeignKey('auth.User', related_name='stacked_economizer')
 
 	def get_boiler_size_mmbtu_per_hr(self):
-		return round(self.boiler_size_hp *
-					 0.0334714, 3)
+		return round(self.boiler_size_hp * 0.0334714, 3)
 
 	def get_recoverable_heat_mmbtu_per_hr(self):
 		return round(
 			self.get_boiler_size_mmbtu_per_hr() *
-			(pow(self.initial_stack_gas_temp_f, 2.3)/ 18500000.0) *
-			self.average_fire_rate / 100.0, 3)
+			round((pow(self.initial_stack_gas_temp_f, 2.3)/ 18500000.0) *
+			self.average_fire_rate, 2) / 100.0, 3)
 
 	def get_recoverable_heat_therms_per_year(self):
 		return round(
