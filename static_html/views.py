@@ -231,6 +231,11 @@ def logout(request, file_name=None, rec_id=None):
 	auth.logout(request)
 	return set_render_object(request, file_name='login', content={})
 
+def test_html(request, file_name=None, rec_id=None):
+	# Logout
+	auth.logout(request)
+	return set_render_object(request, file_name=file_name, content={})
+
 def authenticate_user(request, path):
 	print path
 	if path.replace('/', ''):
@@ -262,7 +267,8 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'steam_leak': steam_leak,
 				'steam_leak_details': steam_leak_details,
 				'stacked_economizer': stacked_economizer,
-				'stacked_economizer_details': stacked_economizer_details}
+				'stacked_economizer_details': stacked_economizer_details,
+				'test_html': test_html}
 
 # Create your views here.
 def index(request, file_name=None, rec_id=None):
