@@ -219,6 +219,31 @@ def stacked_economizer_details(request, file_name=None, rec_id=None):
 	except Exception as err:
 		return render(request, 'static_html/404.html')
 
+# Premium Efficiency
+def premium_efficiency(request, file_name=None, rec_id=None):
+	if rec_id:
+		return render(request, 'static_html/404.html')
+	try:
+		clients_obj = Client.objects.all()
+		clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+		data = {'clients_list': clients_list}
+		return set_render_object(request, file_name=file_name, content=data)
+	except Exception as err:
+		return render(request, 'static_html/404.html')
+
+# Air Compressor
+def air_compressors(request, file_name=None, rec_id=None):
+	if rec_id:
+		return render(request, 'static_html/404.html')
+	try:
+		clients_obj = Client.objects.all()
+		clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+		data = {'clients_list': clients_list}
+		return set_render_object(request, file_name=file_name, content=data)
+	except Exception as err:
+		return render(request, 'static_html/404.html')
 # Login and Logout
 def login(request, file_name=None, rec_id=None):
 	# if rec_id:
@@ -268,6 +293,8 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'steam_leak_details': steam_leak_details,
 				'stacked_economizer': stacked_economizer,
 				'stacked_economizer_details': stacked_economizer_details,
+				'premium_efficiency': premium_efficiency,
+				'air_compressors': air_compressors,
 				'test_html': test_html}
 
 # Create your views here.

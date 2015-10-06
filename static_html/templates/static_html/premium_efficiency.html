@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
+
+	<script src="{% static "clients/js/jquery.js"%}"></script>
+	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+	<script src="{% static "clients/js/angular.js"%}"></script>
+	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+	<script>
+		var app_1 = angular.module("app_premium_efficiency", ['ui.bootstrap']);
+		app_1.config(['$httpProvider', function($httpProvider) {
+			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
+			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+		}]);
+		app_1.controller("premiumEfficiencyListController", ['$scope','$http', function($scope,$http){
+			$http({method: 'GET', url: "/api_premium_efficiency/premium_efficiency/"}).
+				 success(function(data){
+					 $scope.premium_efficiency_list = data;
+			}).error(function(data){});
+		}]);
+		app_1.controller("premiumEfficiencyAddController", ['$scope',
+													'$http',
+													function($scope, $http){
+			$scope.premium_efficiency_json = {'client': '',
+									  'premium_efficiency_name':'',
+									  'gas_rate':0,
+									  'water_rate':0,
+									  'makeup_water_temperature':0,
+									  'existing_blowdown_frequency_per_day':0,
+									  'existing_blowdown_rate_gpm':0,
+									  'existing_blowdown_duration_mins':0,
+									  'existing_days_of_operation':0,
+									  'existing_discharge_temp_in_f':0,
+									  'proposed_blowdown_frequency_per_day':0,
+									  'proposed_blowdown_rate_gpm':0,
+									  'proposed_blowdown_duration_mins':0,
+									  'proposed_days_of_operation':0,
+									  'proposed_discharge_temp_in_f':0,
+									  'existing_heat_recovery_efficiency_perc':0,
+									  'proposed_heat_recovery_efficiency_perc':0};
+			$scope.submit_details = function(){
+				$scope.premium_efficiency_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.premium_efficiency_json.premium_efficiency_name = $("#premium_efficiency_name").val();
+				$scope.premium_efficiency_json.gas_rate = $("#gas_rate").val();
+				$scope.premium_efficiency_json.water_rate = $("#water_rate").val();
+				$scope.premium_efficiency_json.makeup_water_temperature = $("#makeup_water_temperature").val();
+				$scope.premium_efficiency_json.existing_blowdown_frequency_per_day = $("#existing_blowdown_frequency_per_day").val();
+				$scope.premium_efficiency_json.existing_blowdown_rate_gpm = $("#existing_blowdown_rate_gpm").val();
+				$scope.premium_efficiency_json.existing_blowdown_duration_mins = $("#existing_blowdown_duration_mins").val();
+				$scope.premium_efficiency_json.existing_days_of_operation = $("#existing_days_of_operation").val();
+				$scope.premium_efficiency_json.existing_discharge_temp_in_f = $("#existing_discharge_temp_in_f").val();
+				$scope.premium_efficiency_json.proposed_blowdown_frequency_per_day = $("#proposed_blowdown_frequency_per_day").val();
+				$scope.premium_efficiency_json.proposed_blowdown_rate_gpm = $("#proposed_blowdown_rate_gpm").val();
+				$scope.premium_efficiency_json.proposed_blowdown_duration_mins = $("#proposed_blowdown_duration_mins").val();
+				$scope.premium_efficiency_json.proposed_days_of_operation = $("#proposed_days_of_operation").val();
+				$scope.premium_efficiency_json.proposed_discharge_temp_in_f = $("#proposed_discharge_temp_in_f").val();
+				$scope.premium_efficiency_json.existing_heat_recovery_efficiency_perc = $("#existing_heat_recovery_efficiency_perc").val();
+				$scope.premium_efficiency_json.proposed_heat_recovery_efficiency_perc = $("#proposed_heat_recovery_efficiency_perc").val();
+				$http({method: 'POST',
+					   url: '/api_premium_efficiency/premium_efficiency/',
+					   data: $scope.premium_efficiency_json}).
+				success(function(data){
+					window.location.reload();
+				}).
+				error(function(data){
+				});
+				$('#add_new_premium_efficiency').modal('hide');
+			}
+		}]);
+	</script>
+</head>
+<body ng-app="app_premium_efficiency">
+	<div id="wrapper">
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			{% include "static_html/urls.html" %}
+		</nav>
+	</div>
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">
+						 Premium Efficiency List
+					</h1>
+					<p>
+						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_premium_efficiency">+ Premium Efficiency</button>
+					</p>
+					<div ng-controller="premiumEfficiencyListController">
+						<div class="container-fluid">
+							<table class="table table-striped">
+								<tr>
+									<th>Premium Efficiency</th>
+									<!-- <th>Client</th> -->
+									<th>Gas Rate</th>
+									<th>Water Rate</th>
+									<th>Makeup Water Temperature</th>
+								</tr>
+								{% verbatim %}
+									<tr ng-repeat="x in premium_efficiency_list">
+										<td><a href="/premium_efficiency_details/{{ x.id }}">{{ x.premium_efficiency_name }}</a></td>
+										<!-- <td>{{ x.client }}</td> -->
+										<td>{{ x.gas_rate }}</td>
+										<td>{{ x.water_rate }}</td>
+										<td>{{ x.makeup_water_temperature }}</td>
+									</tr>
+								{% endverbatim %}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="add_new_premium_efficiency" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Add New Premium Efficiency</h4>
+				</div>
+				<form class="form-horizontal" ng-controller="premiumEfficiencyAddController" role="form">
+				{% csrf_token %}
+					<div class="container-fluid">
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Client</label>
+						  <div class="col-sm-4">
+							  <select class="form-control col-sm-6" id="client" name="client">
+								{% for client_id, client_name in clients_list %}
+								   <option {% if client_id == 'US' %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+								{% endfor %}
+							  </select>
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Premium Efficiency</label>
+						  <div class="col-sm-4">
+							<input class="form-control" type="text" id="premium_efficiency_name" name="premium_efficiency_name">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Gas Rate</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="gas_rate" name="gas_rate">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Water Rate</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="water_rate" name="water_rate">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Makeup Water Temperature</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="makeup_water_temperature" name="makeup_water_temperature">
+						  </div>
+						</div>
+						<div class="form-group form-group-md bg-info">
+							<label class="col-md-offset-4 col-md-8 ">Reduce Blowdown Flowrate</label>
+						</div>
+						<div class="form-group form-group-sm">
+							<label class="col-sm-offset-4 col-sm-3">
+								Existing Blowdown
+							</label>
+							<label class="col-sm-3">
+								Proposed Blowdown
+							</label>
+						</div>
+
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Blowdown Frequency (Per Day)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_blowdown_frequency_per_day" name="existing_blowdown_frequency_per_day" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_blowdown_frequency_per_day" name="proposed_blowdown_frequency_per_day" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Blowdown Rate (GPM)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_blowdown_rate_gpm" name="existing_blowdown_rate_gpm" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_blowdown_rate_gpm" name="proposed_blowdown_rate_gpm" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Blowdown Duration (minutes)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_blowdown_duration_mins" name="existing_blowdown_duration_mins" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_blowdown_duration_mins" name="proposed_blowdown_duration_mins" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Days of Operation</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_days_of_operation" name="existing_days_of_operation" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_days_of_operation" name="proposed_days_of_operation" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Discharge Temp (F)</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_discharge_temp_in_f" name="existing_discharge_temp_in_f" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_discharge_temp_in_f" name="proposed_discharge_temp_in_f" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-md bg-info">
+							<label class="col-md-offset-4 col-md-8">
+								Provide Blowdown Heat Recovery
+							</label>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Heat Recovery Efficiency</label>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="existing_heat_recovery_efficiency_perc" name="existing_heat_recovery_efficiency_perc" value="0">
+						  </div>
+						  <div class="col-sm-3">
+							<input class="form-control control-label" type="text" id="proposed_heat_recovery_efficiency_perc" name="proposed_heat_recovery_efficiency_perc" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+							<div class="col-sm-4">
+								<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
