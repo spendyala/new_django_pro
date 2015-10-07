@@ -10,6 +10,7 @@ from steam_trap.models import SteamTrap, STEAM_TRAP_CHOICES, TRAP_SIZE_CHOICES
 from steam_leaks.models import SteamLeak
 from boiler_blowdown.models import BoilerBlowdown
 from stacked_economizer.models import StackedEconomizer
+from premium_efficiency.models import PremiumEfficiency
 
 import datetime
 import json
@@ -232,6 +233,31 @@ def premium_efficiency(request, file_name=None, rec_id=None):
 	except Exception as err:
 		return render(request, 'static_html/404.html')
 
+def premium_efficiency_details(request, file_name=None, rec_id=None):
+	if not rec_id:
+		return render(request, 'static_html/404.html')
+
+	try:
+		clients_obj = Client.objects.all()
+		clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+		data = {'clients_list': clients_list}
+		premium_efficiency_obj = PremiumEfficiency.objects.get(id=rec_id)
+		data['premium_efficiency_obj'] = premium_efficiency_obj
+		data['get_existing_energy_cost_full_load'] = premium_efficiency_obj.get_existing_energy_cost_full_load()
+		data['get_proposed_energy_cost_full_load'] = premium_efficiency_obj.get_proposed_energy_cost_full_load()
+		data['get_existing_energy_cost_three_fourth_load'] = premium_efficiency_obj.get_existing_energy_cost_three_fourth_load()
+		data['get_proposed_energy_cost_three_fourth_load'] = premium_efficiency_obj.get_proposed_energy_cost_three_fourth_load()
+		data['get_existing_energy_cost_half_load'] = premium_efficiency_obj.get_existing_energy_cost_half_load()
+		data['get_proposed_energy_cost_half_load'] = premium_efficiency_obj.get_proposed_energy_cost_half_load()
+		data['get_purchase_price_diff'] = premium_efficiency_obj.get_purchase_price_diff()
+		data['get_energy_cost_full_load_diff'] = premium_efficiency_obj.get_energy_cost_full_load_diff()
+		data['get_energy_cost_three_fourth_load_diff'] = premium_efficiency_obj.get_energy_cost_three_fourth_load_diff()
+		data['get_energy_cost_half_load_diff'] = premium_efficiency_obj.get_energy_cost_half_load_diff()
+		return set_render_object(request, file_name=file_name, content=data)
+	except Exception as err:
+		return render(request, 'static_html/404.html')
+
 # Air Compressor
 def air_compressors(request, file_name=None, rec_id=None):
 	if rec_id:
@@ -294,6 +320,7 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'stacked_economizer': stacked_economizer,
 				'stacked_economizer_details': stacked_economizer_details,
 				'premium_efficiency': premium_efficiency,
+				'premium_efficiency_details': premium_efficiency_details,
 				'air_compressors': air_compressors,
 				'test_html': test_html}
 

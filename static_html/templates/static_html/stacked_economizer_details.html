@@ -73,7 +73,7 @@
 							  <div class="col-sm-4">
 								  <select class="form-control col-sm-6" id="client" name="client">
 									{% for client_id, client_name in clients_list %}
-									   <option {% if client_id == 'US' %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+									   <option {% if client_id == stacked_economizer_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
 									{% endfor %}
 								  </select>
 							  </div>

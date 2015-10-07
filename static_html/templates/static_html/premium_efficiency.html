@@ -31,40 +31,34 @@
 													'$http',
 													function($scope, $http){
 			$scope.premium_efficiency_json = {'client': '',
-									  'premium_efficiency_name':'',
-									  'gas_rate':0,
-									  'water_rate':0,
-									  'makeup_water_temperature':0,
-									  'existing_blowdown_frequency_per_day':0,
-									  'existing_blowdown_rate_gpm':0,
-									  'existing_blowdown_duration_mins':0,
-									  'existing_days_of_operation':0,
-									  'existing_discharge_temp_in_f':0,
-									  'proposed_blowdown_frequency_per_day':0,
-									  'proposed_blowdown_rate_gpm':0,
-									  'proposed_blowdown_duration_mins':0,
-									  'proposed_days_of_operation':0,
-									  'proposed_discharge_temp_in_f':0,
-									  'existing_heat_recovery_efficiency_perc':0,
-									  'proposed_heat_recovery_efficiency_perc':0};
+									  'motor_name':'',
+									  'annual_operating_hours':0,
+									  'energy_cost':0,
+									  'motor_nameplate_hp':0,
+									  'existing_full_load_eff':0,
+									  'existing_three_fourth_load_eff':0,
+									  'existing_half_load_eff':0,
+									  'existing_motor_purchase_price':0,
+									  'proposed_full_load_eff':0,
+									  'proposed_three_fourth_load_eff':0,
+									  'proposed_half_load_eff':0,
+									  'proposed_motor_purchase_price':0,
+									  'motor_nameplate_rpm':0};
 			$scope.submit_details = function(){
 				$scope.premium_efficiency_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.premium_efficiency_json.premium_efficiency_name = $("#premium_efficiency_name").val();
-				$scope.premium_efficiency_json.gas_rate = $("#gas_rate").val();
-				$scope.premium_efficiency_json.water_rate = $("#water_rate").val();
-				$scope.premium_efficiency_json.makeup_water_temperature = $("#makeup_water_temperature").val();
-				$scope.premium_efficiency_json.existing_blowdown_frequency_per_day = $("#existing_blowdown_frequency_per_day").val();
-				$scope.premium_efficiency_json.existing_blowdown_rate_gpm = $("#existing_blowdown_rate_gpm").val();
-				$scope.premium_efficiency_json.existing_blowdown_duration_mins = $("#existing_blowdown_duration_mins").val();
-				$scope.premium_efficiency_json.existing_days_of_operation = $("#existing_days_of_operation").val();
-				$scope.premium_efficiency_json.existing_discharge_temp_in_f = $("#existing_discharge_temp_in_f").val();
-				$scope.premium_efficiency_json.proposed_blowdown_frequency_per_day = $("#proposed_blowdown_frequency_per_day").val();
-				$scope.premium_efficiency_json.proposed_blowdown_rate_gpm = $("#proposed_blowdown_rate_gpm").val();
-				$scope.premium_efficiency_json.proposed_blowdown_duration_mins = $("#proposed_blowdown_duration_mins").val();
-				$scope.premium_efficiency_json.proposed_days_of_operation = $("#proposed_days_of_operation").val();
-				$scope.premium_efficiency_json.proposed_discharge_temp_in_f = $("#proposed_discharge_temp_in_f").val();
-				$scope.premium_efficiency_json.existing_heat_recovery_efficiency_perc = $("#existing_heat_recovery_efficiency_perc").val();
-				$scope.premium_efficiency_json.proposed_heat_recovery_efficiency_perc = $("#proposed_heat_recovery_efficiency_perc").val();
+				$scope.premium_efficiency_json.motor_name = $("#motor_name").val();
+				$scope.premium_efficiency_json.annual_operating_hours = $("#annual_operating_hours").val();
+				$scope.premium_efficiency_json.energy_cost = $("#energy_cost").val();
+				$scope.premium_efficiency_json.motor_nameplate_hp = $("#motor_nameplate_hp").val();
+				$scope.premium_efficiency_json.existing_full_load_eff = $("#existing_full_load_eff").val();
+				$scope.premium_efficiency_json.existing_three_fourth_load_eff = $("#existing_three_fourth_load_eff").val();
+				$scope.premium_efficiency_json.existing_half_load_eff = $("#existing_half_load_eff").val();
+				$scope.premium_efficiency_json.existing_motor_purchase_price = $("#existing_motor_purchase_price").val();
+				$scope.premium_efficiency_json.proposed_full_load_eff = $("#proposed_full_load_eff").val();
+				$scope.premium_efficiency_json.proposed_three_fourth_load_eff = $("#proposed_three_fourth_load_eff").val();
+				$scope.premium_efficiency_json.proposed_half_load_eff = $("#proposed_half_load_eff").val();
+				$scope.premium_efficiency_json.proposed_motor_purchase_price = $("#proposed_motor_purchase_price").val();
+				$scope.premium_efficiency_json.motor_nameplate_rpm = $("#motor_nameplate_rpm").val();
 				$http({method: 'POST',
 					   url: '/api_premium_efficiency/premium_efficiency/',
 					   data: $scope.premium_efficiency_json}).
@@ -100,17 +94,19 @@
 								<tr>
 									<th>Premium Efficiency</th>
 									<!-- <th>Client</th> -->
-									<th>Gas Rate</th>
-									<th>Water Rate</th>
-									<th>Makeup Water Temperature</th>
+									<th>Annual Operating Hours</th>
+									<th>Energy Cost</th>
+									<th>Motor Nameplate HP</th>
+									<th>Motor Nameplate RPM</th>
 								</tr>
 								{% verbatim %}
 									<tr ng-repeat="x in premium_efficiency_list">
-										<td><a href="/premium_efficiency_details/{{ x.id }}">{{ x.premium_efficiency_name }}</a></td>
+										<td><a href="/premium_efficiency_details/{{ x.id }}">{{ x.motor_name }}</a></td>
 										<!-- <td>{{ x.client }}</td> -->
-										<td>{{ x.gas_rate }}</td>
-										<td>{{ x.water_rate }}</td>
-										<td>{{ x.makeup_water_temperature }}</td>
+										<td>{{ x.annual_operating_hours }}</td>
+										<td>{{ x.energy_cost }}</td>
+										<td>{{ x.motor_nameplate_hp }}</td>
+										<td>{{ x.motor_nameplate_rpm }}</td>
 									</tr>
 								{% endverbatim %}
 							</table>
@@ -141,98 +137,81 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Premium Efficiency</label>
+						  <label class="col-sm-4 control-label">Premium Efficiency Name</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="premium_efficiency_name" name="premium_efficiency_name">
+							<input class="form-control" type="text" id="motor_name" name="motor_name">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Gas Rate</label>
+						  <label class="col-sm-4 control-label">Annual Operating Hours</label>
 						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="gas_rate" name="gas_rate">
+							<input class="form-control control-label" type="text" id="annual_operating_hours" name="annual_operating_hours">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Water Rate</label>
+						  <label class="col-sm-4 control-label">Energy Cost ($)</label>
 						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="water_rate" name="water_rate">
+							<input class="form-control control-label" type="text" id="energy_cost" name="energy_cost">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Makeup Water Temperature</label>
+						  <label class="col-sm-4 control-label">Motor Nameplate HP</label>
 						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="makeup_water_temperature" name="makeup_water_temperature">
+							<input class="form-control control-label" type="text" id="motor_nameplate_hp" name="motor_nameplate_hp">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Motor Nameplate RPM</label>
+						  <div class="col-sm-4">
+							<input class="form-control control-label" type="text" id="motor_nameplate_rpm" name="motor_nameplate_rpm">
 						  </div>
 						</div>
 						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8 ">Reduce Blowdown Flowrate</label>
+							<label class="col-md-offset-4 col-md-8 "></label>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="col-sm-offset-4 col-sm-3">
-								Existing Blowdown
+								Existing Motor
 							</label>
 							<label class="col-sm-3">
-								Proposed Blowdown
+								Proposed Premium Efficiency Motor
 							</label>
 						</div>
 
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Blowdown Frequency (Per Day)</label>
+						  <label class="col-sm-4 control-label">Full load efficiency (%)</label>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_blowdown_frequency_per_day" name="existing_blowdown_frequency_per_day" value="0">
+							<input class="form-control control-label" type="text" id="existing_full_load_eff" name="existing_full_load_eff" value="0">
 						  </div>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_blowdown_frequency_per_day" name="proposed_blowdown_frequency_per_day" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Blowdown Rate (GPM)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_blowdown_rate_gpm" name="existing_blowdown_rate_gpm" value="0">
-						  </div>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_blowdown_rate_gpm" name="proposed_blowdown_rate_gpm" value="0">
+							<input class="form-control control-label" type="text" id="proposed_full_load_eff" name="proposed_full_load_eff" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Blowdown Duration (minutes)</label>
+						  <label class="col-sm-4 control-label">3/4 load efficiency (%)</label>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_blowdown_duration_mins" name="existing_blowdown_duration_mins" value="0">
+							<input class="form-control control-label" type="text" id="existing_three_fourth_load_eff" name="existing_three_fourth_load_eff" value="0">
 						  </div>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_blowdown_duration_mins" name="proposed_blowdown_duration_mins" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Days of Operation</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_days_of_operation" name="existing_days_of_operation" value="0">
-						  </div>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_days_of_operation" name="proposed_days_of_operation" value="0">
+							<input class="form-control control-label" type="text" id="proposed_three_fourth_load_eff" name="proposed_three_fourth_load_eff" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Discharge Temp (F)</label>
+						  <label class="col-sm-4 control-label">1/2 load efficiency (%)</label>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_discharge_temp_in_f" name="existing_discharge_temp_in_f" value="0">
+							<input class="form-control control-label" type="text" id="existing_half_load_eff" name="existing_half_load_eff" value="0">
 						  </div>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_discharge_temp_in_f" name="proposed_discharge_temp_in_f" value="0">
+							<input class="form-control control-label" type="text" id="proposed_half_load_eff" name="proposed_half_load_eff" value="0">
 						  </div>
-						</div>
-						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8">
-								Provide Blowdown Heat Recovery
-							</label>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Heat Recovery Efficiency</label>
+						  <label class="col-sm-4 control-label">Motor Purchase Price ($)</label>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_heat_recovery_efficiency_perc" name="existing_heat_recovery_efficiency_perc" value="0">
+							<input class="form-control control-label" type="text" id="existing_motor_purchase_price" name="existing_motor_purchase_price" value="0">
 						  </div>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_heat_recovery_efficiency_perc" name="proposed_heat_recovery_efficiency_perc" value="0">
+							<input class="form-control control-label" type="text" id="proposed_motor_purchase_price" name="proposed_motor_purchase_price" value="0">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
