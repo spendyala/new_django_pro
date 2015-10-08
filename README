@@ -19,3 +19,8 @@ http --json POST http://127.0.0.1:8000/clients/
 # TODO: Fix the Directory path for CSS JS and other static files.
 
 pip freeze > requirements.txt
+
+python manage.py dumpdata <your_app> > temp_data.json
+python manage.py sqlclear <your_app> | python manage.py dbshell
+python manage.py syncdb
+python manage.py loaddata temp_data.json

@@ -42,7 +42,7 @@ def client_details(request, file_name=None, rec_id=None):
 				'client_name': client_obj.client_name,
 				'country_id': client_obj.country,
 				'start_date': client_obj.start_date,
-				'customer_site': client_obj.customer_site
+				'customer_site': client_obj.customer_site,
 				'state': client_obj.state,
 				'gas_rate': client_obj.gas_rate,
 				'water_rate': client_obj.water_rate}
