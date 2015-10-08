@@ -40,7 +40,7 @@
 									  'model_info': '',
 									  'serial_info': '',
 									  'compressor_type': '',
-									  'vfd_speed_control': '',
+									  'vfd_speed_control': 1,
 									  'nameplate_horsepower': 0,
 									  'nameplate_max_flow': 0,
 									  'measured_actual_flow': 0,
@@ -59,7 +59,7 @@
 				$scope.air_compressor_json.model_info = $("#model_info").val();
 				$scope.air_compressor_json.serial_info = $("#serial_info").val();
 				$scope.air_compressor_json.compressor_type = $("#compressor_type").val();
-				$scope.air_compressor_json.vfd_speed_control = $("#vfd_speed_control").val();
+				$scope.air_compressor_json.vfd_speed_control = parseInt($("#vfd_speed_control").val());
 				$scope.air_compressor_json.nameplate_horsepower = $("#nameplate_horsepower").val();
 				$scope.air_compressor_json.nameplate_max_flow = $("#nameplate_max_flow").val();
 				$scope.air_compressor_json.measured_actual_flow = $("#measured_actual_flow").val();
@@ -205,13 +205,21 @@
 						<div class="form-group form-group-sm">
 						  <label class="col-sm-6 control-label">Type</label>
 						  <div class="col-sm-3">
-							<input class="form-control" type="text" id="compressor_type" name="compressor_type">
+							  <select class="form-control col-sm-6" id="compressor_type" name="compressor_type">
+								{% for type_id, type_name in compressor_type %}
+								   <option {% if type_id == 'REC' %} selected {% endif %} value="{{ type_id }}">{{ type_name }}</option>
+								{% endfor %}
+							  </select>
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
 						  <label class="col-sm-6 control-label">VFD Speed Control</label>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="vfd_speed_control" name="vfd_speed_control">
+							  <select class="form-control col-sm-6" id="vfd_speed_control" name="vfd_speed_control">
+								{% for vfd_type_id, vfd_type_name in vfd_control_type %}
+								   <option {% if vfd_type_id == 1 %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
+								{% endfor %}
+							  </select>
 						  </div>
 						</div>
 

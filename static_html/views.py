@@ -11,7 +11,7 @@ from steam_leaks.models import SteamLeak
 from boiler_blowdown.models import BoilerBlowdown
 from stacked_economizer.models import StackedEconomizer
 from premium_efficiency.models import PremiumEfficiency
-from air_compressors.models import AirCompressor
+from air_compressors.models import AirCompressor, COMPRESSOR_TYPE, VFD_CONTROL_TYPE
 
 import datetime
 import json
@@ -270,7 +270,11 @@ def air_compressors(request, file_name=None, rec_id=None):
 		clients_obj = Client.objects.all()
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
 
-		data = {'clients_list': clients_list}
+
+		data = {'clients_list': clients_list,
+				'compressor_type': COMPRESSOR_TYPE,
+				'vfd_control_type': VFD_CONTROL_TYPE}
+
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:
 		return render(request, 'static_html/404.html')
@@ -285,7 +289,9 @@ def air_compressor_details(request, file_name=None, rec_id=None):
 		clients_obj = Client.objects.all()
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
 
-		data = {'clients_list': clients_list}
+		data = {'clients_list': clients_list,
+				'compressor_type': COMPRESSOR_TYPE,
+				'vfd_control_type': VFD_CONTROL_TYPE}
 		air_compressor_obj = AirCompressor.objects.get(id=rec_id)
 		data['air_compressor_obj'] = air_compressor_obj
 		data['get_hourly_kwh_consumed'] = air_compressor_obj.get_hourly_kwh_consumed()
