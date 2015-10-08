@@ -48,6 +48,7 @@ docs/_build/
 .env
 venv
 .pypirc
+db.sqlite3
 
 # Vagrant
 .vagrant/

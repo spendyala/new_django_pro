@@ -17,6 +17,10 @@
 			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
+		app_1.config(function($interpolateProvider) {
+			$interpolateProvider.startSymbol('{$');
+			$interpolateProvider.endSymbol('$}');
+		});
 		app_1.controller("steamLeakModifyController", ['$scope','$http', function($scope,$http){
 			$scope.steam_leak_json = {'id': {{steam_leak_obj.id}},
 									  'client': '',
@@ -172,7 +176,7 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Cost / Year</label>
 							  <div class="col-sm-4">
-								<label class="col-sm-5 bg-success" type="number">${{ get_cost_per_year }}</label>
+								<label class="col-sm-5 bg-success" type="number">{$ {{ get_cost_per_year }} | currency: "$" $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">

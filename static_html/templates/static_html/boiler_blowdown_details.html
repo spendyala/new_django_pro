@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
 	<script src="{% static "clients/js/jquery.js"%}"></script>
 	<script src="{% static "clients/js/angular.js"%}"></script>
 	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
@@ -17,6 +18,10 @@
 			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
+		app_1.config(function($interpolateProvider) {
+			$interpolateProvider.startSymbol('{$');
+			$interpolateProvider.endSymbol('$}');
+		});
 		app_1.controller("boilerBlowdownModifyController", ['$scope','$http', function($scope,$http){
 			$scope.boiler_blowdown_json = {'id': {{boiler_blowdown_obj.id}},
 									  'client': '',
@@ -94,7 +99,7 @@
 							  <div class="col-sm-4">
 								  <select class="form-control col-sm-6" id="client" name="client">
 									{% for client_id, client_name in clients_list %}
-									   <option {% if client_id == 'US' %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+									   <option {% if client_id == boiler_blowdown_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
 									{% endfor %}
 								  </select>
 							  </div>
@@ -226,7 +231,7 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Overflow Cost ($)</label>
+							  <label class="col-sm-4 control-label">Blowdown Energy Cost ($)</label>
 							  <div class="col-sm-3">
 								<label class="col-sm-12 bg-success control-label">$ {{ get_existing_overflow_cost }}</label>
 							  </div>
@@ -271,7 +276,7 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Gas and Water Savings ($)</label>
+							  <label class="col-sm-4 control-label">Gas and Water Cost ($)</label>
 							  <div class="col-sm-3">
 								<label class="col-sm-12 bg-success control-label">$ {{ get_existing_gas_and_water_cost }}</label>
 							  </div>
@@ -334,7 +339,7 @@
 								<label class="col-sm-12 bg-success control-label">${{ get_existing_total }}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">${{ get_proposed_total }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_total }} | currency: "$":0 $}</label>
 							  </div>
 							</div>
 
