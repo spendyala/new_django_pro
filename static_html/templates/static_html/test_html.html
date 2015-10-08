@@ -78,7 +78,7 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Start Date</label>
+							  <label class="col-sm-4 control-label">Compressor Name</label>
 							  <div class="col-sm-8">
 								<label class="col-sm-5 bg-success">{{ steam_leak_obj.start_date }}</label>
 							  </div>
@@ -94,19 +94,19 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Leak #</label>
+							  <label class="col-sm-4 control-label">Manufacturer</label>
 							  <div class="col-sm-4">
 								<input class="form-control" type="text" id="steam_leak_number" name="steam_leak_number" value={{steam_leak_obj.steam_leak_number}}>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Location/Description</label>
+							  <label class="col-sm-4 control-label">Model</label>
 							  <div class="col-sm-8">
 								<input class="form-control" type="text" id="location_description" name="location_description" value="{{steam_leak_obj.location_description}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Pressure (psig)</label>
+							  <label class="col-sm-4 control-label">Serial</label>
 							  <div class="col-sm-4">
 								<select class="form-control col-sm-6" id="pressure_in_psig" name="pressure_in_psig">
 									{% for pressure_in_psig_val  in pressure_in_psig_list %}
@@ -116,61 +116,61 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Absolute Pressure (psia)</label>
+							  <label class="col-sm-4 control-label">Type</label>
 							  <div class="col-sm-4">
 								<label class="col-sm-5 bg-success">{{ absolute_pressure_psia }}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Size Leak (inch)</label>
+							  <label class="col-sm-4 control-label">VFD Speed Control</label>
 							  <div class="col-sm-4">
 								  <input class="form-control" type="text" id="size_leak_in_inch" name="size_leak_in_inch" value="{{steam_leak_obj.size_leak_in_inch}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Steam Loss (pph)</label>
+							  <label class="col-sm-4 control-label">Nameplate Horsepower(HP)</label>
 							  <div class="col-sm-4">
 								<label class="col-sm-5 bg-success">{{ get_steam_loss_pph }}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Boiler Efficiency %</label>
+							  <label class="col-sm-4 control-label">Nameplate Maximum Flow(CFM)</label>
 							  <div class="col-sm-3">
 								<input class="form-control" type="text" id="boiler_efficiency" name="boiler_efficiency" value="{{steam_leak_obj.boiler_efficiency}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Steam Energy (Btu/lb)</label>
+							  <label class="col-sm-4 control-label">Measured Actual Flow(GPM)</label>
 							  <div class="col-sm-4">
 								<label class="col-sm-5 bg-success">{{ get_steam_energy_btu_per_lb }}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Gas Usage (Therms/hour)</label>
+							  <label class="col-sm-4 control-label">Measured Line Pressure(PSI)</label>
 							  <div class="col-sm-4">
 								<label class="col-sm-5 bg-success">{{ get_gas_usage_therms_per_hour }}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Therms Rate $</label>
+							  <label class="col-sm-4 control-label">Annual Hours of Opearation</label>
 							  <div class="col-sm-4">
 								<input class="form-control" type="text" id="therm_rate" name="therm_rate" value="{{steam_leak_obj.therm_rate}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Cost / Hour</label>
+							  <label class="col-sm-4 control-label">Hourly Consumed(kwh)</label>
 							  <div class="col-sm-4">
 								<label class="col-sm-5 bg-success">{{ get_cost_per_hour }}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Hours of Operation</label>
+							  <label class="col-sm-4 control-label">Hourly Cost of Operation($)</label>
 							  <div class="col-sm-3">
 								<input class="form-control" type="text" id="hours_of_operation" name="hours_of_operation" value="{{steam_leak_obj.hours_of_operation}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Cost / Year</label>
+							  <label class="col-sm-4 control-label">Annual Cost of Operation($)</label>
 							  <div class="col-sm-4">
 								<label class="col-sm-5 bg-success" type="number">${{ get_cost_per_year }}</label>
 							  </div>

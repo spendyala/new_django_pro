@@ -11,6 +11,7 @@ from steam_leaks.models import SteamLeak
 from boiler_blowdown.models import BoilerBlowdown
 from stacked_economizer.models import StackedEconomizer
 from premium_efficiency.models import PremiumEfficiency
+from air_compressors.models import AirCompressor
 
 import datetime
 import json
@@ -270,6 +271,35 @@ def air_compressors(request, file_name=None, rec_id=None):
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:
 		return render(request, 'static_html/404.html')
+
+def air_compressor_details(request, file_name=None, rec_id=None):
+
+
+	if not rec_id:
+		return render(request, 'static_html/404.html')
+
+	try:
+		clients_obj = Client.objects.all()
+		clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+		data = {'clients_list': clients_list}
+		air_compressor_obj = AirCompressor.objects.get(id=rec_id)
+		data['air_compressor_obj'] = air_compressor_obj
+		data['get_hourly_kwh_consumed'] = air_compressor_obj.get_hourly_kwh_consumed()
+		data['get_hourly_cost_of_operation'] = air_compressor_obj.get_hourly_cost_of_operation()
+		data['get_annual_cost_of_operation'] = air_compressor_obj.get_annual_cost_of_operation()
+		data['get_reduced_line_pressure_from'] = air_compressor_obj.get_reduced_line_pressure_from()
+		data['get_proposed_pressure_decrease'] = air_compressor_obj.get_proposed_pressure_decrease()
+		data['get_estimated_ann_savings_per_2_psi_reduction'] = air_compressor_obj.get_estimated_ann_savings_per_2_psi_reduction()
+		data['get_annual_cost_before_psi_setback'] = air_compressor_obj.get_annual_cost_before_psi_setback()
+		data['get_annual_cost_after_psi_setback'] = air_compressor_obj.get_annual_cost_after_psi_setback()
+		data['get_annual_savings_after_psi_setback'] = air_compressor_obj.get_annual_savings_after_psi_setback()
+		data['get_estimated_air_leak_25_percent_of_costs'] = air_compressor_obj.get_estimated_air_leak_25_percent_of_costs()
+		data['get_estimated_air_leak_40_percent_of_costs'] = air_compressor_obj.get_estimated_air_leak_40_percent_of_costs()
+		return set_render_object(request, file_name=file_name, content=data)
+	except Exception as err:
+		return render(request, 'static_html/404.html')
+
 # Login and Logout
 def login(request, file_name=None, rec_id=None):
 	# if rec_id:
@@ -322,6 +352,7 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'premium_efficiency': premium_efficiency,
 				'premium_efficiency_details': premium_efficiency_details,
 				'air_compressors': air_compressors,
+				'air_compressor_details': air_compressor_details,
 				'test_html': test_html}
 
 # Create your views here.

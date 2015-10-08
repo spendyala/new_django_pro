@@ -77,7 +77,7 @@ class AirCompressor(models.Model):
 			self.annual_hours_of_operation, 2)
 
 	def get_reduced_line_pressure_from(self):
-		return 112.0
+		return self.measured_line_pressure
 
 	def get_proposed_pressure_decrease(self):
 		return round(self.get_reduced_line_pressure_from() -
@@ -119,4 +119,4 @@ class AirCompressor(models.Model):
 		super(AirCompressor, self).save(*args, **kwargs)
 
 	class Meta:
-		ordering = ('air_compressor',)
+		ordering = ('compressor_name',)
