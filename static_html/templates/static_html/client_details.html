@@ -21,11 +21,17 @@
 			$scope.client_json = {'id': {{client_id}},
 								  'client_name':'',
 								  'country':'',
-								  'site_location':''};
+								  'site_location':'',
+								  'state': '',
+								  'gas_rate': '',
+								  'water_rate': ''};
 			$scope.submit_details = function(){
 				$scope.client_json.client_name = $("#client_name").val();
 				$scope.client_json.country = $("#country").val();
 				$scope.client_json.customer_site = $("#customer_site").val();
+				$scope.client_json.state = $("#state").val();
+				$scope.client_json.gas_rate = $("#gas_rate").val();
+				$scope.client_json.water_rate = $("#water_rate").val();
 				$http({method: 'PUT',
 					   url: '/api_client/clients/{{client_id}}/',
 					   data: $scope.client_json}).
@@ -90,9 +96,27 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">State</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="state" name="state" value="{{state}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Site Location</label>
 							  <div class="col-sm-4">
 								<input class="form-control" type="text" id="customer_site" name="site_location" value={{ customer_site }}>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Gas Rate</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="gas_rate" name="gas_rate" value="{{gas_rate}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Water Rate</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="water_rate" name="water_rate" value="{{water_rate}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">

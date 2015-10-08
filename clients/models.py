@@ -12,6 +12,9 @@ class Client(models.Model):
 	country = models.CharField(max_length=2, choices=ISO3166_CHOICES)
 	start_date = models.DateTimeField('Registered Date')
 	customer_site = models.CharField('Customer Site', max_length=256, default='')
+	state = model.CharField('State', max_length=128, default='')
+	gas_rate = model.FloatField('Gas Rate', default=0)
+	water_rate = model.FloatField('Water Rate', default=0)
 	owner = models.ForeignKey('auth.User', related_name='client')
 
 	def was_recent(self):

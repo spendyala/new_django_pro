@@ -10,7 +10,7 @@ class ClientSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Client
 		fields = ('id', 'url', 'client_name', 'country', 'customer_site',
-				  'owner', 'start_date')
+				  'owner', 'start_date', 'state', 'gas_rate', 'water_rate')
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
