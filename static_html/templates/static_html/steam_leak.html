@@ -104,14 +104,14 @@
 										<td>{{ x.pressure_in_psig }}</td>
 										<td>{{ x.absolute_pressure_psia }}</td>
 										<td>{{x.size_leak_in_inch}}</td>
-										<td>{{x.get_steam_loss_pph}}</td>
-										<td>{{x.boiler_efficiency}}</td>
-										<td>{{x.get_steam_energy_btu_per_lb}}</td>
-										<td>{{x.get_gas_usage_therms_per_hour}}</td>
-										<td>{{x.therm_rate}}</td>
-										<td>{{x.get_cost_per_hour}}</td>
-										<td>{{x.hours_of_operation}}</td>
-										<td>{{x.get_cost_per_year}}</td>
+										<td>{{x.get_steam_loss_pph| currency:"":2}}</td>
+										<td>{{x.boiler_efficiency| currency:"":0}}</td>
+										<td>{{x.get_steam_energy_btu_per_lb| currency:"":0}}</td>
+										<td>{{x.get_gas_usage_therms_per_hour| currency:"":0}}</td>
+										<td>{{x.therm_rate| currency:"$":2}}</td>
+										<td>{{x.get_cost_per_hour| currency:"$":2}}</td>
+										<td>{{x.hours_of_operation | currency:"":0}}</td>
+										<td>{{x.get_cost_per_year | currency:"$":0}}</td>
 									</tr>
 								{% endverbatim %}
 							</table>
