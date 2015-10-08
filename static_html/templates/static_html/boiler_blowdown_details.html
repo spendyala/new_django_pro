@@ -170,10 +170,10 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Blowdown (Gallons Per Day)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_blowdown_gallons_per_day }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_gallons_per_day }}|currency:"" :0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_blowdown_gallons_per_day }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_gallons_per_day }}| currency:"" :0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -188,19 +188,19 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Annual Quantity (Gals)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_annual_quantity_gals }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_gals }}| currency:"" :0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_annual_quantity_gals }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_annual_quantity_gals }}| currency: "" :0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Annual Quantity (lbs)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_annual_quantity_lbs }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_lbs }}| currency:"" :0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_annual_quantity_lbs }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_annual_quantity_lbs }}| currency:"" :0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -215,28 +215,28 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Blowdown Energy Loss (BTUH)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_blowdown_energy_loss_btuh }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_btuh }}|currency:"" :0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_blowdown_energy_loss_btuh }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_loss_btuh }}|currency:"" :0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Blowdown Energy Loss (THERM)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_energy_loss_therm }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_energy_loss_therm }}|currency:"":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_energy_loss_therm }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_energy_loss_therm }}| currency:"":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Blowdown Energy Cost ($)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_existing_overflow_cost }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_existing_overflow_cost }}| currency:"$":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_proposed_overflow_cost }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_overflow_cost }}| currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -245,25 +245,25 @@
 								<label class="col-sm-12 control-label">Gas Savings ($)</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_savings_gas }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_savings_gas }}| currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Make-up Water Quantity</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_makeup_water_quantity }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_makeup_water_quantity }}| currency:"$":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_makeup_water_quantity }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_makeup_water_quantity }}| currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Make-up Water Cost ($)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_existing_makeup_water_cost }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_existing_makeup_water_cost }}| currency: "$":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_proposed_makeup_water_cost }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_makeup_water_cost }}| currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -272,16 +272,16 @@
 								<label class="col-sm-12 control-label">Water Savings ($)</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_savings_water }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_savings_water }}| currency: "$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Gas and Water Cost ($)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_existing_gas_and_water_cost }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_existing_gas_and_water_cost }}| currency: "$":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_proposed_gas_and_water_cost }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_gas_and_water_cost }}| currency: "$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -290,7 +290,7 @@
 								<label class="col-sm-12 control-label">Gas and Water Savings ($)</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">$ {{ get_savings_gas_and_water }}</label>
+								<label class="col-sm-12 bg-success control-label">{$ {{ get_savings_gas_and_water }}| currency: "$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-md bg-info">
@@ -309,10 +309,10 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Blowdown Energy Loss (Therms)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_blowdown_energy_loss_therm }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_therm }}| currency: "$":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_blowdown_energy_loss_therm }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_loss_therm }}| currency: "$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -327,16 +327,16 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Blowdown Energy Recovery (Therms)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_existing_blowdown_energy_recovery_therms }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_recovery_therms }}| currency: "$":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">{{ get_proposed_blowdown_energy_recovery_therms }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_recovery_therms }}|currency: "$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Total Savings ($)</label>
 							  <div class="col-sm-3">
-								<label class="col-sm-12 bg-success control-label">${{ get_existing_total }}</label>
+								<label class="col-sm-12 bg-success control-label">{${{ get_existing_total }}| currency: "$":0 $}</label>
 							  </div>
 							  <div class="col-sm-3">
 								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_total }} | currency: "$":0 $}</label>

@@ -146,7 +146,7 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Steam Energy (Btu/lb)</label>
 							  <div class="col-sm-4">
-								<label class="col-sm-5 bg-success">{{ get_steam_energy_btu_per_lb }}</label>
+								<label class="col-sm-5 bg-success">{${{ get_steam_energy_btu_per_lb }}|number $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
@@ -176,7 +176,7 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Cost / Year</label>
 							  <div class="col-sm-4">
-								<label class="col-sm-5 bg-success" type="number">{$ {{ get_cost_per_year }} | currency: "$" $}</label>
+								<label class="col-sm-5 bg-success" type="number">{$ {{ get_cost_per_year }} | currency: "$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
