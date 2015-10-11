@@ -113,14 +113,12 @@
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">State</label>
-							  <div class="col-sm-4">
-								  <div class="col-sm-4">
-									  {% verbatim %}
-										  <select class="form-control" ng-model="state" id="state" name="state">
-												  <option ng-repeat="x in states_list" value="{{x.state_id}}">{{x.state_name}}</option>
-										  </select>
-									  {% endverbatim %}
-								  </div>
+							  <div class="col-sm-6">
+								  {% verbatim %}
+									  <select class="form-control col-sm-6" ng-model="state" id="state" name="state">
+											  <option ng-repeat="x in states_list" value="{{x.state_id}}">{{x.state_name}}</option>
+									  </select>
+								  {% endverbatim %}
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
