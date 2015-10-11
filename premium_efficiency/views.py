@@ -6,10 +6,18 @@ from django.contrib.auth.models import User
 
 from clients.permissions import IsOwnerOrReadOnly
 
-from rest_framework import generics, permissions, renderers, viewsets
+from rest_framework import filters, generics, permissions, renderers, viewsets
 from rest_framework.decorators import api_view, detail_route
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+
+import django_filters
+
+# Premium Efficiency Filter
+class PremiumEfficiencyFilter(django_filters.FilterSet):
+	class Meta:
+		model = PremiumEfficiency
+		fields = ['client']
 
 # Create your views here.
 class PremiumEfficiencyViewSet(viewsets.ModelViewSet):
@@ -17,6 +25,8 @@ class PremiumEfficiencyViewSet(viewsets.ModelViewSet):
 		This viewset automatically provides `list`, `create`, `retrieve`,
 		`update` and `destroy` actions.
 		"""
+		filter_class = PremiumEfficiencyFilter
+		filter_backends = (filters.DjangoFilterBackend,)
 		queryset = PremiumEfficiency.objects.all()
 		serializer_class = PremiumEfficiencySerializer
 		permission_classes = (permissions.IsAuthenticatedOrReadOnly,

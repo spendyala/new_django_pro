@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
 
-from clients.ISO3166 import ISO3166
 from clients.models import Client
 
 from steam_trap.models import SteamTrap, STEAM_TRAP_CHOICES, TRAP_SIZE_CHOICES
@@ -13,8 +13,13 @@ from stacked_economizer.models import StackedEconomizer
 from premium_efficiency.models import PremiumEfficiency
 from air_compressors.models import AirCompressor, COMPRESSOR_TYPE, VFD_CONTROL_TYPE
 
+import copy
 import datetime
 import json
+import operator
+import pycountry
+
+countries_list = [(each_country.alpha2, each_country.name) for each_country in pycountry.countries]
 
 
 def set_render_object(request, file_name=None, content=None):
@@ -29,8 +34,26 @@ def client(request, file_name=None, rec_id=None):
 	if rec_id:
 		return render(request, 'static_html/404.html')
 	data = {}
-	data['countries_list'] = ISO3166
+	data['countries_list'] = countries_list
 	return set_render_object(request, file_name=file_name, content=data)
+
+def state_details(request, file_name=None, rec_id=None):
+	states_list = []
+	if rec_id:
+		for each_country in countries_list:
+			try:
+				states_obj = pycountry.subdivisions.get(country_code=rec_id)
+				states_list = [{'state_id': each_state.code,
+								'state_name': each_state.name} for each_state in states_obj]
+				states_list.sort(key=operator.itemgetter('state_name'))
+			except KeyError:
+				country = pycountry.countries.get(alpha2=rec_id)
+				states_list = [{'state_id': country.alpha2,
+								'state_name': country.name}]
+			except Exception as err:
+				print err
+
+	return JsonResponse(states_list, safe=False)
 
 def client_details(request, file_name=None, rec_id=None):
 	if not rec_id:
@@ -46,7 +69,7 @@ def client_details(request, file_name=None, rec_id=None):
 				'state': client_obj.state,
 				'gas_rate': client_obj.gas_rate,
 				'water_rate': client_obj.water_rate}
-		data['countries_list'] = ISO3166
+		data['countries_list'] = countries_list
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:
 		return render(request, 'static_html/404.html')
@@ -60,8 +83,11 @@ def steam_trap(request, file_name=None, rec_id=None):
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
 		pressure_in_psig_list = STEAM_TRAP_CHOICES.keys()
 		trap_pipe_size_list = TRAP_SIZE_CHOICES.keys()
+		clients_filter = copy.deepcopy(clients_list)
+		clients_filter.append(('all', 'all'))
 
 		data = {'clients_list': clients_list,
+				'clients_filter': clients_filter,
 				'pressure_in_psig_list': pressure_in_psig_list,
 				'trap_pipe_size_list': trap_pipe_size_list}
 		return set_render_object(request, file_name=file_name, content=data)
@@ -103,9 +129,11 @@ def steam_leak(request, file_name=None, rec_id=None):
 		clients_obj = Client.objects.all()
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
 		pressure_in_psig_list = STEAM_TRAP_CHOICES.keys()
-		# trap_pipe_size_list = TRAP_SIZE_CHOICES.keys()
+		clients_filter = copy.deepcopy(clients_list)
+		clients_filter.append(('all', 'all'))
 
 		data = {'clients_list': clients_list,
+				'clients_filter': clients_filter,
 				'pressure_in_psig_list': pressure_in_psig_list}
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:
@@ -143,8 +171,11 @@ def boiler_blowdown(request, file_name=None, rec_id=None):
 	try:
 		clients_obj = Client.objects.all()
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
+		clients_filter = copy.deepcopy(clients_list)
+		clients_filter.append(('all', 'all'))
 
-		data = {'clients_list': clients_list}
+		data = {'clients_list': clients_list,
+				'clients_filter': clients_filter,}
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:
 		return render(request, 'static_html/404.html')
@@ -199,8 +230,11 @@ def stacked_economizer(request, file_name=None, rec_id=None):
 	try:
 		clients_obj = Client.objects.all()
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
+		clients_filter = copy.deepcopy(clients_list)
+		clients_filter.append(('all', 'all'))
 
-		data = {'clients_list': clients_list}
+		data = {'clients_list': clients_list,
+				'clients_filter': clients_filter,}
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:
 		return render(request, 'static_html/404.html')
@@ -231,8 +265,11 @@ def premium_efficiency(request, file_name=None, rec_id=None):
 	try:
 		clients_obj = Client.objects.all()
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
+		clients_filter = copy.deepcopy(clients_list)
+		clients_filter.append(('all', 'all'))
 
-		data = {'clients_list': clients_list}
+		data = {'clients_list': clients_list,
+				'clients_filter': clients_filter,}
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:
 		return render(request, 'static_html/404.html')
@@ -269,9 +306,11 @@ def air_compressors(request, file_name=None, rec_id=None):
 	try:
 		clients_obj = Client.objects.all()
 		clients_list = [(x.id, x.client_name) for x in clients_obj]
-
+		clients_filter = copy.deepcopy(clients_list)
+		clients_filter.append(('all', 'all'))
 
 		data = {'clients_list': clients_list,
+				'clients_filter': clients_filter,
 				'compressor_type': COMPRESSOR_TYPE,
 				'vfd_control_type': VFD_CONTROL_TYPE}
 
@@ -280,8 +319,6 @@ def air_compressors(request, file_name=None, rec_id=None):
 		return render(request, 'static_html/404.html')
 
 def air_compressor_details(request, file_name=None, rec_id=None):
-
-
 	if not rec_id:
 		return render(request, 'static_html/404.html')
 
@@ -362,6 +399,7 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'premium_efficiency_details': premium_efficiency_details,
 				'air_compressors': air_compressors,
 				'air_compressor_details': air_compressor_details,
+				'state_details': state_details,
 				'test_html': test_html}
 
 # Create your views here.

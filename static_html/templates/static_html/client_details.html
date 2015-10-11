@@ -18,6 +18,19 @@
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
 		app_1.controller("clientModifyController", ['$scope','$http', function($scope,$http){
+			$http({method: 'GET', url: "/state_details/{{country_id}}"}).
+				 success(function(data){
+					 $scope.states_list = data;
+			}).error(function(data){});
+			$scope.country = "{{country_id}}";
+			$scope.state = "{{state}}"
+			$scope.change_state = function(country){
+				$http({method: 'GET', url: "/state_details/".concat($scope.country)}).
+					 success(function(data){
+						 $scope.states_list = data;
+						 $scope.state = data[0].state_id;
+				}).error(function(data){});
+			};
 			$scope.client_json = {'id': {{client_id}},
 								  'client_name':'',
 								  'country':'',
@@ -64,6 +77,9 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-lg-12">
+					<h1 class="page-header">
+						Client Details
+					</h1>
 					<form class="form-horizontal" ng-controller="clientModifyController" role="form">
 					{% csrf_token %}
 						<div class="container-fluid">
@@ -88,7 +104,7 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Country</label>
 							  <div class="col-sm-6">
-								  <select class="form-control col-sm-4" id="country" name="country">
+								  <select class="form-control col-sm-4" id="country" name="country" ng-model="country" ng-change="change_state(country)">
 									{% for country_id_key, name in countries_list %}
 									   <option {% if country_id_key == country_id %} selected {% endif %} value="{{ country_id_key }}">{{ name }}</option>
 									{% endfor %}
@@ -98,7 +114,13 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">State</label>
 							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="state" name="state" value="{{state}}">
+								  <div class="col-sm-4">
+									  {% verbatim %}
+										  <select class="form-control" ng-model="state" id="state" name="state">
+												  <option ng-repeat="x in states_list" value="{{x.state_id}}">{{x.state_name}}</option>
+										  </select>
+									  {% endverbatim %}
+								  </div>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">

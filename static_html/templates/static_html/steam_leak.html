@@ -21,16 +21,22 @@
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
 		app_1.controller("steamLeakListController", ['$scope','$http', function($scope,$http){
-			$scope.load_clients_list = function(){
-				$http({method: 'GET', url: "/api_steam_leak/steam_leak/"}).
-					 success(function(data){
-						 $scope.steam_leak_list = data;
-				}).error(function(data){});
-			};
 			$http({method: 'GET', url: "/api_steam_leak/steam_leak/"}).
 				 success(function(data){
 					 $scope.steam_leak_list = data;
 			}).error(function(data){});
+			$scope.clients_filter = "all";
+			$scope.filter_clients = function (clients_filter){
+				var url_str = "/api_steam_leak/steam_leak/";
+				var client_filter_str = "";
+				if ($scope.clients_filter != "all"){
+					client_filter_str = "?client=".concat($scope.clients_filter);
+				};
+				$http({method: 'GET', url: url_str.concat(client_filter_str)}).
+					 success(function(data){
+						 $scope.steam_leak_list = data;
+				}).error(function(data){});
+			};
 		}]);
 		app_1.controller("steamLeakAddController", ['$scope',
 													'$http',
@@ -78,11 +84,23 @@
 					<h1 class="page-header">
 						 Steam Leak List
 					</h1>
-					<p>
-						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_steam_leak">+ Steam Leak</button>
-					</p>
 					<div ng-controller="steamLeakListController">
-						<div class="container-fluid">
+						<div class="container-fluid form-horizontal">
+							<div class="form-group form-group-sm">
+								<label class="col-sm-1 control-label">Client Filter</label>
+								<div class="col-sm-1">
+									<select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
+										{% for filter_id, filter_name in clients_filter %}
+											<option value="{{ filter_id }}">{{ filter_name }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group form-group-sm">
+								 <div class="col-sm-6">
+									<button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_steam_leak">+ Steam Leak</button>
+								</div>
+							</div>
 							<table class="table table-striped">
 								<tr>
 									<th>Leak #</th>
@@ -136,7 +154,7 @@
 						  <div class="col-sm-4">
 							  <select class="form-control col-sm-6" id="client" name="client">
 								{% for client_id, client_name in clients_list %}
-								   <option {% if client_id == 'US' %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+									<option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
 								{% endfor %}
 							  </select>
 						  </div>

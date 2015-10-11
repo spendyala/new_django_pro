@@ -30,12 +30,25 @@
 			}).error(function(data){});
 		}]);
 		app_1.controller("clientAddController", ['$scope', '$http', function($scope, $http){
+			$http({method: 'GET', url: "/state_details/US"}).
+				 success(function(data){
+					 $scope.states_list = data;
+					 $scope.state = data[0].state_id;
+			}).error(function(data){});
+			$scope.country = "US";
 			$scope.client_json = {'client_name':'',
 								  'country':'',
 								  'site_location':'',
 								  'state': '',
 								  'gas_rate': '',
 								  'water_rate': ''};
+			$scope.change_state = function(country){
+				$http({method: 'GET', url: "/state_details/".concat($scope.country)}).
+					 success(function(data){
+						 $scope.states_list = data;
+						 $scope.state = data[0].state_id;
+				}).error(function(data){});
+			};
 			$scope.submit_details = function(){
 				$scope.client_json.client_name = $("#client_name").val();
 				$scope.client_json.country = $("#country").val();
@@ -70,11 +83,13 @@
 					<h1 class="page-header">
 						Clients List
 					</h1>
-					<p>
-						<button type="button" class="btn btn-success btn-sm col-sm-2" data-toggle="modal" data-target="#add_new_client">+ Client</button>
-					</p>
 					<div ng-controller="clientListController">
-						<div class="container-fluid">
+						<div class="container-fluid form-horizontal">
+							<div class="form-group form-group-sm">
+								 <div class="col-sm-6">
+									<button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_client">+ Client</button>
+								</div>
+							</div>
 							<table class="table table-striped">
 								<tr>
 									<th>Client Name</th>
@@ -122,9 +137,9 @@
 						<div class="form-group form-group-sm">
 						  <label class="col-sm-4 control-label">Country</label>
 						  <div class="col-sm-6">
-							  <select class="form-control col-sm-6" id="country" name="country">
+							  <select class="form-control col-sm-6" id="country" name="country" ng-model="country" ng-change="change_state(country)">
 								{% for country_id, name in countries_list %}
-								   <option {% if country_id == 'US' %} selected {% endif %} value="{{ country_id }}">{{ name }}</option>
+								   <option value="{{ country_id }}">{{ name }}</option>
 								{% endfor %}
 							  </select>
 						  </div>
@@ -132,7 +147,11 @@
 						<div class="form-group form-group-sm">
 						  <label class="col-sm-4 control-label">State</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="state" name="state">
+							  {% verbatim %}
+								  <select class="form-control" id="state" name="state" ng-model="state">
+										  <option ng-repeat="x in states_list" value="{{x.state_id}}">{{x.state_name}}</option>
+								  </select>
+							  {% endverbatim %}
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">

@@ -39,6 +39,7 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'djangular',  # Django angular
 	'rest_framework',  # Rest Framework
+	'django_filters', # Django filters
 	'static_html',  # HTML Files goes here
 	'clients',
 	'steam_trap',
