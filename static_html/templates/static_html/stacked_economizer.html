@@ -86,8 +86,8 @@
 					<div ng-controller="stackedEconomizerListController">
 						<div class="container-fluid form-horizontal">
 							<div class="form-group form-group-sm">
-								<label class="col-sm-1 control-label">Client Filter</label>
-								<div class="col-sm-1">
+								<label class="col-sm-2 control-label">Client Filter</label>
+								<div class="col-sm-2">
 									<select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
 										{% for filter_id, filter_name in clients_filter %}
 											<option value="{{ filter_id }}">{{ filter_name }}</option>
