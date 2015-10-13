@@ -7,8 +7,8 @@
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
-	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
 
 	<script src="{% static "clients/js/jquery.js"%}"></script>
 	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
@@ -16,61 +16,61 @@
 	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
 	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
 	<script>
-		var app_1 = angular.module("app_stacked_economizer", ['ui.bootstrap']);
+		var app_1 = angular.module("app_vfd", ['ui.bootstrap']);
 		app_1.config(['$httpProvider', function($httpProvider) {
 			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
-		app_1.controller("stackedEconomizerListController", ['$scope','$http', function($scope,$http){
-			$http({method: 'GET', url: "/api_stacked_economizer/stacked_economizer/"}).
+		app_1.controller("vfdMotorListController", ['$scope','$http', function($scope,$http){
+			$http({method: 'GET', url: "/api_vfd/vfd_motor/"}).
 				 success(function(data){
-					 $scope.stacked_economizer_list = data;
+					 $scope.vfd_list = data;
 			}).error(function(data){});
 			$scope.clients_filter = "all";
 			$scope.filter_clients = function (clients_filter){
-				var url_str = "/api_stacked_economizer/stacked_economizer/";
+				var url_str = "/api_vfd/vfd_motor/";
 				var client_filter_str = "";
 				if ($scope.clients_filter != "all"){
 					client_filter_str = "?client=".concat($scope.clients_filter);
 				};
 				$http({method: 'GET', url: url_str.concat(client_filter_str)}).
 					 success(function(data){
-						 $scope.stacked_economizer_list = data;
+						 $scope.vfd_list = data;
 				}).error(function(data){});
 			};
 		}]);
-		app_1.controller("stackedEconomizerAddController", ['$scope',
+		app_1.controller("vfdMotorAddController", ['$scope',
 													'$http',
 													function($scope, $http){
-			$scope.stacked_economizer_json = {'client': '',
-									  'boiler_stacked_economizer':'',
-									  'gas_rate':0,
-									  'hours_of_operations':0,
-									  'boiler_size_hp':0,
-									  'initial_stack_gas_temp_f':0,
-									  'average_fire_rate':0};
+			$scope.vfd_json = {'client': '',
+							   'vfd_name': '',
+							   'cost_per_kwh': 0,
+							   'motor_horse_pwr': 0,
+							   'existing_motor_efficiency': 0,
+							   'proposed_vfd_efficiency': 0,
+							   'motor_load': 0};
 			$scope.submit_details = function(){
-				$scope.stacked_economizer_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.stacked_economizer_json.boiler_stacked_economizer = $("#boiler_stacked_economizer").val();
-				$scope.stacked_economizer_json.gas_rate = $("#gas_rate").val();
-				$scope.stacked_economizer_json.hours_of_operations = $("#hours_of_operations").val();
-				$scope.stacked_economizer_json.boiler_size_hp = $("#boiler_size_hp").val();
-				$scope.stacked_economizer_json.initial_stack_gas_temp_f = $("#initial_stack_gas_temp_f").val();
-				$scope.stacked_economizer_json.average_fire_rate = $("#average_fire_rate").val();
+				$scope.vfd_json.client = '/api_client/clients/'+$("#client").val()+'/';
+				$scope.vfd_json.vfd_name = $("#vfd_name").val();
+				$scope.vfd_json.cost_per_kwh = $("#cost_per_kwh").val();
+				$scope.vfd_json.motor_horse_pwr = $("#motor_horse_pwr").val();
+				$scope.vfd_json.existing_motor_efficiency = $("#existing_motor_efficiency").val();
+				$scope.vfd_json.proposed_vfd_efficiency = $("#proposed_vfd_efficiency").val();
+				$scope.vfd_json.motor_load = $("#motor_load").val();
 				$http({method: 'POST',
-					   url: '/api_stacked_economizer/stacked_economizer/',
-					   data: $scope.stacked_economizer_json}).
+					   url: '/api_vfd/vfd_motor/',
+					   data: $scope.vfd_json}).
 				success(function(data){
 					window.location.reload();
 				}).
 				error(function(data){
 				});
-				$('#add_new_stacked_economizer').modal('hide');
+				$('#add_new_vfd').modal('hide');
 			}
 		}]);
 	</script>
 </head>
-<body ng-app="app_stacked_economizer">
+<body ng-app="app_vfd">
 	<div id="wrapper">
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 			{% include "static_html/urls.html" %}
@@ -81,9 +81,9 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">
-						 Stacked Economizer List
+						 VFD Motor List
 					</h1>
-					<div ng-controller="stackedEconomizerListController">
+					<div ng-controller="vfdMotorListController">
 						<div class="container-fluid form-horizontal">
 							<div class="form-group form-group-sm">
 								<label class="col-sm-1 control-label">Client Filter</label>
@@ -97,26 +97,26 @@
 							</div>
 							<div class="form-group form-group-sm">
 								 <div class="col-sm-6">
-									<button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_stacked_economizer">+ Stacked Economizer</button>
+									<button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_vfd">+ VFD Motor</button>
 								</div>
 							</div>
 							<table class="table table-striped">
 								<tr>
-									<th>Stacked Economizer</th>
-									<!-- <th>Client</th> -->
-									<th>Hours of Operation</th>
-									<th>Boiler Size (HP)</th>
-									<th>Initial Stack Gas Temp (F)</th>
-									<th>Average Fire Rate</th>
+									<th>VFD</th>
+									<th>Cost (per kWh)</th>
+									<th>Motor (HP)</th>
+									<th>Existing Motor efficiency (%)</th>
+									<th>Proposed Motor efficiency (%)</th>
+									<th>Motor Load (%)</th>
 								</tr>
 								{% verbatim %}
-									<tr ng-repeat="x in stacked_economizer_list">
-										<td><a href="/stacked_economizer_details/{{ x.id }}">{{ x.boiler_stacked_economizer }}</a></td>
-										<!-- <td>{{ x.client }}</td> -->
-										<td>{{ x.hours_of_operations }}</td>
-										<td>{{ x.boiler_size_hp }}</td>
-										<td>{{ x.initial_stack_gas_temp_f }}</td>
-										<td>{{ x.average_fire_rate }}</td>
+									<tr ng-repeat="x in vfd_list">
+										<td><a href="/vfd_details/{{ x.id }}">{{ x.vfd_name }}</a></td>
+										<td>{{ x.cost_per_kwh }}</td>
+										<td>{{ x.motor_horse_pwr }}</td>
+										<td>{{ x.existing_motor_efficiency }}</td>
+										<td>{{ x.proposed_vfd_efficiency }}</td>
+										<td>{{ x.motor_load }}</td>
 									</tr>
 								{% endverbatim %}
 							</table>
@@ -127,18 +127,18 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="add_new_stacked_economizer" role="dialog">
+	<div class="modal fade" id="add_new_vfd" role="dialog">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Add New Stacked Economizer</h4>
+					<h4 class="modal-title">Add New VFD Motor</h4>
 				</div>
-				<form class="form-horizontal" ng-controller="stackedEconomizerAddController" role="form">
+				<form class="form-horizontal" ng-controller="vfdMotorAddController" role="form">
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Client</label>
-						  <div class="col-sm-4">
+						  <label class="col-sm-3 control-label">Client</label>
+						  <div class="col-sm-6">
 							  <select class="form-control col-sm-6" id="client" name="client">
 								{% for client_id, client_name in clients_list %}
 									<option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
@@ -147,46 +147,43 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Stacked Economizer</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="boiler_stacked_economizer" name="boiler_stacked_economizer">
+						  <label class="col-sm-3 control-label">VFD Motor Name</label>
+						  <div class="col-sm-6">
+							<input class="form-control" type="text" id="vfd_name" name="vfd_name">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Gas Rate</label>
-						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="gas_rate" name="gas_rate">
+						  <label class="col-sm-3 control-label">Cost (per kWh)</label>
+						  <div class="col-sm-6">
+							<input class="form-control" type="text" id="cost_per_kwh" name="cost_per_kwh">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Hours of Operation</label>
-						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="hours_of_operations" name="hours_of_operations">
+						  <label class="col-sm-3 control-label">Motor (HP)</label>
+						  <div class="col-sm-6">
+							<input class="form-control" type="text" id="motor_horse_pwr" name="motor_horse_pwr">
 						  </div>
 						</div>
-						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8 ">Stacked Economizer</label>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-3 control-label">Existing Motor Efficiency (%)</label>
+						  <div class="col-sm-6">
+							<input class="form-control" type="text" id="existing_motor_efficiency" name="existing_motor_efficiency">
+						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Boiler Size (HP)</label>
+						  <label class="col-sm-3 control-label">Proposed Motor Efficiency (%)</label>
+						  <div class="col-sm-6">
+							<input class="form-control control-label" type="text" id="proposed_vfd_efficiency" name="proposed_vfd_efficiency">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-3 control-label">Motor Load (%)</label>
 						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="boiler_size_hp" name="boiler_size_hp" value="0">
+							<input class="form-control" type="text" id="motor_load" name="motor_load">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Initial Stack Gas Temp (F)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="initial_stack_gas_temp_f" name="initial_stack_gas_temp_f" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Average Fire Rate</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="average_fire_rate" name="average_fire_rate" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-							<div class="col-sm-4">
+							<div class="col-sm-6 col-sm-offset-4">
 								<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							</div>

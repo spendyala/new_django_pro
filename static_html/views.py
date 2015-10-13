@@ -12,6 +12,7 @@ from boiler_blowdown.models import BoilerBlowdown
 from stacked_economizer.models import StackedEconomizer
 from premium_efficiency.models import PremiumEfficiency
 from air_compressors.models import AirCompressor, COMPRESSOR_TYPE, VFD_CONTROL_TYPE
+from vfd.models import LaborVFDMotor, MaterialsVFDMotor, VfdMotorSetpointSelections, VfdMotorDataPerMonth, VfdMotor
 
 import copy
 import datetime
@@ -346,6 +347,41 @@ def air_compressor_details(request, file_name=None, rec_id=None):
 	except Exception as err:
 		return render(request, 'static_html/404.html')
 
+# Air Compressor
+def vfd(request, file_name=None, rec_id=None):
+	if rec_id:
+		return render(request, 'static_html/404.html')
+	try:
+		clients_obj = Client.objects.all()
+		clients_list = [(x.id, x.client_name) for x in clients_obj]
+		clients_filter = copy.deepcopy(clients_list)
+		clients_filter.append(('all', 'all'))
+
+		data = {'clients_list': clients_list,
+				'clients_filter': clients_filter}
+
+		return set_render_object(request, file_name=file_name, content=data)
+	except Exception as err:
+		return render(request, 'static_html/404.html')
+
+
+def vfd_details(request, file_name=None, rec_id=None):
+	if not rec_id:
+		return render(request, 'static_html/404.html')
+
+	try:
+		clients_obj = Client.objects.all()
+		clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+		data = {'clients_list': clients_list,
+				'compressor_type': COMPRESSOR_TYPE,
+				'vfd_control_type': VFD_CONTROL_TYPE}
+		vfd_motor_obj = VfdMotor.objects.get(id=rec_id)
+		data['vfd_motor_obj'] = vfd_motor_obj
+		return set_render_object(request, file_name=file_name, content=data)
+	except Exception as err:
+		return render(request, 'static_html/404.html')
+
 # Login and Logout
 def login(request, file_name=None, rec_id=None):
 	# if rec_id:
@@ -400,6 +436,8 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'air_compressors': air_compressors,
 				'air_compressor_details': air_compressor_details,
 				'state_details': state_details,
+				'vfd': vfd,
+				'vfd_details': vfd_details,
 				'test_html': test_html}
 
 # Create your views here.

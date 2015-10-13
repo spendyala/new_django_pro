@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
 	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
 	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
 
 	<script src="{% static "clients/js/jquery.js"%}"></script>
@@ -21,9 +22,11 @@
 			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 		}]);
 		app_1.controller("steamTrapListController", ['$scope','$http', function($scope,$http){
+			$scope.total_cost_per_year = 0;
 			$http({method: 'GET', url: "/api_steam_trap/steam_trap/"}).
 				 success(function(data){
 					 $scope.steam_trap_list = data;
+					 $scope.total_cost_per_year = 0;
 			}).error(function(data){});
 			$scope.clients_filter = "all";
 			$scope.filter_clients = function (clients_filter){
@@ -35,6 +38,10 @@
 				$http({method: 'GET', url: url_str.concat(client_filter_str)}).
 					 success(function(data){
 						 $scope.steam_trap_list = data;
+						 $scope.total_cost_per_year = 0;
+						 for(i=0;i<data.length;i++){
+							$scope.total_cost_per_year += data[i].get_cost_per_year;
+						 }
 				}).error(function(data){});
 			};
 		}]);
@@ -132,6 +139,21 @@
 										<td>{{x.get_cost_per_hour| currency:"$":2}}</td>
 										<td>{{x.hours_of_operation| currency:"":2}}</td>
 										<td>{{x.get_cost_per_year| currency:"$":0}}</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td>Total</td>
+										<td>{{ total_cost_per_year| currency:"$":0 }}</td>
 									</tr>
 								{% endverbatim %}
 							</table>

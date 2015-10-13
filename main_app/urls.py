@@ -25,6 +25,7 @@ urlpatterns = [
 	url(r'^api_stacked_economizer/', include('stacked_economizer.urls')),
 	url(r'^api_air_compressors/', include('air_compressors.urls')),
 	url(r'^api_premium_efficiency/', include('premium_efficiency.urls')),
+	url(r'^api_vfd/', include('vfd.urls')),
 	url(r'^authenticate_user(|/)$', 'static_html.views.authenticate_user'),
 	# url(r'^login(|/)$', 'main_app.views.login'),
 	url(r'^(|/)', include('static_html.urls', namespace='static_html')),

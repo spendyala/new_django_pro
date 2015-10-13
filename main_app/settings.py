@@ -47,7 +47,8 @@ INSTALLED_APPS = (
 	'boiler_blowdown',
 	'stacked_economizer',
 	'air_compressors',
-	'premium_efficiency'
+	'premium_efficiency',
+	'vfd'
 )
 
 MIDDLEWARE_CLASSES = (
