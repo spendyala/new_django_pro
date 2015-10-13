@@ -8,14 +8,23 @@ ISO3166_CHOICES = ISO3166.ISO3166
 
 
 class Client(models.Model):
-	client_name = models.CharField('Client', max_length=256)
-	country = models.CharField(max_length=2, choices=ISO3166_CHOICES)
 	start_date = models.DateTimeField('Registered Date')
-	customer_site = models.CharField('Customer Site', max_length=256, default='')
-	state = models.CharField('State', max_length=128, default='')
-	gas_rate = models.FloatField('Gas Rate', default=0)
-	water_rate = models.FloatField('Water Rate', default=0)
 	owner = models.ForeignKey('auth.User', related_name='client')
+
+	client_name = models.CharField('Client', default='', max_length=256)
+	account_name = models.CharField('Account Name', default='', max_length=256)
+	project_name = models.CharField('Project Name', default='', max_length=256)
+
+	address = models.TextField('Address', max_length=750, default='')
+	city = models.CharField('City', max_length=256, default='')
+	state = models.CharField('State', max_length=128, default='')
+	country = models.CharField(max_length=2, default='US', choices=ISO3166_CHOICES)
+
+	electric_rate = models.FloatField('Electric Rate ($/kWh)', default=0)
+	gas_rate = models.FloatField('Gas Rate ($/Therms)', default=0)
+	water_rate = models.FloatField('Water Rate ($/Gallons)', default=0)
+	sewer_rate = models.FloatField('Sewer Rate ($/Gallons)', default=0)
+
 
 	def was_recent(self):
 		return self.start_date >= timezone.now() - datetime.timedelta(days=1)

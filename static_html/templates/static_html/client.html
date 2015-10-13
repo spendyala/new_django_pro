@@ -14,7 +14,6 @@
 	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
 
 	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
 	<script src="{% static "clients/js/angular.js"%}"></script>
 	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
 	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
@@ -38,11 +37,16 @@
 			}).error(function(data){});
 			$scope.country = "US";
 			$scope.client_json = {'client_name':'',
+								  'account_name':'',
+								  'project_name':'',
+								  'address':'',
 								  'country':'',
-								  'site_location':'',
+								  'city':'',
 								  'state': '',
-								  'gas_rate': '',
-								  'water_rate': ''};
+								  'electric_rate': 0,
+								  'gas_rate': 0,
+								  'water_rate': 0,
+								  'sewer_rate': 0};
 			$scope.change_state = function(country){
 				$http({method: 'GET', url: "/state_details/".concat($scope.country)}).
 					 success(function(data){
@@ -52,11 +56,16 @@
 			};
 			$scope.submit_details = function(){
 				$scope.client_json.client_name = $("#client_name").val();
-				$scope.client_json.country = $("#country").val();
-				$scope.client_json.customer_site = $("#site_location").val();
+				$scope.client_json.account_name = $("#account_name").val();
+				$scope.client_json.project_name = $("#project_name").val();
+				$scope.client_json.address = $("#address").val();
+				$scope.client_json.city = $("#city").val();
 				$scope.client_json.state = $("#state").val();
+				$scope.client_json.country = $("#country").val();
+				$scope.client_json.electric_rate = $("#electric_rate").val();
 				$scope.client_json.gas_rate = $("#gas_rate").val();
 				$scope.client_json.water_rate = $("#water_rate").val();
+				$scope.client_json.sewer_rate = $("#sewer_rate").val();
 				$http({method: 'POST',
 					   url: '/api_client/clients/',
 					//    data: JSON.stringify($scope.client_json)).
@@ -95,21 +104,27 @@
 								<tr>
 									<th>Client Name</th>
 									<th>Country</th>
-									<th>Customer Site</th>
-									<th>Start Date</th>
 									<th>State</th>
-									<th>Gas Rate</th>
-									<th>Water Rate</th>
+									<th>City</th>
+									<th><pre class="pre">Electric Rate
+($/kWh)</pre></th>
+									<th><pre class="pre">Gas Rate
+($/Therms)</pre></th>
+									<th><pre class="pre">Water Rate
+($/Gallons)</pre></th>
+									<th><pre class="pre">Sewer Rate
+($/Gallons)</pre></th>
 								</tr>
 								{% verbatim %}
 									<tr ng-repeat="x in client_list">
 										<td><a href="/client_details/{{ x.id }}">{{ x.client_name }}</a></td>
 										<td>{{ x.country }}</td>
-										<td>{{ x.customer_site }}</td>
-										<td>{{ x.start_date }}</td>
 										<td>{{ x.state }}</td>
-										<td>{{ x.gas_rate }}</td>
-										<td>{{ x.water_rate }}</td>
+										<td>{{ x.city }}</td>
+										<td class="text-right">{{ x.electric_rate }}</td>
+										<td class="text-right">{{ x.gas_rate }}</td>
+										<td class="text-right">{{ x.water_rate }}</td>
+										<td class="text-right">{{ x.sewer_rate}}</td>
 									</tr>
 								{% endverbatim %}
 							</table>
@@ -136,6 +151,19 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Account Name</label>
+						  <div class="col-sm-4">
+							<input class="form-control" type="text" id="account_name" name="account_name">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Project Name</label>
+						  <div class="col-sm-4">
+							<input class="form-control" type="text" id="project_name" name="project_name">
+						  </div>
+						</div>
+
+						<div class="form-group form-group-sm">
 						  <label class="col-sm-4 control-label">Country</label>
 						  <div class="col-sm-6">
 							  <select class="form-control col-sm-6" id="country" name="country" ng-model="country" ng-change="change_state(country)">
@@ -156,22 +184,39 @@
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Site Location</label>
+						  <label class="col-sm-4 control-label">City</label>
 						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="site_location" name="site_location">
+							<input class="form-control" type="text" id="city" name="city">
 						  </div>
 						</div>
-
+						<div class="form-group">
+						  <label class="col-sm-4 control-label">Address</label>
+						  <div class="col-sm-5">
+							  <textarea class="col-sm-4 form-control" rows="3" id="address" name="address"></textarea>
+						  </div>
+						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Gas Rate</label>
+						  <label class="col-sm-4 control-label">Electric Rate ($/kWh)</label>
+						  <div class="col-sm-4">
+							<input class="form-control" type="text" id="electric_rate" name="electric_rate">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Gas Rate ($/Therms)</label>
 						  <div class="col-sm-4">
 							<input class="form-control" type="text" id="gas_rate" name="gas_rate">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Water Rate</label>
+						  <label class="col-sm-4 control-label">Water Rate ($/Gallons)</label>
 						  <div class="col-sm-4">
 							<input class="form-control" type="text" id="water_rate" name="water_rate">
+						  </div>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-4 control-label">Sewer Rate ($/Gallons)</label>
+						  <div class="col-sm-4">
+							<input class="form-control" type="text" id="sewer_rate" name="sewer_rate">
 						  </div>
 						</div>
 						<div class="form-group form-group-sm">

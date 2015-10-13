@@ -64,12 +64,17 @@ def client_details(request, file_name=None, rec_id=None):
 		client_obj = Client.objects.get(id=rec_id)
 		data = {'client_id': client_obj.id,
 				'client_name': client_obj.client_name,
+				'account_name': client_obj.account_name,
+				'project_name': client_obj.project_name,
+				'address': client_obj.address,
+				'city': client_obj.city,
+				'state': client_obj.state,
 				'country_id': client_obj.country,
 				'start_date': client_obj.start_date,
-				'customer_site': client_obj.customer_site,
-				'state': client_obj.state,
+				'electric_rate': client_obj.electric_rate,
 				'gas_rate': client_obj.gas_rate,
-				'water_rate': client_obj.water_rate}
+				'water_rate': client_obj.water_rate,
+				'sewer_rate': client_obj.sewer_rate}
 		data['countries_list'] = countries_list
 		return set_render_object(request, file_name=file_name, content=data)
 	except Exception as err:

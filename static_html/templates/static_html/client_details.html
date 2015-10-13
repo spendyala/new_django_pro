@@ -32,20 +32,29 @@
 						 $scope.state = data[0].state_id;
 				}).error(function(data){});
 			};
-			$scope.client_json = {'id': {{client_id}},
-								  'client_name':'',
+			$scope.client_json = {'client_name':'',
+								  'account_name':'',
+								  'project_name':'',
+								  'address':'',
 								  'country':'',
-								  'site_location':'',
+								  'city':'',
 								  'state': '',
-								  'gas_rate': '',
-								  'water_rate': ''};
+								  'electric_rate': 0,
+								  'gas_rate': 0,
+								  'water_rate': 0,
+								  'sewer_rate': 0};
 			$scope.submit_details = function(){
 				$scope.client_json.client_name = $("#client_name").val();
-				$scope.client_json.country = $("#country").val();
-				$scope.client_json.customer_site = $("#customer_site").val();
+				$scope.client_json.account_name = $("#account_name").val();
+				$scope.client_json.project_name = $("#project_name").val();
+				$scope.client_json.address = $("#address").val();
+				$scope.client_json.city = $("#city").val();
 				$scope.client_json.state = $("#state").val();
+				$scope.client_json.country = $("#country").val();
+				$scope.client_json.electric_rate = $("#electric_rate").val();
 				$scope.client_json.gas_rate = $("#gas_rate").val();
 				$scope.client_json.water_rate = $("#water_rate").val();
+				$scope.client_json.sewer_rate = $("#sewer_rate").val();
 				$http({method: 'PUT',
 					   url: '/api_client/clients/{{client_id}}/',
 					   data: $scope.client_json}).
@@ -103,6 +112,18 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Account Name</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="account_name" name="account_name" value={{ account_name }}>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Project Name</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="project_name" name="project_name" value={{ project_name }}>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Country</label>
 							  <div class="col-sm-6">
 								  <select class="form-control col-sm-4" id="country" name="country" ng-model="country" ng-change="change_state(country)">
@@ -123,21 +144,39 @@
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Site Location</label>
+							  <label class="col-sm-4 control-label">City</label>
 							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="customer_site" name="site_location" value={{ customer_site }}>
+								<input class="form-control" type="text" id="city" name="city" value={{ city }}>
+							  </div>
+							</div>
+							<div class="form-group">
+							  <label class="col-sm-4 control-label">Address</label>
+							  <div class="col-sm-5">
+								  <textarea class="col-sm-4 form-control" rows="3" id="address" name="address">{{ address }}</textarea>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Gas Rate</label>
+							  <label class="col-sm-4 control-label">Electric Rate ($/kWh)</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="electric_rate" name="electric_rate" value="{{electric_rate}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Gas Rate ($/Therms)</label>
 							  <div class="col-sm-4">
 								<input class="form-control" type="text" id="gas_rate" name="gas_rate" value="{{gas_rate}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Water Rate</label>
+							  <label class="col-sm-4 control-label">Water Rate ($/Gallons)</label>
 							  <div class="col-sm-4">
 								<input class="form-control" type="text" id="water_rate" name="water_rate" value="{{water_rate}}">
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-4 control-label">Sewer Rate ($/Gallons)</label>
+							  <div class="col-sm-4">
+								<input class="form-control" type="text" id="sewer_rate" name="sewer_rate" value="{{sewer_rate}}">
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">

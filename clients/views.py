@@ -22,7 +22,6 @@ class ClientViewSet(viewsets.ModelViewSet):
 												  IsOwnerOrReadOnly)
 
 		def perform_create(self, serializer):
-			import pdb; pdb.set_trace()
 			serializer.save(owner=self.request.user)
 
 
