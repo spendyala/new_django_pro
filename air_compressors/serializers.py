@@ -28,7 +28,7 @@ class AirCompressorSerializer(serializers.HyperlinkedModelSerializer):
 				  'vfd_speed_control', 'nameplate_horsepower',
 				  'nameplate_max_flow', 'measured_actual_flow',
 				  'measured_line_pressure', 'annual_hours_of_operation',
-				  'reduce_line_pressure_to',
+				  'reduce_line_pressure_to', 'vfd_90_t_fitting',
 				  'get_hourly_kwh_consumed', 'get_hourly_cost_of_operation',
 				  'get_annual_cost_of_operation',
 				  'get_reduced_line_pressure_from',

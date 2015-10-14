@@ -42,6 +42,7 @@
 									  'measured_actual_flow': 0,
 									  'measured_line_pressure': 0,
 									  'annual_hours_of_operation': 0,
+									  'vfd_90_t_fitting': 1,
 									  'reduce_line_pressure_to': 0};
 			$scope.submit_details = function(){
 				$scope.air_compressor_json.client = '/api_client/clients/'+$("#client").val()+'/';
@@ -62,6 +63,7 @@
 				$scope.air_compressor_json.measured_line_pressure = $("#measured_line_pressure").val();
 				$scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
 				$scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
+				$scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
 				$http({method: 'PUT',
 					   url: '/api_air_compressors/air_compressors/{{air_compressor_obj.id}}/',
 					   data: $scope.air_compressor_json}).
@@ -231,13 +233,13 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Hourly Cost Of Operation ($)</label>
 							  <div class="col-sm-3">
-								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_hourly_cost_of_operation}} | currency:"$":2 $}</label>
+								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_hourly_cost_of_operation}} | currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Annual Cost Of Operation ($)</label>
 							  <div class="col-sm-3">
-								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_annual_cost_of_operation}} | currency:"$":2 $}</label>
+								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_annual_cost_of_operation}} | currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-md bg-info">
@@ -262,25 +264,55 @@
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Estimated Annual Savings Per 2 PSI Reduction ($)</label>
 							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_estimated_ann_savings_per_2_psi_reduction}} | currency:"$":2 $}</label>
+								<label class="bg-success col-md-8 control-label">{$ {{get_estimated_ann_savings_per_2_psi_reduction}} | currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Annual Cost Before PSI Setback ($)</label>
 							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_before_psi_setback}} | currency:"$":2 $}</label>
+								<label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_before_psi_setback}} | currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Annual Cost After PSI Setback ($)</label>
 							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_after_psi_setback}} | currency:"$":2 $}</label>
+								<label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_after_psi_setback}} | currency:"$":0 $}</label>
 							  </div>
 							</div>
 							<div class="form-group form-group-sm">
 							  <label class="col-sm-4 control-label">Annual Savings After PSI Setback ($)</label>
 							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_annual_savings_after_psi_setback}} | currency:"$":2 $}</label>
+								<label class="bg-success col-md-8 control-label">{$ {{get_annual_savings_after_psi_setback}} | currency:"$":0 $}</label>
+							  </div>
+							</div>
+							<div class="form-group form-group-md bg-info">
+								<label class="col-md-offset-4 col-md-8 ">90° (T-FITTING) REPLACEMENT SAVINGS</label>
+							</div>
+							<div class="form-group form-group-sm">
+							  <label class="col-sm-6 col-sm-offset-2">"Are there any 90° T-Fittings in the air supply piping that could be replaced with 45° fittings?"</label>
+							</div>
+							<div class="form-group form-group-sm">
+								<div class="col-sm-2 col-sm-offset-2">
+								</div>
+							  <div class="col-sm-5">
+									  <label class="col-md-12"><pre>Estimated Savings
+(10 PSI Reduction)</pre></label>
+							  </div>
+							</div>
+							<div class="form-group form-group-sm">
+							  <div class="col-sm-2 col-sm-offset-2">
+								  <select class="form-control col-sm-6" id="vfd_90_t_fitting" name="vfd_90_t_fitting">
+									{% for vfd_type_id, vfd_type_name in vfd_control_type %}
+									   <option {% if vfd_type_id == air_compressor_obj.vfd_90_t_fitting %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
+									{% endfor %}
+								  </select>
+							  </div>
+							  <div class="col-sm-5">
+								  {% if air_compressor_obj.vfd_90_t_fitting == 1 %}
+									  <label class="bg-success col-md-3">{$ {{get_annual_savings_after_psi_setback}} | currency:"$":0 $}</label>
+								  {% else %}
+									  <label class="bg-success col-md-3">{$ 0 | currency:"$":0 $}</label>
+								  {% endif %}
 							  </div>
 							</div>
 							<div class="form-group form-group-md bg-info">

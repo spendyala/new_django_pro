@@ -59,6 +59,7 @@
 									  'measured_actual_flow': 0,
 									  'measured_line_pressure': 0,
 									  'annual_hours_of_operation': 0,
+									  'vfd_90_t_fitting': 1,
 									  'reduce_line_pressure_to': 0};
 			$scope.submit_details = function(){
 				$scope.air_compressor_json.client = '/api_client/clients/'+$("#client").val()+'/';
@@ -79,11 +80,16 @@
 				$scope.air_compressor_json.measured_line_pressure = $("#measured_line_pressure").val();
 				$scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
 				$scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
+				$scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
+				debugger;
+				console.log($scope.air_compressor)
 				$http({method: 'POST',
 					   url: '/api_air_compressors/air_compressors/',
 					   data: $scope.air_compressor_json}).
 				success(function(data){
-					window.location.reload();
+					console.log(data);
+					debugger;
+					// window.location.reload();
 				}).
 				error(function(data){
 				});
@@ -276,6 +282,21 @@
 						  <label class="col-sm-6 control-label">Annual Hours Of Operation (Hours)</label>
 						  <div class="col-sm-3">
 							<input class="form-control control-label" type="text" id="annual_hours_of_operation" name="annual_hours_of_operation" value="0">
+						  </div>
+						</div>
+						<div class="form-group form-group-md bg-info">
+							<label class="col-md-offset-4 col-md-8 ">90° (T-FITTING) REPLACEMENT SAVINGS</label>
+						</div>
+						<div class="form-group form-group-sm">
+						  <label class="col-sm-8 control-label">"Are there any 90° T-Fittings in the air supply
+piping that could be replaced with 45° fittings?"
+				</label>
+						  <div class="col-sm-2">
+							  <select class="form-control col-sm-6" id="vfd_90_t_fitting" name="vfd_90_t_fitting">
+								{% for vfd_type_id, vfd_type_name in vfd_control_type %}
+								   <option {% if vfd_type_id == 1 %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
+								{% endfor %}
+							  </select>
 						  </div>
 						</div>
 						<div class="form-group form-group-md bg-info">

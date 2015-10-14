@@ -46,10 +46,12 @@ class AirCompressor(models.Model):
 									   choices=COMPRESSOR_TYPE,
 									   max_length=256,
 									   default='REC')
-	vfd_speed_control = models.CharField('VFD Speed Control',
+	vfd_speed_control = models.IntegerField('VFD Speed Control',
 									   choices=VFD_CONTROL_TYPE,
-									   max_length=256,
-									   default=0)
+									   default=1)
+	vfd_90_t_fitting = models.IntegerField('90Degree T-fitting',
+										   choices=VFD_CONTROL_TYPE,
+										   default=1)
 	# Inputs
 	nameplate_horsepower = models.FloatField('Nameplate Horsepower (HP)', default=0)
 	nameplate_max_flow = models.FloatField('Nameplate Maximum Flow (CFM)',
@@ -63,6 +65,7 @@ class AirCompressor(models.Model):
 	reduce_line_pressure_to = models.FloatField('Reduced Line Pressure: To (PSI)',
 												default=0)
 	owner = models.ForeignKey('auth.User', related_name='air_compressor')
+
 
 	def get_hourly_kwh_consumed(self):
 		return round((self.nameplate_horsepower * 0.746)/0.9, 3)
