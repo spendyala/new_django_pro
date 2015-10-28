@@ -19,6 +19,7 @@ from vfd.models import LaborVFDMotor, MaterialsVFDMotor, VfdMotorSetpointSelecti
 from supporting_files import spreadsheet
 # New
 from steam_leaks.serializers import SteamLeakSerializer
+from steam_trap.serializers import SteamTrapSerializer
 
 import copy
 import datetime
@@ -407,8 +408,12 @@ def logout(request, file_name=None, rec_id=None):
 
 def excel(request, file_name=None, obj=None, rec_id=None):
 	# Logout
-	model_obj = {'steam_leak': SteamLeak}
-	serializer_obj = {'steam_leak': SteamLeakSerializer}
+	model_obj = {'steam_leak': SteamLeak,
+				 'steam_trap': SteamTrap}
+	serializer_obj = {'steam_leak': SteamLeakSerializer,
+					  'steam_trap': SteamTrapSerializer}
+	excel_obj = {'steam_leak': spreadsheet.SteamLeakExcel,
+				 'steam_trap': spreadsheet.SteamTrapExcel}
 	if rec_id == 'all':
 		models_objects = model_obj[obj].objects.all()
 	else:
@@ -416,7 +421,7 @@ def excel(request, file_name=None, obj=None, rec_id=None):
 	model_serializer = serializer_obj[obj](models_objects,
 		many=True,
 		context={'request': request})
-	excel_obj = spreadsheet.SteamLeakExcel(model_serializer.data)
+	excel_obj = excel_obj[obj](model_serializer.data)
 	return excel_obj.get_excel_raw()
 
 def test_html(request, file_name=None, rec_id=None):
