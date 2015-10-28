@@ -3,6 +3,8 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from django.contrib import auth
 from django.core.context_processors import csrf
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
 
 from clients.models import Client
 
@@ -13,6 +15,10 @@ from stacked_economizer.models import StackedEconomizer
 from premium_efficiency.models import PremiumEfficiency
 from air_compressors.models import AirCompressor, COMPRESSOR_TYPE, VFD_CONTROL_TYPE
 from vfd.models import LaborVFDMotor, MaterialsVFDMotor, VfdMotorSetpointSelections, VfdMotorDataPerMonth, VfdMotor
+
+from supporting_files import spreadsheet
+# New
+from steam_leaks.serializers import SteamLeakSerializer
 
 import copy
 import datetime
@@ -399,9 +405,30 @@ def logout(request, file_name=None, rec_id=None):
 	auth.logout(request)
 	return set_render_object(request, file_name='login', content={})
 
+def excel(request, file_name=None, obj=None, rec_id=None):
+	# Logout
+	model_obj = {'steam_leak': SteamLeak}
+	serializer_obj = {'steam_leak': SteamLeakSerializer}
+	if rec_id == 'all':
+		models_objects = model_obj[obj].objects.all()
+	else:
+		models_objects = model_obj[obj].objects.filter(client=rec_id)
+	model_serializer = serializer_obj[obj](models_objects,
+		many=True,
+		context={'request': request})
+	excel_obj = spreadsheet.SteamLeakExcel(model_serializer.data)
+	return excel_obj.get_excel_raw()
+
 def test_html(request, file_name=None, rec_id=None):
 	# Logout
-	auth.logout(request)
+	if rec_id == 909:
+		print rec_id
+		steam_leak_objects = SteamLeak.objects.all()
+	else:
+		steam_leak_objects = SteamLeak.objects.filter(client=rec_id)
+	import pdb; pdb.set_trace()
+	# SteamLeakViewSet
+
 	return set_render_object(request, file_name=file_name, content={})
 
 def authenticate_user(request, path):
@@ -443,10 +470,11 @@ VIEW_METHODS = { #'authenticate_user': authenticate_user,
 				'state_details': state_details,
 				'vfd': vfd,
 				'vfd_details': vfd_details,
+				'excel': excel,
 				'test_html': test_html}
 
 # Create your views here.
-def index(request, file_name=None, rec_id=None):
+def index(request, file_name=None, rec_id=None, obj=None):
 	if not request.user.is_authenticated():
 		# return HttpResponseRedirect('/login/')
 		return login(request, file_name='login')
@@ -456,7 +484,9 @@ def index(request, file_name=None, rec_id=None):
 		return set_render_object(request, file_name='index', content=content)
 	else:
 		method_obj = VIEW_METHODS.get(file_name)
-		if method_obj:
+		if file_name == 'excel' and method_obj:
+			return method_obj(request, file_name, obj, rec_id)
+		elif method_obj:
 			return method_obj(request, file_name, rec_id)
 		else:
 			# return HttpResponse(json.dumps({'Error': 'Page Not found 404'}))
