@@ -15,22 +15,22 @@ import django_filters
 
 # Premium Efficiency Filter
 class PremiumEfficiencyFilter(django_filters.FilterSet):
-	class Meta:
-		model = PremiumEfficiency
-		fields = ['client']
+    class Meta:
+        model = PremiumEfficiency
+        fields = ['client']
 
 # Create your views here.
 class PremiumEfficiencyViewSet(viewsets.ModelViewSet):
-		"""
-		This viewset automatically provides `list`, `create`, `retrieve`,
-		`update` and `destroy` actions.
-		"""
-		filter_class = PremiumEfficiencyFilter
-		filter_backends = (filters.DjangoFilterBackend,)
-		queryset = PremiumEfficiency.objects.all()
-		serializer_class = PremiumEfficiencySerializer
-		permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-												  IsOwnerOrReadOnly)
+        """
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+        """
+        filter_class = PremiumEfficiencyFilter
+        filter_backends = (filters.DjangoFilterBackend,)
+        queryset = PremiumEfficiency.objects.all()
+        serializer_class = PremiumEfficiencySerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                              IsOwnerOrReadOnly)
 
-		def perform_create(self, serializer):
-			serializer.save(owner=self.request.user)
+        def perform_create(self, serializer):
+            serializer.save(owner=self.request.user)

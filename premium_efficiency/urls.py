@@ -11,5 +11,5 @@ router = DefaultRouter()
 router.register(r'premium_efficiency', views.PremiumEfficiencyViewSet)
 
 urlpatterns = [
-		url(r'^', include(router.urls))
+        url(r'^', include(router.urls))
 ]

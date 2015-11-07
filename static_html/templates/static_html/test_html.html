@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
+
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("app_xyz", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.controller("xyzListController", ['$scope','$http', function($scope,$http){
+            $scope.total_cost_per_year = 0;
+            $http({method: 'GET', url: "/api_xyz/xyz/"}).
+                 success(function(data){
+                     $scope.xyz_list = data;
+                     $scope.total_cost_per_year = 0;
+            }).error(function(data){});
+            $scope.clients_filter = "all";
+            $scope.filter_clients = function (clients_filter){
+                var url_str = "/api_xyz/xyz/";
+                var client_filter_str = "";
+                if ($scope.clients_filter != "all"){
+                    client_filter_str = "?client=".concat($scope.clients_filter);
+                };
+                $http({method: 'GET', url: url_str.concat(client_filter_str)}).
+                     success(function(data){
+                         $scope.xyz_list = data;
+                         $scope.total_cost_per_year = 0;
+                         for(i=0;i<data.length;i++){
+                            $scope.total_cost_per_year += data[i].get_cost_per_year;
+                         }
+                }).error(function(data){});
+            };
+            $scope.download_xyz = function(){
+                window.location.href = '/excel/xyz/'.concat($scope.clients_filter);
+            }
+        }]);
+        app_1.controller("xyzAddController", ['$scope',
+                                                    '$http',
+                                                    function($scope, $http){
+            $scope.xyz_json = {'client': '',
+                                      'xyz_number':'',
+                                      'location_description':'',
+                                      'pressure_in_psig':100,
+                                      'hours_of_operation':8760,
+                                      'boiler_efficiency':80,
+                                      'trap_pipe_size':0.5,
+                                      'therm_rate':0};
+            $scope.submit_details = function(){
+                $scope.xyz_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.xyz_json.xyz_number = $("#xyz_number").val();
+                $scope.xyz_json.location_description = $("#location_description").val();
+                $scope.xyz_json.pressure_in_psig = $("#pressure_in_psig").val();
+                $scope.xyz_json.hours_of_operation = $("#hours_of_operation").val();
+                $scope.xyz_json.boiler_efficiency = $("#boiler_efficiency").val();
+                $scope.xyz_json.trap_pipe_size = $("#trap_pipe_size").val();
+                $scope.xyz_json.therm_rate = $("#therm_rate").val();
+                $http({method: 'POST',
+                       url: '/api_xyz/xyz/',
+                       data: $scope.xyz_json}).
+                success(function(data){
+                    window.location.reload();
+                }).
+                error(function(data){
+                });
+                $('#add_new_xyz').modal('hide');
+            }
+        }]);
+    </script>
+</head>
+<body ng-app="app_xyz">
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                         XYZ List
+                    </h1>
+                    <div ng-controller="xyzListController">
+                        <div class="container-fluid form-horizontal">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-2 control-label">Client Filter</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
+                                        {% for filter_id, filter_name in clients_filter %}
+                                            <option value="{{ filter_id }}">{{ filter_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                 <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_xyz">+ XYZ</button>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Failed Trap #</th>
+                                    <th>Pressure (psig)</th>
+                                    <th>Absolute Pressure (psia)</th>
+                                    <th>Trap Pipe Size (inch)</th>
+                                    <th>Size Trap orifice(inch)</th>
+                                    <th>Steam Loss (pph)</th>
+                                    <th>Boiler Efficiency</th>
+                                    <th>Steam Energy (Btu/lb)</th>
+                                    <th>Gas Usage (Therms/hour)</th>
+                                    <th>Therm Rate</th>
+                                    <th>Cost / Hour</th>
+                                    <th>Hours of Operation</th>
+                                    <th>Cost / Year</th>
+                                </tr>
+                                {% verbatim %}
+                                    <tr ng-repeat="x in xyz_list">
+                                        <td><a href="/xyz_details/{{ x.id }}">{{ x.xyz_number }}</a></td>
+                                        <td>{{ x.pressure_in_psig }}</td>
+                                        <td>{{ x.absolute_pressure_psia }}</td>
+                                        <td>{{x.trap_pipe_size}}</td>
+                                        <td>{{x.size_trap_orifice}}</td>
+                                        <td>{{x.get_steam_loss_pph}}</td>
+                                        <td>{{x.boiler_efficiency}}</td>
+                                        <td>{{x.get_steam_energy_btu_per_lb| currency:"":0 }}</td>
+                                        <td>{{x.get_gas_usage_therms_per_hour| currency:"":0 }}</td>
+                                        <td>{{x.therm_rate | currency:"$":2 }}</td>
+                                        <td>{{x.get_cost_per_hour| currency:"$":2}}</td>
+                                        <td>{{x.hours_of_operation| currency:"":2}}</td>
+                                        <td>{{x.get_cost_per_year| currency:"$":0}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>Total</td>
+                                        <td>{{ total_cost_per_year| currency:"$":0 }}</td>
+                                    </tr>
+                                {% endverbatim %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_new_xyz" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New XYZ</h4>
+                </div>
+                <form class="form-horizontal" ng-controller="xyzAddController" role="form">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Client</label>
+                          <div class="col-sm-4">
+                              <select class="form-control col-sm-6" id="client" name="client">
+                                {% for client_id, client_name in clients_list %}
+                                    <option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-1 control-label">1</label>
+                          <label class="col-sm-1 control-label">2</label>
+                          <label class="col-sm-1 control-label">3</label>
+                          <label class="col-sm-1 control-label">4</label>
+                          <label class="col-sm-1 control-label">5</label>
+                          <label class="col-sm-1 control-label">6</label>
+                          <label class="col-sm-1 control-label">7</label>
+                          <label class="col-sm-1 control-label">8</label>
+                          <label class="col-sm-1 control-label">9</label>
+                          <label class="col-sm-1 control-label">10</label>
+                          <label class="col-sm-1 control-label">11</label>
+                          <label class="col-sm-1 control-label">12</label>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Blah Blah</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="xyz_number" name="xyz_number">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Failed Trap #</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="xyz_number" name="xyz_number">
+                          </div>
+                        </div>
+
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Hours of Operation</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="hours_of_operation" name="hours_of_operation" value="8760">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Boiler Efficiency %</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="boiler_efficiency" name="boiler_efficiency" value="80">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Location/Description</label>
+                          <div class="col-sm-8">
+                            <input class="form-control" type="text" id="location_description" name="location_description">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Pressure (psig)</label>
+                          <div class="col-sm-4">
+                            <select class="form-control col-sm-6" id="pressure_in_psig" name="pressure_in_psig">
+                                {% for pressure_in_psig_val  in pressure_in_psig_list %}
+                                   <option {% if pressure_in_psig_val == 100 %} selected {% endif %} value="{{ pressure_in_psig_val }}">{{ pressure_in_psig_val }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Trap Pipe Size (inch)</label>
+                          <div class="col-sm-4">
+                              <select class="form-control col-sm-6" id="trap_pipe_size" name="trap_pipe_size">
+                                  {% for trap_pipe_size_val  in trap_pipe_size_list %}
+                                     <option {% if trap_pipe_size_val == 0.5 %} selected {% endif %} value="{{ trap_pipe_size_val }}">{{ trap_pipe_size_val }}</option>
+                                  {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Therms Rate $</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="therm_rate" name="therm_rate">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-4">
+                                <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <input id="save_client_app" name="save_client_app" type="text" value="0" hidden/> -->
+
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

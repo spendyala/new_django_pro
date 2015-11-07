@@ -11,5 +11,5 @@ router = DefaultRouter()
 router.register(r'steam_leak', views.SteamLeakViewSet)
 
 urlpatterns = [
-		url(r'^', include(router.urls))
+        url(r'^', include(router.urls))
 ]

@@ -14,22 +14,22 @@ from rest_framework.reverse import reverse
 import django_filters
 
 class SteamLeakFilter(django_filters.FilterSet):
-	class Meta:
-		model = SteamLeak
-		fields = ['client']
+    class Meta:
+        model = SteamLeak
+        fields = ['client']
 
 # Create your views here.
 class SteamLeakViewSet(viewsets.ModelViewSet):
-		"""
-		This viewset automatically provides `list`, `create`, `retrieve`,
-		`update` and `destroy` actions.
-		"""
-		filter_backends = (filters.DjangoFilterBackend,)
-		filter_class = SteamLeakFilter
-		queryset = SteamLeak.objects.all()
-		serializer_class = SteamLeakSerializer
-		permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-												  IsOwnerOrReadOnly)
+        """
+        This viewset automatically provides `list`, `create`, `retrieve`,
+        `update` and `destroy` actions.
+        """
+        filter_backends = (filters.DjangoFilterBackend,)
+        filter_class = SteamLeakFilter
+        queryset = SteamLeak.objects.all()
+        serializer_class = SteamLeakSerializer
+        permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                              IsOwnerOrReadOnly)
 
-		def perform_create(self, serializer):
-			serializer.save(owner=self.request.user)
+        def perform_create(self, serializer):
+            serializer.save(owner=self.request.user)

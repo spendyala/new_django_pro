@@ -11,5 +11,5 @@ router = DefaultRouter()
 router.register(r'air_compressors', views.AirCompressorViewSet)
 
 urlpatterns = [
-		url(r'^', include(router.urls))
+        url(r'^', include(router.urls))
 ]

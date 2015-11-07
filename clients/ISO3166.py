@@ -1,7 +1,8 @@
 # ISO3166 python dict
 # oficial list in http,//www.iso.org/iso/iso_3166_code_lists
 import pycountry
-ISO3166 = [(each_country.alpha2, each_country.name) for each_country in pycountry.countries]
+ISO3166 = [(each_country.alpha2, each_country.name)
+           for each_country in pycountry.countries]
 
 # ISO3166 = [
 #     ('AF', 'AFGHANISTAN'),
