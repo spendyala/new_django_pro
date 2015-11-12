@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from valve_insulation.models import ValveInsulation  # , Comments
+from pipe_insulation.models import PipeInsulation  # , Comments
 
-admin.site.register(ValveInsulation)
+admin.site.register(PipeInsulation)

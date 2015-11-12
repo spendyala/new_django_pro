@@ -16,6 +16,7 @@ from premium_efficiency.models import PremiumEfficiency
 from air_compressors.models import AirCompressor, COMPRESSOR_TYPE, VFD_CONTROL_TYPE
 from vfd.models import LaborVFDMotor, MaterialsVFDMotor, VfdMotorSetpointSelections, VfdMotorDataPerMonth, VfdMotor
 from valve_insulation.models import ValveInsulation, NPS_PIPE_SIZES, WORKING_FLUID, LOCATION_OPTIONS, BASE_METAL_CHOICES, INSULATION_CHOICES, INSULATION_THICKNESS_OPT
+from pipe_insulation.models import PipeInsulation
 
 from supporting_files import spreadsheet
 # New
@@ -456,6 +457,54 @@ def valve_insulation_details(request, file_name=None, rec_id=None):
     except Exception as err:
         return render(request, 'static_html/404.html')
 
+
+# Pipe Insulation
+def pipe_insulation(request, file_name=None, rec_id=None):
+    if rec_id:
+        return render(request, 'static_html/404.html')
+    try:
+        clients_obj = Client.objects.all()
+        clients_list = [(x.id, x.client_name) for x in clients_obj]
+        clients_filter = copy.deepcopy(clients_list)
+        clients_filter.append(('all', 'all'))
+
+        data = {'clients_list': clients_list,
+                'clients_filter': clients_filter,
+                'nps_pipe_size_options': NPS_PIPE_SIZES,
+                'working_fluid_options': WORKING_FLUID,
+                'location_options': LOCATION_OPTIONS,
+                'base_metal_choices': BASE_METAL_CHOICES,
+                'insulation_choices': INSULATION_CHOICES,
+                'insulation_thickness_options': INSULATION_THICKNESS_OPT}
+
+        return set_render_object(request, file_name=file_name, content=data)
+    except Exception as err:
+        return render(request, 'static_html/404.html')
+
+
+# Valve Insulation Details
+def pipe_insulation_details(request, file_name=None, rec_id=None):
+    if not rec_id:
+        return render(request, 'static_html/404.html')
+
+    try:
+        clients_obj = Client.objects.all()
+        clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+        data = {'clients_list': clients_list,
+                'nps_pipe_size_options': NPS_PIPE_SIZES,
+                'working_fluid_options': WORKING_FLUID,
+                'location_options': LOCATION_OPTIONS,
+                'base_metal_choices': BASE_METAL_CHOICES,
+                'insulation_choices': INSULATION_CHOICES,
+                'insulation_thickness_options': INSULATION_THICKNESS_OPT}
+        pipe_insulation_obj = PipeInsulation.objects.get(id=rec_id)
+        data['pipe_insulation_obj'] = pipe_insulation_obj
+        return set_render_object(request, file_name=file_name, content=data)
+    except Exception as err:
+        return render(request, 'static_html/404.html')
+
+
 # Login and Logout
 def login(request, file_name=None, rec_id=None):
     # if rec_id:
@@ -533,6 +582,8 @@ VIEW_METHODS = {# 'authenticate_user': authenticate_user,
                 'vfd_details': vfd_details,
                 'valve_insulation': valve_insulation,
                 'valve_insulation_details': valve_insulation_details,
+                'pipe_insulation': pipe_insulation,
+                'pipe_insulation_details': pipe_insulation_details,
                 'excel': excel,
                 'test_html': test_html}
 

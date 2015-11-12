@@ -50,7 +50,8 @@ INSTALLED_APPS = (
     'air_compressors',
     'premium_efficiency',
     'vfd',
-    'valve_insulation'
+    'valve_insulation',
+    'pipe_insulation'
 )
 
 MIDDLEWARE_CLASSES = (

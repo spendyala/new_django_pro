@@ -13,7 +13,7 @@
     <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
     <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
     <script>
-        var app_1 = angular.module("app_valve_insulation", ['ui.bootstrap']);
+        var app_1 = angular.module("app_pipe_insulation", ['ui.bootstrap']);
         app_1.config(['$httpProvider', function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -22,10 +22,10 @@
             $interpolateProvider.startSymbol('{$');
             $interpolateProvider.endSymbol('$}');
           });
-        app_1.controller("valveInsulationModifyController", ['$scope','$http', function($scope,$http){
-            $scope.valve_insulation_json = {'client': '',
+        app_1.controller("pipeInsulationModifyController", ['$scope','$http', function($scope,$http){
+            $scope.pipe_insulation_json = {'client': '',
                                             'name': '',
-                                            'valve_type': '',
+                                            'length_of_pipe': '',
                                             'ambient_temp': 70.0,
                                             'base_metal': '',
                                             'insulation': '',
@@ -34,34 +34,32 @@
                                             'location': '',
                                             'nps_pipe_size_inches': 0.5,
                                             'process_temp_or_pressure': 10,
-                                            'quantity': 0,
                                             'system_efficiency': 80.0,
                                             'system_hours_per_year': 8760.0,
                                             'wind_speed_mph': 0.0,
                                             'working_fluid': ''};
             $scope.submit_details = function(){
-                $scope.valve_insulation_json.client = '/api_client/clients/'+$("#client").val()+'/';
-                $scope.valve_insulation_json.name = $("#name").val();
-                $scope.valve_insulation_json.valve_type = $("#valve_type").val();
-                $scope.valve_insulation_json.ambient_temp = $("#ambient_temp").val();
-                $scope.valve_insulation_json.base_metal = $("#base_metal").val();
-                $scope.valve_insulation_json.insulation = $("#insulation").val();
-                $scope.valve_insulation_json.insulation_thickness = $("#insulation_thickness").val();
-                $scope.valve_insulation_json.jacket_material = $("#jacket_material").val();
-                $scope.valve_insulation_json.location = $("#location").val();
-                $scope.valve_insulation_json.nps_pipe_size_inches = $("#nps_pipe_size_inches").val();
-                $scope.valve_insulation_json.process_temp_or_pressure = $("#process_temp_or_pressure").val();
-                $scope.valve_insulation_json.quantity = $("#quantity").val();
-                $scope.valve_insulation_json.system_efficiency = $("#system_efficiency").val();
-                $scope.valve_insulation_json.system_hours_per_year = $("#system_hours_per_year").val();
-                $scope.valve_insulation_json.wind_speed_mph = $("#wind_speed_mph").val();
-                $scope.valve_insulation_json.working_fluid = $("#working_fluid").val();
+                $scope.pipe_insulation_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.pipe_insulation_json.name = $("#name").val();
+                $scope.pipe_insulation_json.length_of_pipe = $("#length_of_pipe").val();
+                $scope.pipe_insulation_json.ambient_temp = $("#ambient_temp").val();
+                $scope.pipe_insulation_json.base_metal = $("#base_metal").val();
+                $scope.pipe_insulation_json.insulation = $("#insulation").val();
+                $scope.pipe_insulation_json.insulation_thickness = $("#insulation_thickness").val();
+                $scope.pipe_insulation_json.jacket_material = $("#jacket_material").val();
+                $scope.pipe_insulation_json.location = $("#location").val();
+                $scope.pipe_insulation_json.nps_pipe_size_inches = $("#nps_pipe_size_inches").val();
+                $scope.pipe_insulation_json.process_temp_or_pressure = $("#process_temp_or_pressure").val();
+                $scope.pipe_insulation_json.system_efficiency = $("#system_efficiency").val();
+                $scope.pipe_insulation_json.system_hours_per_year = $("#system_hours_per_year").val();
+                $scope.pipe_insulation_json.wind_speed_mph = $("#wind_speed_mph").val();
+                $scope.pipe_insulation_json.working_fluid = $("#working_fluid").val();
 
                 $http({method: 'PUT',
-                       url: '/api_valve_insulation/valve_insulation/{{valve_insulation_obj.id}}/',
-                       data: $scope.valve_insulation_json}).
+                       url: '/api_pipe_insulation/pipe_insulation/{{pipe_insulation_obj.id}}/',
+                       data: $scope.pipe_insulation_json}).
                 success(function(data){
-                    window.location.href = '/valve_insulation/';
+                    window.location.href = '/pipe_insulation/';
                 }).
                 error(function(data){
                 });
@@ -69,9 +67,9 @@
 
             $scope.submit_delete = function(){
                 $http({method: 'DELETE',
-                       url: '/api_valve_insulation/valve_insulation/{{valve_insulation_obj.id}}/'}).
+                       url: '/api_pipe_insulation/pipe_insulation/{{pipe_insulation_obj.id}}/'}).
                 success(function(data){
-                    window.location.href = '/valve_insulation/';
+                    window.location.href = '/pipe_insulation/';
                 }).
                 error(function(data){
                 });
@@ -80,7 +78,7 @@
         }]);
     </script>
 </head>
-<body ng-app="app_valve_insulation">
+<body ng-app="app_pipe_insulation">
     <div id="wrapper">
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             {% include "static_html/urls.html" %}
@@ -93,19 +91,19 @@
                     <h1 class="page-header">
                         Steam Trap Details
                     </h1>
-                    <form class="form-horizontal" ng-controller="valveInsulationModifyController" role="form">
+                    <form class="form-horizontal" ng-controller="pipeInsulationModifyController" role="form">
                     {% csrf_token %}
                         <div class="container-fluid">
                             <div class="form-group form-group-sm">
                               <label class="col-sm-4 control-label">ID</label>
                               <div class="col-sm-4">
-                                <label class="col-sm-5 bg-success">{{ valve_insulation_obj.id }}</label>
+                                <label class="col-sm-5 bg-success">{{ pipe_insulation_obj.id }}</label>
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
                               <label class="col-sm-4 control-label">Start Date</label>
                               <div class="col-sm-8">
-                                <label class="col-sm-5 bg-success">{{ valve_insulation_obj.start_date }}</label>
+                                <label class="col-sm-5 bg-success">{{ pipe_insulation_obj.start_date }}</label>
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -113,27 +111,21 @@
                               <div class="col-sm-4">
                                   <select class="form-control col-sm-6" id="client" name="client">
                                     {% for client_id, client_name in clients_list %}
-                                       <option {% if client_id == valve_insulation_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                       <option {% if client_id == pipe_insulation_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
                                     {% endfor %}
                                   </select>
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
-                              <label class="col-sm-3 control-label">Valve Insulation Name</label>
+                              <label class="col-sm-3 control-label">Pipe Insulation Description</label>
                               <div class="col-sm-6">
-                                <input class="form-control" type="text" id="name" name="name" value={{valve_insulation_obj.name}}>
+                                <input class="form-control" type="text" id="name" name="name" value="{{pipe_insulation_obj.name}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
-                              <label class="col-sm-3 control-label">Valve Type</label>
+                              <label class="col-sm-3 control-label">Length of Pipe (feet)</label>
                               <div class="col-sm-6">
-                                <input class="form-control" type="text" id="valve_type" name="valve_type" value={{valve_insulation_obj.valve_type}}>
-                              </div>
-                            </div>
-                            <div class="form-group form-group-sm">
-                              <label class="col-sm-3 control-label">Quantity</label>
-                              <div class="col-sm-6">
-                                <input class="form-control" type="text" id="quantity" name="quantity" value={{valve_insulation_obj.quantity}}>
+                                <input class="form-control" type="text" id="length_of_pipe" name="length_of_pipe" value="{{pipe_insulation_obj.length_of_pipe}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -141,7 +133,7 @@
                               <div class="col-sm-6">
                                   <select class="form-control col-sm-6" id="nps_pipe_size_inches" name="nps_pipe_size_inches">
                                     {% for key, value in nps_pipe_size_options %}
-                                        <option {% if key == valve_insulation_obj.nps_pipe_size_inches %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                        <option {% if key == pipe_insulation_obj.nps_pipe_size_inches %} selected {% endif %} value="{{ key }}">{{ value }}</option>
                                     {% endfor %}
                                   </select>
                               </div>
@@ -151,7 +143,7 @@
                               <div class="col-sm-6">
                                   <select class="form-control col-sm-6" id="working_fluid" name="working_fluid">
                                     {% for key, value in working_fluid_options %}
-                                        <option {% if key == valve_insulation_obj.working_fluid %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                        <option {% if key == pipe_insulation_obj.working_fluid %} selected {% endif %} value="{{ key }}">{{ value }}</option>
                                     {% endfor %}
                                   </select>
                               </div>
@@ -159,33 +151,33 @@
                             <div class="form-group form-group-sm">
                               <label class="col-sm-3 control-label">Process Temp or Pressure</label>
                               <div class="col-sm-9">
-                                <input class="form-control" type="text" id="process_temp_or_pressure" name="process_temp_or_pressure" value="{{valve_insulation_obj.process_temp_or_pressure}}">
+                                <input class="form-control" type="text" id="process_temp_or_pressure" name="process_temp_or_pressure" value="{{pipe_insulation_obj.process_temp_or_pressure}}">
                                 <span class="help-block">(Integer Numbers only) Noel Chambers: Select the temperature of the working fluid if the fluid a liquid. If the working fluid is steam please select the working pressure of the system.</span>
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
                               <label class="col-sm-3 control-label">System Efficiency (%)</label>
                               <div class="col-sm-3">
-                                <input class="form-control" type="text" id="system_efficiency" name="system_efficiency" value="{{valve_insulation_obj.system_efficiency}}">
+                                <input class="form-control" type="text" id="system_efficiency" name="system_efficiency" value="{{pipe_insulation_obj.system_efficiency}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
                               <label class="col-sm-3 control-label">Ambient Temp</label>
                               <div class="col-sm-3">
-                                <input class="form-control" type="text" id="ambient_temp" name="ambient_temp" value="{{valve_insulation_obj.ambient_temp}}">
+                                <input class="form-control" type="text" id="ambient_temp" name="ambient_temp" value="{{pipe_insulation_obj.ambient_temp}}">
                               </div>
                             </div>
 
                             <div class="form-group form-group-sm">
                               <label class="col-sm-3 control-label">System Hours / Year</label>
                               <div class="col-sm-3">
-                                <input class="form-control" type="text" id="system_hours_per_year" name="system_hours_per_year" value="{{valve_insulation_obj.system_hours_per_year}}">
+                                <input class="form-control" type="text" id="system_hours_per_year" name="system_hours_per_year" value="{{pipe_insulation_obj.system_hours_per_year}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
                               <label class="col-sm-3 control-label">Wind Speed (MPH)</label>
                               <div class="col-sm-3">
-                                <input class="form-control" type="text" id="wind_speed_mph" name="wind_speed_mph" value="{{valve_insulation_obj.wind_speed_mph}}">
+                                <input class="form-control" type="text" id="wind_speed_mph" name="wind_speed_mph" value="{{pipe_insulation_obj.wind_speed_mph}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -193,7 +185,7 @@
                               <div class="col-sm-3">
                                   <select class="form-control col-sm-6" id="location" name="location">
                                     {% for key, value in location_options %}
-                                        <option {% if key == valve_insulation_obj.location %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                        <option {% if key == pipe_insulation_obj.location %} selected {% endif %} value="{{ key }}">{{ value }}</option>
                                     {% endfor %}
                                   </select>
 
@@ -204,7 +196,7 @@
                               <div class="col-sm-3">
                                   <select class="form-control col-sm-6" id="base_metal" name="base_metal">
                                     {% for key, value in base_metal_choices %}
-                                        <option {% if key == valve_insulation_obj.base_metal %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                        <option {% if key == pipe_insulation_obj.base_metal %} selected {% endif %} value="{{ key }}">{{ value }}</option>
                                     {% endfor %}
                                   </select>
 
@@ -218,7 +210,7 @@
                               <div class="col-sm-3">
                                   <select class="form-control col-sm-6" id="insulation" name="insulation">
                                     {% for key, value in insulation_choices %}
-                                        <option {% if key == valve_insulation_obj.insulation %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                        <option {% if key == pipe_insulation_obj.insulation %} selected {% endif %} value="{{ key }}">{{ value }}</option>
                                     {% endfor %}
                                   </select>
 
@@ -229,7 +221,7 @@
                               <div class="col-sm-3">
                                   <select class="form-control col-sm-6" id="insulation_thickness" name="insulation_thickness">
                                     {% for key, value in insulation_thickness_options %}
-                                        <option {% if key == valve_insulation_obj.insulation_thickness %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                        <option {% if key == pipe_insulation_obj.insulation_thickness %} selected {% endif %} value="{{ key }}">{{ value }}</option>
                                     {% endfor %}
                                   </select>
 
@@ -238,7 +230,7 @@
                             <div class="form-group form-group-sm">
                               <label class="col-sm-3 control-label">Jacket Material</label>
                               <div class="col-sm-3">
-                                <input class="form-control" type="text" id="jacket_material" name="jacket_material" value="{{valve_insulation_obj.jacket_material}}">
+                                <input class="form-control" type="text" id="jacket_material" name="jacket_material" value="{{pipe_insulation_obj.jacket_material}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">

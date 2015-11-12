@@ -68,20 +68,19 @@ INSULATION_THICKNESS_OPT = [(0.5, 0.5),
 #   ('', ''),
 
 
-class ValveInsulation(models.Model):
+class PipeInsulation(models.Model):
     client = models.ForeignKey(Client)
     start_date = models.DateTimeField('Registered Date')
-    name = models.CharField('Valve Insulation Name',
+    name = models.CharField('Pipe Insulation Description',
                             default='',
                             max_length=128)
     # Existing Pipe Conditions
-    valve_type = models.CharField('Valve Type',
-                                  default='',
-                                  max_length=128)
-    quantity = models.IntegerField('Quantity', default=0)
+    # quantity = models.IntegerField('Quantity', default=0)
     nps_pipe_size_inches = models.FloatField('NPS Pipe Size (inches)',
                                              choices=NPS_PIPE_SIZES,
                                              default=0.5)
+    length_of_pipe = models.FloatField('Length of Pipe (feet)',
+                                       default=0)
     working_fluid = models.CharField('Working Fluid',
                                      choices=WORKING_FLUID,
                                      max_length=128,
@@ -120,7 +119,7 @@ class ValveInsulation(models.Model):
                                        default='',
                                        max_length=128)
 
-    owner = models.ForeignKey('auth.User', related_name='valve_insulation')
+    owner = models.ForeignKey('auth.User', related_name='pipe_insulation')
 
     def __str__(self):
         return self.name
@@ -128,7 +127,7 @@ class ValveInsulation(models.Model):
     def save(self, *args, **kwargs):
         # TODO: add owner
         self.start_date = datetime.datetime.utcnow()
-        super(ValveInsulation, self).save(*args, **kwargs)
+        super(PipeInsulation, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ('name',)

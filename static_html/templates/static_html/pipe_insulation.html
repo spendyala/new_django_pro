@@ -16,35 +16,35 @@
     <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
     <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
     <script>
-        var app_1 = angular.module("app_valve_insulation", ['ui.bootstrap']);
+        var app_1 = angular.module("app_pipe_insulation", ['ui.bootstrap']);
         app_1.config(['$httpProvider', function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
         }]);
-        app_1.controller("valveInsulationListController", ['$scope','$http', function($scope,$http){
-            $http({method: 'GET', url: "/api_valve_insulation/valve_insulation/"}).
+        app_1.controller("pipeInsulationListController", ['$scope','$http', function($scope,$http){
+            $http({method: 'GET', url: "/api_pipe_insulation/pipe_insulation/"}).
                  success(function(data){
-                     $scope.valve_insulation_list = data;
+                     $scope.pipe_insulation_list = data;
             }).error(function(data){});
             $scope.clients_filter = "all";
             $scope.filter_clients = function (clients_filter){
-                var url_str = "/api_valve_insulation/valve_insulation/";
+                var url_str = "/api_pipe_insulation/pipe_insulation/";
                 var client_filter_str = "";
                 if ($scope.clients_filter != "all"){
                     client_filter_str = "?client=".concat($scope.clients_filter);
                 };
                 $http({method: 'GET', url: url_str.concat(client_filter_str)}).
                      success(function(data){
-                         $scope.valve_insulation_list = data;
+                         $scope.pipe_insulation_list = data;
                 }).error(function(data){});
             };
         }]);
-        app_1.controller("valveInsulationAddController", ['$scope',
+        app_1.controller("pipeInsulationAddController", ['$scope',
                                                     '$http',
                                                     function($scope, $http){
-            $scope.valve_insulation_json = {'client': '',
+            $scope.pipe_insulation_json = {'client': '',
                                             'name': '',
-                                            'valve_type': '',
+                                            'length_of_pipe': '',
                                             'ambient_temp': 70.0,
                                             'base_metal': '',
                                             'insulation': '',
@@ -53,43 +53,41 @@
                                             'location': '',
                                             'nps_pipe_size_inches': 0.5,
                                             'process_temp_or_pressure': 10,
-                                            'quantity': 0,
                                             'system_efficiency': 80.0,
                                             'system_hours_per_year': 8760.0,
                                             'wind_speed_mph': 0.0,
                                             'working_fluid': ''};
             $scope.submit_details = function(){
-                $scope.valve_insulation_json.client = '/api_client/clients/'+$("#client").val()+'/';
-                $scope.valve_insulation_json.name = $("#name").val();
-                $scope.valve_insulation_json.valve_type = $("#valve_type").val();
-                $scope.valve_insulation_json.ambient_temp = $("#ambient_temp").val();
-                $scope.valve_insulation_json.base_metal = $("#base_metal").val();
-                $scope.valve_insulation_json.insulation = $("#insulation").val();
-                $scope.valve_insulation_json.insulation_thickness = $("#insulation_thickness").val();
-                $scope.valve_insulation_json.jacket_material = $("#jacket_material").val();
-                $scope.valve_insulation_json.location = $("#location").val();
-                $scope.valve_insulation_json.nps_pipe_size_inches = $("#nps_pipe_size_inches").val();
-                $scope.valve_insulation_json.process_temp_or_pressure = $("#process_temp_or_pressure").val();
-                $scope.valve_insulation_json.quantity = $("#quantity").val();
-                $scope.valve_insulation_json.system_efficiency = $("#system_efficiency").val();
-                $scope.valve_insulation_json.system_hours_per_year = $("#system_hours_per_year").val();
-                $scope.valve_insulation_json.wind_speed_mph = $("#wind_speed_mph").val();
-                $scope.valve_insulation_json.working_fluid = $("#working_fluid").val();
+                $scope.pipe_insulation_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.pipe_insulation_json.name = $("#name").val();
+                $scope.pipe_insulation_json.length_of_pipe = $("#length_of_pipe").val();
+                $scope.pipe_insulation_json.ambient_temp = $("#ambient_temp").val();
+                $scope.pipe_insulation_json.base_metal = $("#base_metal").val();
+                $scope.pipe_insulation_json.insulation = $("#insulation").val();
+                $scope.pipe_insulation_json.insulation_thickness = $("#insulation_thickness").val();
+                $scope.pipe_insulation_json.jacket_material = $("#jacket_material").val();
+                $scope.pipe_insulation_json.location = $("#location").val();
+                $scope.pipe_insulation_json.nps_pipe_size_inches = $("#nps_pipe_size_inches").val();
+                $scope.pipe_insulation_json.process_temp_or_pressure = $("#process_temp_or_pressure").val();
+                $scope.pipe_insulation_json.system_efficiency = $("#system_efficiency").val();
+                $scope.pipe_insulation_json.system_hours_per_year = $("#system_hours_per_year").val();
+                $scope.pipe_insulation_json.wind_speed_mph = $("#wind_speed_mph").val();
+                $scope.pipe_insulation_json.working_fluid = $("#working_fluid").val();
 
                 $http({method: 'POST',
-                       url: '/api_valve_insulation/valve_insulation/',
-                       data: $scope.valve_insulation_json}).
+                       url: '/api_pipe_insulation/pipe_insulation/',
+                       data: $scope.pipe_insulation_json}).
                 success(function(data){
                     window.location.reload();
                 }).
                 error(function(data){
                 });
-                $('#add_new_valve_insulation').modal('hide');
+                $('#add_new_pipe_insulation').modal('hide');
             }
         }]);
     </script>
 </head>
-<body ng-app="app_valve_insulation">
+<body ng-app="app_pipe_insulation">
     <div id="wrapper">
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             {% include "static_html/urls.html" %}
@@ -100,9 +98,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                         Valve Insulation List
+                         Pipe Insulation List
                     </h1>
-                    <div ng-controller="valveInsulationListController">
+                    <div ng-controller="pipeInsulationListController">
                         <div class="container-fluid form-horizontal">
                             <div class="form-group form-group-sm">
                                 <label class="col-sm-2 control-label">Client Filter</label>
@@ -116,20 +114,20 @@
                             </div>
                             <div class="form-group form-group-sm">
                                  <div class="col-sm-6">
-                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_valve_insulation">+ Valve Insulation</button>
+                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_pipe_insulation">+ Pipe Insulation</button>
                                 </div>
                             </div>
                             <table class="table table-striped">
                                 <tr>
                                     <th>Name</th>
-                                    <th>Valve Type</th>
-                                    <th>Quantity</th>
+                                    <th>Length of pipe (feet)</th>
+                                    <th>NPS Pipe Size (inches)</th>
                                 </tr>
                                 {% verbatim %}
-                                    <tr ng-repeat="x in valve_insulation_list">
-                                        <td><a href="/valve_insulation_details/{{ x.id }}">{{ x.name }}</a></td>
-                                        <td>{{ x.valve_type }}</td>
-                                        <td>{{ x.quantity}}</td>
+                                    <tr ng-repeat="x in pipe_insulation_list">
+                                        <td><a href="/pipe_insulation_details/{{ x.id }}">{{ x.name }}</a></td>
+                                        <td>{{ x.length_of_pipe}}</td>
+                                        <td>{{ x.nps_pipe_size_inches}}</td>
                                     </tr>
                                 {% endverbatim %}
                             </table>
@@ -140,13 +138,13 @@
         </div>
     </div>
 
-    <div class="modal fade" id="add_new_valve_insulation" role="dialog">
+    <div class="modal fade" id="add_new_pipe_insulation" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add New Valve Insulation</h4>
+                    <h4 class="modal-title">Add New Pipe Insulation</h4>
                 </div>
-                <form class="form-horizontal" ng-controller="valveInsulationAddController" role="form">
+                <form class="form-horizontal" ng-controller="pipeInsulationAddController" role="form">
                 {% csrf_token %}
                     <div class="container-fluid">
                         <div class="form-group form-group-sm">
@@ -160,21 +158,15 @@
                           </div>
                         </div>
                         <div class="form-group form-group-sm">
-                          <label class="col-sm-3 control-label">Valve Insulation Name</label>
+                          <label class="col-sm-3 control-label">Pipe Insulation Description</label>
                           <div class="col-sm-6">
                             <input class="form-control" type="text" id="name" name="name">
                           </div>
                         </div>
                         <div class="form-group form-group-sm">
-                          <label class="col-sm-3 control-label">Valve Type</label>
+                          <label class="col-sm-3 control-label">Length of Pipe (feet)</label>
                           <div class="col-sm-6">
-                            <input class="form-control" type="text" id="valve_type" name="valve_type">
-                          </div>
-                        </div>
-                        <div class="form-group form-group-sm">
-                          <label class="col-sm-3 control-label">Quantity</label>
-                          <div class="col-sm-6">
-                            <input class="form-control" type="text" id="quantity" name="quantity">
+                            <input class="form-control" type="text" id="length_of_pipe" name="length_of_pipe">
                           </div>
                         </div>
                         <div class="form-group form-group-sm">
