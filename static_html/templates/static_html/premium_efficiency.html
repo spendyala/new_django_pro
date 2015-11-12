@@ -2,253 +2,253 @@
 {% load staticfiles %}
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
-	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
-	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
 
-	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
-	<script src="{% static "clients/js/angular.js"%}"></script>
-	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
-	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
-	<script>
-		var app_1 = angular.module("app_premium_efficiency", ['ui.bootstrap']);
-		app_1.config(['$httpProvider', function($httpProvider) {
-			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-		}]);
-		app_1.controller("premiumEfficiencyListController", ['$scope','$http', function($scope,$http){
-			$http({method: 'GET', url: "/api_premium_efficiency/premium_efficiency/"}).
-				 success(function(data){
-					 $scope.premium_efficiency_list = data;
-			}).error(function(data){});
-			$scope.clients_filter = "all";
-			$scope.filter_clients = function (clients_filter){
-				var url_str = "/api_premium_efficiency/premium_efficiency/";
-				var client_filter_str = "";
-				if ($scope.clients_filter != "all"){
-					client_filter_str = "?client=".concat($scope.clients_filter);
-				};
-				$http({method: 'GET', url: url_str.concat(client_filter_str)}).
-					 success(function(data){
-						 $scope.premium_efficiency_list = data;
-				}).error(function(data){});
-			};
-		}]);
-		app_1.controller("premiumEfficiencyAddController", ['$scope',
-													'$http',
-													function($scope, $http){
-			$scope.premium_efficiency_json = {'client': '',
-									  'motor_name':'',
-									  'annual_operating_hours':0,
-									  'energy_cost':0,
-									  'motor_nameplate_hp':0,
-									  'existing_full_load_eff':0,
-									  'existing_three_fourth_load_eff':0,
-									  'existing_half_load_eff':0,
-									  'existing_motor_purchase_price':0,
-									  'proposed_full_load_eff':0,
-									  'proposed_three_fourth_load_eff':0,
-									  'proposed_half_load_eff':0,
-									  'proposed_motor_purchase_price':0,
-									  'motor_nameplate_rpm':0};
-			$scope.submit_details = function(){
-				$scope.premium_efficiency_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.premium_efficiency_json.motor_name = $("#motor_name").val();
-				$scope.premium_efficiency_json.annual_operating_hours = $("#annual_operating_hours").val();
-				$scope.premium_efficiency_json.energy_cost = $("#energy_cost").val();
-				$scope.premium_efficiency_json.motor_nameplate_hp = $("#motor_nameplate_hp").val();
-				$scope.premium_efficiency_json.existing_full_load_eff = $("#existing_full_load_eff").val();
-				$scope.premium_efficiency_json.existing_three_fourth_load_eff = $("#existing_three_fourth_load_eff").val();
-				$scope.premium_efficiency_json.existing_half_load_eff = $("#existing_half_load_eff").val();
-				$scope.premium_efficiency_json.existing_motor_purchase_price = $("#existing_motor_purchase_price").val();
-				$scope.premium_efficiency_json.proposed_full_load_eff = $("#proposed_full_load_eff").val();
-				$scope.premium_efficiency_json.proposed_three_fourth_load_eff = $("#proposed_three_fourth_load_eff").val();
-				$scope.premium_efficiency_json.proposed_half_load_eff = $("#proposed_half_load_eff").val();
-				$scope.premium_efficiency_json.proposed_motor_purchase_price = $("#proposed_motor_purchase_price").val();
-				$scope.premium_efficiency_json.motor_nameplate_rpm = $("#motor_nameplate_rpm").val();
-				$http({method: 'POST',
-					   url: '/api_premium_efficiency/premium_efficiency/',
-					   data: $scope.premium_efficiency_json}).
-				success(function(data){
-					window.location.reload();
-				}).
-				error(function(data){
-				});
-				$('#add_new_premium_efficiency').modal('hide');
-			}
-		}]);
-	</script>
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("app_premium_efficiency", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.controller("premiumEfficiencyListController", ['$scope','$http', function($scope,$http){
+            $http({method: 'GET', url: "/api_premium_efficiency/premium_efficiency/"}).
+                 success(function(data){
+                     $scope.premium_efficiency_list = data;
+            }).error(function(data){});
+            $scope.clients_filter = "all";
+            $scope.filter_clients = function (clients_filter){
+                var url_str = "/api_premium_efficiency/premium_efficiency/";
+                var client_filter_str = "";
+                if ($scope.clients_filter != "all"){
+                    client_filter_str = "?client=".concat($scope.clients_filter);
+                };
+                $http({method: 'GET', url: url_str.concat(client_filter_str)}).
+                     success(function(data){
+                         $scope.premium_efficiency_list = data;
+                }).error(function(data){});
+            };
+        }]);
+        app_1.controller("premiumEfficiencyAddController", ['$scope',
+                                                    '$http',
+                                                    function($scope, $http){
+            $scope.premium_efficiency_json = {'client': '',
+                                      'motor_name':'',
+                                      'annual_operating_hours':0,
+                                      'energy_cost':0,
+                                      'motor_nameplate_hp':0,
+                                      'existing_full_load_eff':0,
+                                      'existing_three_fourth_load_eff':0,
+                                      'existing_half_load_eff':0,
+                                      'existing_motor_purchase_price':0,
+                                      'proposed_full_load_eff':0,
+                                      'proposed_three_fourth_load_eff':0,
+                                      'proposed_half_load_eff':0,
+                                      'proposed_motor_purchase_price':0,
+                                      'motor_nameplate_rpm':0};
+            $scope.submit_details = function(){
+                $scope.premium_efficiency_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.premium_efficiency_json.motor_name = $("#motor_name").val();
+                $scope.premium_efficiency_json.annual_operating_hours = $("#annual_operating_hours").val();
+                $scope.premium_efficiency_json.energy_cost = $("#energy_cost").val();
+                $scope.premium_efficiency_json.motor_nameplate_hp = $("#motor_nameplate_hp").val();
+                $scope.premium_efficiency_json.existing_full_load_eff = $("#existing_full_load_eff").val();
+                $scope.premium_efficiency_json.existing_three_fourth_load_eff = $("#existing_three_fourth_load_eff").val();
+                $scope.premium_efficiency_json.existing_half_load_eff = $("#existing_half_load_eff").val();
+                $scope.premium_efficiency_json.existing_motor_purchase_price = $("#existing_motor_purchase_price").val();
+                $scope.premium_efficiency_json.proposed_full_load_eff = $("#proposed_full_load_eff").val();
+                $scope.premium_efficiency_json.proposed_three_fourth_load_eff = $("#proposed_three_fourth_load_eff").val();
+                $scope.premium_efficiency_json.proposed_half_load_eff = $("#proposed_half_load_eff").val();
+                $scope.premium_efficiency_json.proposed_motor_purchase_price = $("#proposed_motor_purchase_price").val();
+                $scope.premium_efficiency_json.motor_nameplate_rpm = $("#motor_nameplate_rpm").val();
+                $http({method: 'POST',
+                       url: '/api_premium_efficiency/premium_efficiency/',
+                       data: $scope.premium_efficiency_json}).
+                success(function(data){
+                    window.location.reload();
+                }).
+                error(function(data){
+                });
+                $('#add_new_premium_efficiency').modal('hide');
+            }
+        }]);
+    </script>
 </head>
 <body ng-app="app_premium_efficiency">
-	<div id="wrapper">
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			{% include "static_html/urls.html" %}
-		</nav>
-	</div>
-	<div id="page-wrapper">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="page-header">
-						 Premium Efficiency List
-					</h1>
-					<div ng-controller="premiumEfficiencyListController">
-						<div class="container-fluid form-horizontal">
-							<div class="form-group form-group-sm">
-								<label class="col-sm-2 control-label">Client Filter</label>
-								<div class="col-sm-2">
-									<select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
-										{% for filter_id, filter_name in clients_filter %}
-											<option value="{{ filter_id }}">{{ filter_name }}</option>
-										{% endfor %}
-									</select>
-								</div>
-							</div>
-							<div class="form-group form-group-sm">
-								 <div class="col-sm-6">
-									<button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_premium_efficiency">+ Premium Efficiency</button>
-								</div>
-							</div>
-							<table class="table table-striped">
-								<tr>
-									<th>Premium Efficiency</th>
-									<!-- <th>Client</th> -->
-									<th>Annual Operating Hours</th>
-									<th>Energy Cost</th>
-									<th>Motor Nameplate HP</th>
-									<th>Motor Nameplate RPM</th>
-								</tr>
-								{% verbatim %}
-									<tr ng-repeat="x in premium_efficiency_list">
-										<td><a href="/premium_efficiency_details/{{ x.id }}">{{ x.motor_name }}</a></td>
-										<!-- <td>{{ x.client }}</td> -->
-										<td>{{ x.annual_operating_hours }}</td>
-										<td>{{ x.energy_cost }}</td>
-										<td>{{ x.motor_nameplate_hp }}</td>
-										<td>{{ x.motor_nameplate_rpm }}</td>
-									</tr>
-								{% endverbatim %}
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                         Premium Efficiency List
+                    </h1>
+                    <div ng-controller="premiumEfficiencyListController">
+                        <div class="container-fluid form-horizontal">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-2 control-label">Client Filter</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
+                                        {% for filter_id, filter_name in clients_filter %}
+                                            <option value="{{ filter_id }}">{{ filter_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                 <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_premium_efficiency">+ Premium Efficiency</button>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Premium Efficiency</th>
+                                    <!-- <th>Client</th> -->
+                                    <th>Annual Operating Hours</th>
+                                    <th>Energy Cost</th>
+                                    <th>Motor Nameplate HP</th>
+                                    <th>Motor Nameplate RPM</th>
+                                </tr>
+                                {% verbatim %}
+                                    <tr ng-repeat="x in premium_efficiency_list">
+                                        <td><a href="/premium_efficiency_details/{{ x.id }}">{{ x.motor_name }}</a></td>
+                                        <!-- <td>{{ x.client }}</td> -->
+                                        <td>{{ x.annual_operating_hours }}</td>
+                                        <td>{{ x.energy_cost }}</td>
+                                        <td>{{ x.motor_nameplate_hp }}</td>
+                                        <td>{{ x.motor_nameplate_rpm }}</td>
+                                    </tr>
+                                {% endverbatim %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="modal fade" id="add_new_premium_efficiency" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Add New Premium Efficiency</h4>
-				</div>
-				<form class="form-horizontal" ng-controller="premiumEfficiencyAddController" role="form">
-				{% csrf_token %}
-					<div class="container-fluid">
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Client</label>
-						  <div class="col-sm-4">
-							  <select class="form-control col-sm-6" id="client" name="client">
-								{% for client_id, client_name in clients_list %}
-									<option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
-								{% endfor %}
-							  </select>
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Premium Efficiency Name</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="motor_name" name="motor_name">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Annual Operating Hours</label>
-						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="annual_operating_hours" name="annual_operating_hours">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Energy Cost ($)</label>
-						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="energy_cost" name="energy_cost">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Motor Nameplate HP</label>
-						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="motor_nameplate_hp" name="motor_nameplate_hp">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Motor Nameplate RPM</label>
-						  <div class="col-sm-4">
-							<input class="form-control control-label" type="text" id="motor_nameplate_rpm" name="motor_nameplate_rpm">
-						  </div>
-						</div>
-						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8 "></label>
-						</div>
-						<div class="form-group form-group-sm">
-							<label class="col-sm-offset-4 col-sm-3">
-								Existing Motor
-							</label>
-							<label class="col-sm-3">
-								Proposed Premium Efficiency Motor
-							</label>
-						</div>
+    <div class="modal fade" id="add_new_premium_efficiency" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Premium Efficiency</h4>
+                </div>
+                <form class="form-horizontal" ng-controller="premiumEfficiencyAddController" role="form">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Client</label>
+                          <div class="col-sm-4">
+                              <select class="form-control col-sm-6" id="client" name="client">
+                                {% for client_id, client_name in clients_list %}
+                                    <option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Premium Efficiency Name</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="motor_name" name="motor_name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Annual Operating Hours</label>
+                          <div class="col-sm-4">
+                            <input class="form-control control-label" type="text" id="annual_operating_hours" name="annual_operating_hours">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Energy Cost ($)</label>
+                          <div class="col-sm-4">
+                            <input class="form-control control-label" type="text" id="energy_cost" name="energy_cost">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Motor Nameplate HP</label>
+                          <div class="col-sm-4">
+                            <input class="form-control control-label" type="text" id="motor_nameplate_hp" name="motor_nameplate_hp">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Motor Nameplate RPM</label>
+                          <div class="col-sm-4">
+                            <input class="form-control control-label" type="text" id="motor_nameplate_rpm" name="motor_nameplate_rpm">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-md bg-info">
+                            <label class="col-md-offset-4 col-md-8 "></label>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-offset-4 col-sm-3">
+                                Existing Motor
+                            </label>
+                            <label class="col-sm-3">
+                                Proposed Premium Efficiency Motor
+                            </label>
+                        </div>
 
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Full load efficiency (%)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_full_load_eff" name="existing_full_load_eff" value="0">
-						  </div>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_full_load_eff" name="proposed_full_load_eff" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">3/4 load efficiency (%)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_three_fourth_load_eff" name="existing_three_fourth_load_eff" value="0">
-						  </div>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_three_fourth_load_eff" name="proposed_three_fourth_load_eff" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">1/2 load efficiency (%)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_half_load_eff" name="existing_half_load_eff" value="0">
-						  </div>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_half_load_eff" name="proposed_half_load_eff" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Motor Purchase Price ($)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="existing_motor_purchase_price" name="existing_motor_purchase_price" value="0">
-						  </div>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="proposed_motor_purchase_price" name="proposed_motor_purchase_price" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-							<div class="col-sm-4">
-								<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Full load efficiency (%)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="existing_full_load_eff" name="existing_full_load_eff" value="0">
+                          </div>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="proposed_full_load_eff" name="proposed_full_load_eff" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">3/4 load efficiency (%)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="existing_three_fourth_load_eff" name="existing_three_fourth_load_eff" value="0">
+                          </div>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="proposed_three_fourth_load_eff" name="proposed_three_fourth_load_eff" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">1/2 load efficiency (%)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="existing_half_load_eff" name="existing_half_load_eff" value="0">
+                          </div>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="proposed_half_load_eff" name="proposed_half_load_eff" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Motor Purchase Price ($)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="existing_motor_purchase_price" name="existing_motor_purchase_price" value="0">
+                          </div>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="proposed_motor_purchase_price" name="proposed_motor_purchase_price" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-4">
+                                <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

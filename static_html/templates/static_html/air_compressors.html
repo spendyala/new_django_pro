@@ -2,322 +2,322 @@
 {% load staticfiles %}
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
-	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
 
-	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
-	<script src="{% static "clients/js/angular.js"%}"></script>
-	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
-	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
-	<script>
-		var app_1 = angular.module("app_air_compressor", ['ui.bootstrap']);
-		app_1.config(['$httpProvider', function($httpProvider) {
-			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-		}]);
-		app_1.controller("airCompressorListController", ['$scope','$http', function($scope,$http){
-			$http({method: 'GET', url: "/api_air_compressors/air_compressors/"}).
-				 success(function(data){
-					 $scope.air_compressor_list = data;
-			}).error(function(data){});
-			$scope.clients_filter = "all";
-			$scope.filter_clients = function (clients_filter){
-				var url_str = "/api_air_compressors/air_compressors/";
-				var client_filter_str = "";
-				if ($scope.clients_filter != "all"){
-					client_filter_str = "?client=".concat($scope.clients_filter);
-				};
-				$http({method: 'GET', url: url_str.concat(client_filter_str)}).
-					 success(function(data){
-						 $scope.air_compressor_list = data;
-				}).error(function(data){});
-			};
-		}]);
-		app_1.controller("airCompressorAddController", ['$scope',
-													'$http',
-													function($scope, $http){
-			$scope.air_compressor_json = {'client': '',
-									  'air_compressor': '',
-									  'customer_name': '',
-									  'customer_site': '',
-									  'project_name': '',
-									  'electric_utility_rate':0,
-									  'compressor_name': '',
-									  'manufacturer': '',
-									  'model_info': '',
-									  'serial_info': '',
-									  'compressor_type': '',
-									  'vfd_speed_control': 1,
-									  'nameplate_horsepower': 0,
-									  'nameplate_max_flow': 0,
-									  'measured_actual_flow': 0,
-									  'measured_line_pressure': 0,
-									  'annual_hours_of_operation': 0,
-									  'vfd_90_t_fitting': 1,
-									  'reduce_line_pressure_to': 0};
-			$scope.submit_details = function(){
-				$scope.air_compressor_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.air_compressor_json.air_compressor = $("#air_compressor").val();
-				$scope.air_compressor_json.customer_name = $("#customer_name").val();
-				$scope.air_compressor_json.customer_site = $("#customer_site").val();
-				$scope.air_compressor_json.project_name = $("#project_name").val();
-				$scope.air_compressor_json.electric_utility_rate = $("#electric_utility_rate").val();
-				$scope.air_compressor_json.compressor_name = $("#compressor_name").val();
-				$scope.air_compressor_json.manufacturer = $("#manufacturer").val();
-				$scope.air_compressor_json.model_info = $("#model_info").val();
-				$scope.air_compressor_json.serial_info = $("#serial_info").val();
-				$scope.air_compressor_json.compressor_type = $("#compressor_type").val();
-				$scope.air_compressor_json.vfd_speed_control = parseInt($("#vfd_speed_control").val());
-				$scope.air_compressor_json.nameplate_horsepower = $("#nameplate_horsepower").val();
-				$scope.air_compressor_json.nameplate_max_flow = $("#nameplate_max_flow").val();
-				$scope.air_compressor_json.measured_actual_flow = $("#measured_actual_flow").val();
-				$scope.air_compressor_json.measured_line_pressure = $("#measured_line_pressure").val();
-				$scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
-				$scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
-				$scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
-				debugger;
-				console.log($scope.air_compressor)
-				$http({method: 'POST',
-					   url: '/api_air_compressors/air_compressors/',
-					   data: $scope.air_compressor_json}).
-				success(function(data){
-					console.log(data);
-					debugger;
-					// window.location.reload();
-				}).
-				error(function(data){
-				});
-				$('#add_new_air_compressor').modal('hide');
-			}
-		}]);
-	</script>
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("app_air_compressor", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.controller("airCompressorListController", ['$scope','$http', function($scope,$http){
+            $http({method: 'GET', url: "/api_air_compressors/air_compressors/"}).
+                 success(function(data){
+                     $scope.air_compressor_list = data;
+            }).error(function(data){});
+            $scope.clients_filter = "all";
+            $scope.filter_clients = function (clients_filter){
+                var url_str = "/api_air_compressors/air_compressors/";
+                var client_filter_str = "";
+                if ($scope.clients_filter != "all"){
+                    client_filter_str = "?client=".concat($scope.clients_filter);
+                };
+                $http({method: 'GET', url: url_str.concat(client_filter_str)}).
+                     success(function(data){
+                         $scope.air_compressor_list = data;
+                }).error(function(data){});
+            };
+        }]);
+        app_1.controller("airCompressorAddController", ['$scope',
+                                                    '$http',
+                                                    function($scope, $http){
+            $scope.air_compressor_json = {'client': '',
+                                      'air_compressor': '',
+                                      'customer_name': '',
+                                      'customer_site': '',
+                                      'project_name': '',
+                                      'electric_utility_rate':0,
+                                      'compressor_name': '',
+                                      'manufacturer': '',
+                                      'model_info': '',
+                                      'serial_info': '',
+                                      'compressor_type': '',
+                                      'vfd_speed_control': 1,
+                                      'nameplate_horsepower': 0,
+                                      'nameplate_max_flow': 0,
+                                      'measured_actual_flow': 0,
+                                      'measured_line_pressure': 0,
+                                      'annual_hours_of_operation': 0,
+                                      'vfd_90_t_fitting': 1,
+                                      'reduce_line_pressure_to': 0};
+            $scope.submit_details = function(){
+                $scope.air_compressor_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.air_compressor_json.air_compressor = $("#air_compressor").val();
+                $scope.air_compressor_json.customer_name = $("#customer_name").val();
+                $scope.air_compressor_json.customer_site = $("#customer_site").val();
+                $scope.air_compressor_json.project_name = $("#project_name").val();
+                $scope.air_compressor_json.electric_utility_rate = $("#electric_utility_rate").val();
+                $scope.air_compressor_json.compressor_name = $("#compressor_name").val();
+                $scope.air_compressor_json.manufacturer = $("#manufacturer").val();
+                $scope.air_compressor_json.model_info = $("#model_info").val();
+                $scope.air_compressor_json.serial_info = $("#serial_info").val();
+                $scope.air_compressor_json.compressor_type = $("#compressor_type").val();
+                $scope.air_compressor_json.vfd_speed_control = parseInt($("#vfd_speed_control").val());
+                $scope.air_compressor_json.nameplate_horsepower = $("#nameplate_horsepower").val();
+                $scope.air_compressor_json.nameplate_max_flow = $("#nameplate_max_flow").val();
+                $scope.air_compressor_json.measured_actual_flow = $("#measured_actual_flow").val();
+                $scope.air_compressor_json.measured_line_pressure = $("#measured_line_pressure").val();
+                $scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
+                $scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
+                $scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
+                debugger;
+                console.log($scope.air_compressor)
+                $http({method: 'POST',
+                       url: '/api_air_compressors/air_compressors/',
+                       data: $scope.air_compressor_json}).
+                success(function(data){
+                    console.log(data);
+                    debugger;
+                    // window.location.reload();
+                }).
+                error(function(data){
+                });
+                $('#add_new_air_compressor').modal('hide');
+            }
+        }]);
+    </script>
 </head>
 <body ng-app="app_air_compressor">
-	<div id="wrapper">
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			{% include "static_html/urls.html" %}
-		</nav>
-	</div>
-	<div id="page-wrapper">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="page-header">
-						 Air Compressor List
-					</h1>
-					<div ng-controller="airCompressorListController">
-						<div class="container-fluid form-horizontal">
-							<div class="form-group form-group-sm">
-								<label class="col-sm-2 control-label">Client Filter</label>
-								<div class="col-sm-2">
-									<select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
-										{% for filter_id, filter_name in clients_filter %}
-											<option value="{{ filter_id }}">{{ filter_name }}</option>
-										{% endfor %}
-									</select>
-								</div>
-							</div>
-							<div class="form-group form-group-sm">
-								 <div class="col-sm-6">
-									<button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_air_compressor">+ Air Compressor</button>
-								</div>
-							</div>
-							<table class="table table-striped">
-								<tr>
-									<th>Compressor Name</th>
-									<th>Manufacturer</th>
-									<th>Model #</th>
-									<th>Nameplate Horsepower</th>
-									<th>Annual Hours Of Operation</th>
-								</tr>
-								{% verbatim %}
-									<tr ng-repeat="x in air_compressor_list">
-										<td><a href="/air_compressor_details/{{ x.id }}">{{ x.compressor_name }}</a></td>
-										<td>{{ x.manufacturer }}</td>
-										<td>{{ x.model_info }}</td>
-										<td>{{ x.nameplate_horsepower }}</td>
-										<td>{{ x.annual_hours_of_operation }}</td>
-									</tr>
-								{% endverbatim %}
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                         Air Compressor List
+                    </h1>
+                    <div ng-controller="airCompressorListController">
+                        <div class="container-fluid form-horizontal">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-2 control-label">Client Filter</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
+                                        {% for filter_id, filter_name in clients_filter %}
+                                            <option value="{{ filter_id }}">{{ filter_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                 <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_air_compressor">+ Air Compressor</button>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Compressor Name</th>
+                                    <th>Manufacturer</th>
+                                    <th>Model #</th>
+                                    <th>Nameplate Horsepower</th>
+                                    <th>Annual Hours Of Operation</th>
+                                </tr>
+                                {% verbatim %}
+                                    <tr ng-repeat="x in air_compressor_list">
+                                        <td><a href="/air_compressor_details/{{ x.id }}">{{ x.compressor_name }}</a></td>
+                                        <td>{{ x.manufacturer }}</td>
+                                        <td>{{ x.model_info }}</td>
+                                        <td>{{ x.nameplate_horsepower }}</td>
+                                        <td>{{ x.annual_hours_of_operation }}</td>
+                                    </tr>
+                                {% endverbatim %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="modal fade" id="add_new_air_compressor" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Add New Air Compressor</h4>
-				</div>
-				<form class="form-horizontal" ng-controller="airCompressorAddController" role="form">
-				{% csrf_token %}
-					<div class="container-fluid">
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Client</label>
-						  <div class="col-sm-6">
-							  <select class="form-control col-sm-6" id="client" name="client">
-								{% for client_id, client_name in clients_list %}
-									<option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
-								{% endfor %}
-							  </select>
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Air Compressor</label>
-						  <div class="col-sm-6">
-							<input class="form-control" type="text" id="air_compressor" name="air_compressor">
-						  </div>
-						</div>
-						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8 ">SITE INFORMATION</label>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Customer Name</label>
-						  <div class="col-sm-6">
-							<input class="form-control" type="text" id="customer_name" name="customer_name">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Customer Site</label>
-						  <div class="col-sm-6">
-							<input class="form-control" type="text" id="customer_site" name="customer_site">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Project Name</label>
-						  <div class="col-sm-6">
-							<input class="form-control" type="text" id="project_name" name="project_name">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Electric Utility Rate (per kWh)</label>
-						  <div class="col-sm-6">
-							<input class="form-control control-label" type="text" id="electric_utility_rate" name="electric_utility_rate">
-						  </div>
-						</div>
-						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8 ">AIR COMPRESSOR INFORMATION</label>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Compressor Name</label>
-						  <div class="col-sm-3">
-							<input class="form-control" type="text" id="compressor_name" name="compressor_name">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Manufacturer</label>
-						  <div class="col-sm-3">
-							<input class="form-control" type="text" id="manufacturer" name="manufacturer">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Model #</label>
-						  <div class="col-sm-3">
-							<input class="form-control" type="text" id="model_info" name="model_info">
-						  </div>
-						</div>
+    <div class="modal fade" id="add_new_air_compressor" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Air Compressor</h4>
+                </div>
+                <form class="form-horizontal" ng-controller="airCompressorAddController" role="form">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Client</label>
+                          <div class="col-sm-6">
+                              <select class="form-control col-sm-6" id="client" name="client">
+                                {% for client_id, client_name in clients_list %}
+                                    <option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Air Compressor</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="text" id="air_compressor" name="air_compressor">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-md bg-info">
+                            <label class="col-md-offset-4 col-md-8 ">SITE INFORMATION</label>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Customer Name</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="text" id="customer_name" name="customer_name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Customer Site</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="text" id="customer_site" name="customer_site">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Project Name</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="text" id="project_name" name="project_name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Electric Utility Rate (per kWh)</label>
+                          <div class="col-sm-6">
+                            <input class="form-control control-label" type="text" id="electric_utility_rate" name="electric_utility_rate">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-md bg-info">
+                            <label class="col-md-offset-4 col-md-8 ">AIR COMPRESSOR INFORMATION</label>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Compressor Name</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="compressor_name" name="compressor_name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Manufacturer</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="manufacturer" name="manufacturer">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Model #</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="model_info" name="model_info">
+                          </div>
+                        </div>
 
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Serial #</label>
-						  <div class="col-sm-3">
-							<input class="form-control" type="text" id="serial_info" name="serial_info">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Type</label>
-						  <div class="col-sm-3">
-							  <select class="form-control col-sm-6" id="compressor_type" name="compressor_type">
-								{% for type_id, type_name in compressor_type %}
-								   <option {% if type_id == 'REC' %} selected {% endif %} value="{{ type_id }}">{{ type_name }}</option>
-								{% endfor %}
-							  </select>
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">VFD Speed Control</label>
-						  <div class="col-sm-3">
-							  <select class="form-control col-sm-6" id="vfd_speed_control" name="vfd_speed_control">
-								{% for vfd_type_id, vfd_type_name in vfd_control_type %}
-								   <option {% if vfd_type_id == 1 %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
-								{% endfor %}
-							  </select>
-						  </div>
-						</div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Serial #</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="serial_info" name="serial_info">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Type</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="compressor_type" name="compressor_type">
+                                {% for type_id, type_name in compressor_type %}
+                                   <option {% if type_id == 'REC' %} selected {% endif %} value="{{ type_id }}">{{ type_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">VFD Speed Control</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="vfd_speed_control" name="vfd_speed_control">
+                                {% for vfd_type_id, vfd_type_name in vfd_control_type %}
+                                   <option {% if vfd_type_id == 1 %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
 
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Nameplate Horsepower (HP)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="nameplate_horsepower" name="nameplate_horsepower" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Nameplate Maximum Flow (CFM)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="nameplate_max_flow" name="nameplate_max_flow" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Measured Actual Flow (GPM)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="measured_actual_flow" name="measured_actual_flow" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Measured Line Pressure (PSI)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="measured_line_pressure" name="measured_line_pressure" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Annual Hours Of Operation (Hours)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="annual_hours_of_operation" name="annual_hours_of_operation" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8 ">90° (T-FITTING) REPLACEMENT SAVINGS</label>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-8 control-label">"Are there any 90° T-Fittings in the air supply
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Nameplate Horsepower (HP)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="nameplate_horsepower" name="nameplate_horsepower" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Nameplate Maximum Flow (CFM)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="nameplate_max_flow" name="nameplate_max_flow" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Measured Actual Flow (GPM)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="measured_actual_flow" name="measured_actual_flow" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Measured Line Pressure (PSI)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="measured_line_pressure" name="measured_line_pressure" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Annual Hours Of Operation (Hours)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="annual_hours_of_operation" name="annual_hours_of_operation" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-md bg-info">
+                            <label class="col-md-offset-4 col-md-8 ">90° (T-FITTING) REPLACEMENT SAVINGS</label>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-8 control-label">"Are there any 90° T-Fittings in the air supply
 piping that could be replaced with 45° fittings?"
-				</label>
-						  <div class="col-sm-2">
-							  <select class="form-control col-sm-6" id="vfd_90_t_fitting" name="vfd_90_t_fitting">
-								{% for vfd_type_id, vfd_type_name in vfd_control_type %}
-								   <option {% if vfd_type_id == 1 %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
-								{% endfor %}
-							  </select>
-						  </div>
-						</div>
-						<div class="form-group form-group-md bg-info">
-							<label class="col-md-offset-4 col-md-8 ">ESTIMATED PRESSURE (PSI) SETBACK SAVINGS</label>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-6 control-label">Reduced Line Pressure TO (PSI)</label>
-						  <div class="col-sm-3">
-							<input class="form-control control-label" type="text" id="reduce_line_pressure_to" name="reduce_line_pressure_to" value="0">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-							<div class="col-sm-6">
-								<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                </label>
+                          <div class="col-sm-2">
+                              <select class="form-control col-sm-6" id="vfd_90_t_fitting" name="vfd_90_t_fitting">
+                                {% for vfd_type_id, vfd_type_name in vfd_control_type %}
+                                   <option {% if vfd_type_id == 1 %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-md bg-info">
+                            <label class="col-md-offset-4 col-md-8 ">ESTIMATED PRESSURE (PSI) SETBACK SAVINGS</label>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-6 control-label">Reduced Line Pressure TO (PSI)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control control-label" type="text" id="reduce_line_pressure_to" name="reduce_line_pressure_to" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-6">
+                                <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

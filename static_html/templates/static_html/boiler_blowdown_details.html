@@ -2,374 +2,374 @@
 {% load staticfiles %}
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
-	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
-	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<script src="{% static "clients/js/angular.js"%}"></script>
-	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
-	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
-	<script>
-		var app_1 = angular.module("app_boiler_blowdown", ['ui.bootstrap']);
-		app_1.config(['$httpProvider', function($httpProvider) {
-			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-		}]);
-		app_1.config(function($interpolateProvider) {
-			$interpolateProvider.startSymbol('{$');
-			$interpolateProvider.endSymbol('$}');
-		});
-		app_1.controller("boilerBlowdownModifyController", ['$scope','$http', function($scope,$http){
-			$scope.boiler_blowdown_json = {'id': {{boiler_blowdown_obj.id}},
-									  'client': '',
-									  'boiler_blowdown_name':'',
-									  'gas_rate':0,
-									  'water_rate':0,
-									  'makeup_water_temperature':0,
-									  'existing_blowdown_frequency_per_day':0,
-									  'existing_blowdown_rate_gpm':0,
-									  'existing_blowdown_duration_mins':0,
-									  'existing_days_of_operation':0,
-									  'existing_discharge_temp_in_f':0,
-									  'proposed_blowdown_frequency_per_day':0,
-									  'proposed_blowdown_rate_gpm':0,
-									  'proposed_blowdown_duration_mins':0,
-									  'proposed_days_of_operation':0,
-									  'proposed_discharge_temp_in_f':0,
-									  'existing_heat_recovery_efficiency_perc':0,
-									  'proposed_heat_recovery_efficiency_perc':0};
-			$scope.submit_details = function(){
-				$scope.boiler_blowdown_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.boiler_blowdown_json.boiler_blowdown_name = $("#boiler_blowdown_name").val();
-				$scope.boiler_blowdown_json.gas_rate = $("#gas_rate").val();
-				$scope.boiler_blowdown_json.water_rate = $("#water_rate").val();
-				$scope.boiler_blowdown_json.makeup_water_temperature = $("#makeup_water_temperature").val();
-				$scope.boiler_blowdown_json.existing_blowdown_frequency_per_day = $("#existing_blowdown_frequency_per_day").val();
-				$scope.boiler_blowdown_json.existing_blowdown_rate_gpm = $("#existing_blowdown_rate_gpm").val();
-				$scope.boiler_blowdown_json.existing_blowdown_duration_mins = $("#existing_blowdown_duration_mins").val();
-				$scope.boiler_blowdown_json.existing_days_of_operation = $("#existing_days_of_operation").val();
-				$scope.boiler_blowdown_json.existing_discharge_temp_in_f = $("#existing_discharge_temp_in_f").val();
-				$scope.boiler_blowdown_json.proposed_blowdown_frequency_per_day = $("#proposed_blowdown_frequency_per_day").val();
-				$scope.boiler_blowdown_json.proposed_blowdown_rate_gpm = $("#proposed_blowdown_rate_gpm").val();
-				$scope.boiler_blowdown_json.proposed_blowdown_duration_mins = $("#proposed_blowdown_duration_mins").val();
-				$scope.boiler_blowdown_json.proposed_days_of_operation = $("#proposed_days_of_operation").val();
-				$scope.boiler_blowdown_json.proposed_discharge_temp_in_f = $("#proposed_discharge_temp_in_f").val();
-				$scope.boiler_blowdown_json.existing_heat_recovery_efficiency_perc = $("#existing_heat_recovery_efficiency_perc").val();
-				$scope.boiler_blowdown_json.proposed_heat_recovery_efficiency_perc = $("#proposed_heat_recovery_efficiency_perc").val();
-				$http({method: 'PUT',
-					   url: '/api_boiler_blowdown/boiler_blowdown/{{boiler_blowdown_obj.id}}/',
-					   data: $scope.boiler_blowdown_json}).
-				success(function(data){
-					window.location.href = '/boiler_blowdown/';
-				}).
-				error(function(data){
-				});
-			}
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("app_boiler_blowdown", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.config(function($interpolateProvider) {
+            $interpolateProvider.startSymbol('{$');
+            $interpolateProvider.endSymbol('$}');
+        });
+        app_1.controller("boilerBlowdownModifyController", ['$scope','$http', function($scope,$http){
+            $scope.boiler_blowdown_json = {'id': {{boiler_blowdown_obj.id}},
+                                      'client': '',
+                                      'boiler_blowdown_name':'',
+                                      'gas_rate':0,
+                                      'water_rate':0,
+                                      'makeup_water_temperature':0,
+                                      'existing_blowdown_frequency_per_day':0,
+                                      'existing_blowdown_rate_gpm':0,
+                                      'existing_blowdown_duration_mins':0,
+                                      'existing_days_of_operation':0,
+                                      'existing_discharge_temp_in_f':0,
+                                      'proposed_blowdown_frequency_per_day':0,
+                                      'proposed_blowdown_rate_gpm':0,
+                                      'proposed_blowdown_duration_mins':0,
+                                      'proposed_days_of_operation':0,
+                                      'proposed_discharge_temp_in_f':0,
+                                      'existing_heat_recovery_efficiency_perc':0,
+                                      'proposed_heat_recovery_efficiency_perc':0};
+            $scope.submit_details = function(){
+                $scope.boiler_blowdown_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.boiler_blowdown_json.boiler_blowdown_name = $("#boiler_blowdown_name").val();
+                $scope.boiler_blowdown_json.gas_rate = $("#gas_rate").val();
+                $scope.boiler_blowdown_json.water_rate = $("#water_rate").val();
+                $scope.boiler_blowdown_json.makeup_water_temperature = $("#makeup_water_temperature").val();
+                $scope.boiler_blowdown_json.existing_blowdown_frequency_per_day = $("#existing_blowdown_frequency_per_day").val();
+                $scope.boiler_blowdown_json.existing_blowdown_rate_gpm = $("#existing_blowdown_rate_gpm").val();
+                $scope.boiler_blowdown_json.existing_blowdown_duration_mins = $("#existing_blowdown_duration_mins").val();
+                $scope.boiler_blowdown_json.existing_days_of_operation = $("#existing_days_of_operation").val();
+                $scope.boiler_blowdown_json.existing_discharge_temp_in_f = $("#existing_discharge_temp_in_f").val();
+                $scope.boiler_blowdown_json.proposed_blowdown_frequency_per_day = $("#proposed_blowdown_frequency_per_day").val();
+                $scope.boiler_blowdown_json.proposed_blowdown_rate_gpm = $("#proposed_blowdown_rate_gpm").val();
+                $scope.boiler_blowdown_json.proposed_blowdown_duration_mins = $("#proposed_blowdown_duration_mins").val();
+                $scope.boiler_blowdown_json.proposed_days_of_operation = $("#proposed_days_of_operation").val();
+                $scope.boiler_blowdown_json.proposed_discharge_temp_in_f = $("#proposed_discharge_temp_in_f").val();
+                $scope.boiler_blowdown_json.existing_heat_recovery_efficiency_perc = $("#existing_heat_recovery_efficiency_perc").val();
+                $scope.boiler_blowdown_json.proposed_heat_recovery_efficiency_perc = $("#proposed_heat_recovery_efficiency_perc").val();
+                $http({method: 'PUT',
+                       url: '/api_boiler_blowdown/boiler_blowdown/{{boiler_blowdown_obj.id}}/',
+                       data: $scope.boiler_blowdown_json}).
+                success(function(data){
+                    window.location.href = '/boiler_blowdown/';
+                }).
+                error(function(data){
+                });
+            }
 
-			$scope.submit_delete = function(){
-				$http({method: 'DELETE',
-					   url: '/api_boiler_blowdown/boiler_blowdown/{{boiler_blowdown_obj.id}}/'}).
-				success(function(data){
-					window.location.href = '/boiler_blowdown/';
-				}).
-				error(function(data){
-				});
-			}
-		}]);
-	</script>
+            $scope.submit_delete = function(){
+                $http({method: 'DELETE',
+                       url: '/api_boiler_blowdown/boiler_blowdown/{{boiler_blowdown_obj.id}}/'}).
+                success(function(data){
+                    window.location.href = '/boiler_blowdown/';
+                }).
+                error(function(data){
+                });
+            }
+        }]);
+    </script>
 </head>
 <body ng-app="app_boiler_blowdown">
-	<div id="wrapper">
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			{% include "static_html/urls.html" %}
-		</nav>
-	</div>
-	<div id="page-wrapper">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="page-header">
-						Boiler Blowdown Details
-					</h1>
-					<form class="form-horizontal" ng-controller="boilerBlowdownModifyController" role="form">
-					{% csrf_token %}
-						<div class="container-fluid">
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Client</label>
-							  <div class="col-sm-4">
-								  <select class="form-control col-sm-6" id="client" name="client">
-									{% for client_id, client_name in clients_list %}
-									   <option {% if client_id == boiler_blowdown_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
-									{% endfor %}
-								  </select>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Boiler Blowdown Reduction and Recovery</label>
-							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="boiler_blowdown_name" name="boiler_blowdown_name" value="{{boiler_blowdown_obj.boiler_blowdown_name}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Gas Rate</label>
-							  <div class="col-sm-4">
-								<input class="form-control control-label" type="text" id="gas_rate" name="gas_rate" value={{boiler_blowdown_obj.gas_rate}}>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Water Rate</label>
-							  <div class="col-sm-4">
-								<input class="form-control control-label" type="text" id="water_rate" name="water_rate" value={{boiler_blowdown_obj.water_rate}}>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Makeup Water Temperature</label>
-							  <div class="col-sm-4">
-								<input class="form-control control-label" type="text" id="makeup_water_temperature" name="makeup_water_temperature" value="{{boiler_blowdown_obj.makeup_water_temperature}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-md bg-info">
-								<label class="col-md-offset-4 col-md-8 ">Reduce Blowdown Flowrate</label>
-							</div>
-							<div class="form-group form-group-sm">
-								<label class="col-sm-offset-4 col-sm-2">
-									Existing Blowdown
-								</label>
-								<label class="col-sm-2">
-									Proposed Blowdown
-								</label>
-								<label class="col-sm-2">
-									Blowdown Reduction
-								</label>
-							</div>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        Boiler Blowdown Details
+                    </h1>
+                    <form class="form-horizontal" ng-controller="boilerBlowdownModifyController" role="form">
+                    {% csrf_token %}
+                        <div class="container-fluid">
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Client</label>
+                              <div class="col-sm-4">
+                                  <select class="form-control col-sm-6" id="client" name="client">
+                                    {% for client_id, client_name in clients_list %}
+                                       <option {% if client_id == boiler_blowdown_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                    {% endfor %}
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Boiler Blowdown Reduction and Recovery</label>
+                              <div class="col-sm-4">
+                                <input class="form-control" type="text" id="boiler_blowdown_name" name="boiler_blowdown_name" value="{{boiler_blowdown_obj.boiler_blowdown_name}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Gas Rate</label>
+                              <div class="col-sm-4">
+                                <input class="form-control control-label" type="text" id="gas_rate" name="gas_rate" value={{boiler_blowdown_obj.gas_rate}}>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Water Rate</label>
+                              <div class="col-sm-4">
+                                <input class="form-control control-label" type="text" id="water_rate" name="water_rate" value={{boiler_blowdown_obj.water_rate}}>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Makeup Water Temperature</label>
+                              <div class="col-sm-4">
+                                <input class="form-control control-label" type="text" id="makeup_water_temperature" name="makeup_water_temperature" value="{{boiler_blowdown_obj.makeup_water_temperature}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-md bg-info">
+                                <label class="col-md-offset-4 col-md-8 ">Reduce Blowdown Flowrate</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-offset-4 col-sm-2">
+                                    Existing Blowdown
+                                </label>
+                                <label class="col-sm-2">
+                                    Proposed Blowdown
+                                </label>
+                                <label class="col-sm-2">
+                                    Blowdown Reduction
+                                </label>
+                            </div>
 
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Frequency (Per Day)</label>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="existing_blowdown_frequency_per_day" name="existing_blowdown_frequency_per_day" value="{{boiler_blowdown_obj.existing_blowdown_frequency_per_day}}">
-							  </div>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="proposed_blowdown_frequency_per_day" name="proposed_blowdown_frequency_per_day" value="{{boiler_blowdown_obj.proposed_blowdown_frequency_per_day}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Rate (GPM)</label>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="existing_blowdown_rate_gpm" name="existing_blowdown_rate_gpm" value="{{boiler_blowdown_obj.existing_blowdown_rate_gpm}}">
-							  </div>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="proposed_blowdown_rate_gpm" name="proposed_blowdown_rate_gpm" value="{{boiler_blowdown_obj.proposed_blowdown_rate_gpm}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Duration (minutes)</label>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="existing_blowdown_duration_mins" name="existing_blowdown_duration_mins" value="{{boiler_blowdown_obj.existing_blowdown_duration_mins}}">
-							  </div>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="proposed_blowdown_duration_mins" name="proposed_blowdown_duration_mins" value="{{boiler_blowdown_obj.proposed_blowdown_duration_mins}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown (Gallons Per Day)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_gallons_per_day }}|currency:"" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_gallons_per_day }}| currency:"" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_gallons_per_day }} - {{ get_proposed_blowdown_gallons_per_day }}| currency:"" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Days of Operation</label>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="existing_days_of_operation" name="existing_days_of_operation" value="{{boiler_blowdown_obj.existing_days_of_operation}}">
-							  </div>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="proposed_days_of_operation" name="proposed_days_of_operation" value="{{boiler_blowdown_obj.proposed_days_of_operation}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Annual Quantity (Gals)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_gals }}| currency:"" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_annual_quantity_gals }}| currency: "" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_gals }} - {{ get_proposed_annual_quantity_gals }}| currency: "" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Annual Quantity (lbs)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_lbs }}| currency:"" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_annual_quantity_lbs }}| currency:"" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-							   <label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_lbs }} - {{ get_proposed_annual_quantity_lbs }}| currency: "" :0 $}</label>
-							 </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Discharge Temp (F)</label>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="existing_discharge_temp_in_f" name="existing_discharge_temp_in_f" value="{{boiler_blowdown_obj.existing_discharge_temp_in_f}}">
-							  </div>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="proposed_discharge_temp_in_f" name="proposed_discharge_temp_in_f" value="{{boiler_blowdown_obj.proposed_discharge_temp_in_f}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Energy Loss (BTUH)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_btuh }}|currency:"" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_loss_btuh }}|currency:"" :0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-							   <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_btuh }} - {{ get_proposed_blowdown_energy_loss_btuh }}| currency: "" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Energy Loss (THERM)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_energy_loss_therm }}|currency:"":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_energy_loss_therm }}| currency:"":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-							   <label class="col-sm-12 bg-success control-label">{${{ get_existing_energy_loss_therm }} - {{ get_proposed_energy_loss_therm }}| currency: "" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Energy Cost ($)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{$ {{ get_existing_overflow_cost }}| currency:"$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_overflow_cost }}| currency:"$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-							   <label class="col-sm-12 bg-success control-label">{${{ get_existing_overflow_cost }} - {{ get_proposed_overflow_cost }}| currency: "$" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Make-up Water Quantity</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_makeup_water_quantity }}| currency:"$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_makeup_water_quantity }}| currency:"$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-							   <label class="col-sm-12 bg-success control-label">{${{ get_existing_makeup_water_quantity }} - {{ get_proposed_makeup_water_quantity }}| currency: "$" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Make-up Water Cost ($)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{$ {{ get_existing_makeup_water_cost }}| currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_makeup_water_cost }}| currency:"$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_makeup_water_cost }} - {{ get_proposed_makeup_water_cost }}| currency: "$" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Gas and Water Cost ($)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{$ {{ get_existing_gas_and_water_cost }}| currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_gas_and_water_cost }}| currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_gas_and_water_cost }} - {{ get_proposed_gas_and_water_cost }}| currency: "$" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-md bg-info">
-								<label class="col-md-offset-4 col-md-8">
-									Provide Blowdown Heat Recovery
-								</label>
-							</div>
-							<div class="form-group form-group-sm">
-								<label class="col-sm-offset-4 col-sm-2">
-									Savings at Existing Blowdown Rate
-								</label>
-								<label class="col-sm-2">
-									Savings at Proposed Blowdown Rate
-								</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Energy Loss (Therms)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_therm }}| currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_loss_therm }}| currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_therm }} - {{ get_proposed_blowdown_energy_loss_therm }}| currency: "$" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Heat Recovery Efficiency</label>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="existing_heat_recovery_efficiency_perc" name="existing_heat_recovery_efficiency_perc" value="{{boiler_blowdown_obj.existing_heat_recovery_efficiency_perc}}">
-							  </div>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="proposed_heat_recovery_efficiency_perc" name="proposed_heat_recovery_efficiency_perc" value="{{boiler_blowdown_obj.proposed_heat_recovery_efficiency_perc}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Blowdown Energy Recovery (Therms)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_recovery_therms }}| currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_recovery_therms }}|currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_recovery_therms }} - {{ get_proposed_blowdown_energy_recovery_therms }}| currency: "$" :0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Total Savings ($)</label>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_total }}| currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_total }} | currency: "$":0 $}</label>
-							  </div>
-							  <div class="col-sm-2">
-								<label class="col-sm-12 bg-success control-label">{${{ get_existing_total }} - {{ get_proposed_total }}| currency: "$" :0 $}</label>
-							  </div>
-							</div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Frequency (Per Day)</label>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="existing_blowdown_frequency_per_day" name="existing_blowdown_frequency_per_day" value="{{boiler_blowdown_obj.existing_blowdown_frequency_per_day}}">
+                              </div>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="proposed_blowdown_frequency_per_day" name="proposed_blowdown_frequency_per_day" value="{{boiler_blowdown_obj.proposed_blowdown_frequency_per_day}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Rate (GPM)</label>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="existing_blowdown_rate_gpm" name="existing_blowdown_rate_gpm" value="{{boiler_blowdown_obj.existing_blowdown_rate_gpm}}">
+                              </div>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="proposed_blowdown_rate_gpm" name="proposed_blowdown_rate_gpm" value="{{boiler_blowdown_obj.proposed_blowdown_rate_gpm}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Duration (minutes)</label>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="existing_blowdown_duration_mins" name="existing_blowdown_duration_mins" value="{{boiler_blowdown_obj.existing_blowdown_duration_mins}}">
+                              </div>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="proposed_blowdown_duration_mins" name="proposed_blowdown_duration_mins" value="{{boiler_blowdown_obj.proposed_blowdown_duration_mins}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown (Gallons Per Day)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_gallons_per_day }}|currency:"" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_gallons_per_day }}| currency:"" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_gallons_per_day }} - {{ get_proposed_blowdown_gallons_per_day }}| currency:"" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Days of Operation</label>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="existing_days_of_operation" name="existing_days_of_operation" value="{{boiler_blowdown_obj.existing_days_of_operation}}">
+                              </div>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="proposed_days_of_operation" name="proposed_days_of_operation" value="{{boiler_blowdown_obj.proposed_days_of_operation}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Annual Quantity (Gals)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_gals }}| currency:"" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_annual_quantity_gals }}| currency: "" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_gals }} - {{ get_proposed_annual_quantity_gals }}| currency: "" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Annual Quantity (lbs)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_lbs }}| currency:"" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_annual_quantity_lbs }}| currency:"" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                               <label class="col-sm-12 bg-success control-label">{${{ get_existing_annual_quantity_lbs }} - {{ get_proposed_annual_quantity_lbs }}| currency: "" :0 $}</label>
+                             </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Discharge Temp (F)</label>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="existing_discharge_temp_in_f" name="existing_discharge_temp_in_f" value="{{boiler_blowdown_obj.existing_discharge_temp_in_f}}">
+                              </div>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="proposed_discharge_temp_in_f" name="proposed_discharge_temp_in_f" value="{{boiler_blowdown_obj.proposed_discharge_temp_in_f}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Energy Loss (BTUH)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_btuh }}|currency:"" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_loss_btuh }}|currency:"" :0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                               <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_btuh }} - {{ get_proposed_blowdown_energy_loss_btuh }}| currency: "" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Energy Loss (THERM)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_energy_loss_therm }}|currency:"":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_energy_loss_therm }}| currency:"":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                               <label class="col-sm-12 bg-success control-label">{${{ get_existing_energy_loss_therm }} - {{ get_proposed_energy_loss_therm }}| currency: "" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Energy Cost ($)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ get_existing_overflow_cost }}| currency:"$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_overflow_cost }}| currency:"$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                               <label class="col-sm-12 bg-success control-label">{${{ get_existing_overflow_cost }} - {{ get_proposed_overflow_cost }}| currency: "$" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Make-up Water Quantity</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_makeup_water_quantity }}| currency:"$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_makeup_water_quantity }}| currency:"$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                               <label class="col-sm-12 bg-success control-label">{${{ get_existing_makeup_water_quantity }} - {{ get_proposed_makeup_water_quantity }}| currency: "$" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Make-up Water Cost ($)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ get_existing_makeup_water_cost }}| currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_makeup_water_cost }}| currency:"$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_makeup_water_cost }} - {{ get_proposed_makeup_water_cost }}| currency: "$" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Gas and Water Cost ($)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ get_existing_gas_and_water_cost }}| currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_gas_and_water_cost }}| currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_gas_and_water_cost }} - {{ get_proposed_gas_and_water_cost }}| currency: "$" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-md bg-info">
+                                <label class="col-md-offset-4 col-md-8">
+                                    Provide Blowdown Heat Recovery
+                                </label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-offset-4 col-sm-2">
+                                    Savings at Existing Blowdown Rate
+                                </label>
+                                <label class="col-sm-2">
+                                    Savings at Proposed Blowdown Rate
+                                </label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Energy Loss (Therms)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_therm }}| currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_loss_therm }}| currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_loss_therm }} - {{ get_proposed_blowdown_energy_loss_therm }}| currency: "$" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Heat Recovery Efficiency</label>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="existing_heat_recovery_efficiency_perc" name="existing_heat_recovery_efficiency_perc" value="{{boiler_blowdown_obj.existing_heat_recovery_efficiency_perc}}">
+                              </div>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="proposed_heat_recovery_efficiency_perc" name="proposed_heat_recovery_efficiency_perc" value="{{boiler_blowdown_obj.proposed_heat_recovery_efficiency_perc}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Blowdown Energy Recovery (Therms)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_recovery_therms }}| currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_proposed_blowdown_energy_recovery_therms }}|currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_blowdown_energy_recovery_therms }} - {{ get_proposed_blowdown_energy_recovery_therms }}| currency: "$" :0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Total Savings ($)</label>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_total }}| currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ get_proposed_total }} | currency: "$":0 $}</label>
+                              </div>
+                              <div class="col-sm-2">
+                                <label class="col-sm-12 bg-success control-label">{${{ get_existing_total }} - {{ get_proposed_total }}| currency: "$" :0 $}</label>
+                              </div>
+                            </div>
 
-							<div class="form-group form-group-sm">
-								<div class="col-sm-6 control-label">
-									<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
-									<input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-sm-6 control-label">
+                                    <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                    <input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

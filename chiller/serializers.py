@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from boiler_blowdown.models import BoilerBlowdown
+from chiller.models import Chiller, ChillerLoopPump, CondensatePump
 from django.contrib.auth.models import User
 
 
@@ -42,7 +42,7 @@ class BoilerBlowdownSerializer(serializers.HyperlinkedModelSerializer):
     get_savings_water = serializers.ReadOnlyField()
 
     class Meta:
-        model = BoilerBlowdown
+        model = Chiller
         fields = ('id',
                   'url',
                   'owner',

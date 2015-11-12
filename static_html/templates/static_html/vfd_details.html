@@ -2,744 +2,744 @@
 {% load staticfiles %}
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
-	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
-	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<script src="{% static "clients/js/angular.js"%}"></script>
-	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
-	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
-	<script>
-		var app_1 = angular.module("app_vfd", ['ui.bootstrap']);
-		app_1.config(['$httpProvider', function($httpProvider) {
-			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-		}]);
-		app_1.config(function($interpolateProvider) {
-			$interpolateProvider.startSymbol('{$');
-			$interpolateProvider.endSymbol('$}');
-		  });
-		app_1.controller("setpointAddController", ['$scope', '$http', function($scope, $http){
-			$scope.submit_new_setpoint = function(){
-				$scope.vfd_motor_setpoint_selection_json = {
-					'client_vfd': "http://127.0.0.1:8000/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/",
-					'percent_of_time': $scope.percent_of_time,
-					'speed_percent': $scope.speed_percent
-				}
-				$http({method: 'POST',
-					   url: '/api_vfd/vfd_motor_setpoint_selections/',
-					   data: $scope.vfd_motor_setpoint_selection_json}).
-				success(function(data){
-				}).
-				error(function(data){
-				});
-				$('#add_vfd_setpoint').modal('hide');
-				window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-			};
-		}]);
-		app_1.controller("vfdMotorModifyController", ['$scope','$http', function($scope,$http){
-			$scope.total_hours = 0;
-			$scope.existing_total_kwh = 0;
-			$scope.existing_cost_per_kwh = 0;
-			$scope.proposed_total_kwh = 0;
-			$scope.proposed_cost_per_kwh = 0;
-			$scope.monthly = {};
-			var months_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-			var added_list = [];
-			$http({method: 'GET', url: "/api_vfd/vfd_motor_data_per_month/?client_vfd={{vfd_motor_obj.id}}"}).
-				 success(function(data){
-					 for(i=0; i<data.length; i++){
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("app_vfd", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.config(function($interpolateProvider) {
+            $interpolateProvider.startSymbol('{$');
+            $interpolateProvider.endSymbol('$}');
+          });
+        app_1.controller("setpointAddController", ['$scope', '$http', function($scope, $http){
+            $scope.submit_new_setpoint = function(){
+                $scope.vfd_motor_setpoint_selection_json = {
+                    'client_vfd': "http://127.0.0.1:8000/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/",
+                    'percent_of_time': $scope.percent_of_time,
+                    'speed_percent': $scope.speed_percent
+                }
+                $http({method: 'POST',
+                       url: '/api_vfd/vfd_motor_setpoint_selections/',
+                       data: $scope.vfd_motor_setpoint_selection_json}).
+                success(function(data){
+                }).
+                error(function(data){
+                });
+                $('#add_vfd_setpoint').modal('hide');
+                window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+            };
+        }]);
+        app_1.controller("vfdMotorModifyController", ['$scope','$http', function($scope,$http){
+            $scope.total_hours = 0;
+            $scope.existing_total_kwh = 0;
+            $scope.existing_cost_per_kwh = 0;
+            $scope.proposed_total_kwh = 0;
+            $scope.proposed_cost_per_kwh = 0;
+            $scope.monthly = {};
+            var months_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+            var added_list = [];
+            $http({method: 'GET', url: "/api_vfd/vfd_motor_data_per_month/?client_vfd={{vfd_motor_obj.id}}"}).
+                 success(function(data){
+                     for(i=0; i<data.length; i++){
 
-						 $scope.monthly[data[i].get_ui_name] = {'hours':data[i].hours_of_operation,
-																'id': data[i].id};
-						 $scope.total_hours += data[i].hours_of_operation;
-						 $scope.existing_total_kwh += data[i].get_existing_kwh;
-						 $scope.existing_cost_per_kwh += data[i].get_existing_cost_of_operation;
-						 added_list.push(data[i].get_ui_name);
-					};
-					for(i=0; i<months_list.length; i++){
-						if(added_list.indexOf(months_list[i]) >= 0){
-							continue;
-						}else{
-							$scope.monthly[months_list[i]] = {'hours':0,
-															  'id': null};
-						};
-					};
-					$scope.total_extended_cost = 0;
-					$scope.total_labor_cost = 0;
-					$http({method: 'GET', url: "/api_vfd/vfd_motor_setpoint_selections/?client_vfd={{vfd_motor_obj.id}}"}).
-						 success(function(data){
-							 $scope.vfd_motor_setpoint_selections = data;
-							 for(i=0; i<data.length; i++){
-								 $scope.proposed_total_kwh += data[i].get_proposed_kwh * $scope.total_hours;
-								 $scope.proposed_cost_per_kwh += data[i].get_proposed_cost_of_operation * $scope.total_hours;
-							};
-							$http({method: 'GET', url: "/api_vfd/materials_vfd_motor/?client_vfd={{vfd_motor_obj.id}}"}).
-								 success(function(material_data){
-									 $scope.materials_vfd_motor = material_data;
-									 for(i=0; i<material_data.length; i++){
-										 $scope.total_extended_cost += material_data[i].get_extended_cost;
-									};
-							}).error(function(data){});
-							$http({method: 'GET', url: "/api_vfd/labor_vfd_motor/?client_vfd={{vfd_motor_obj.id}}"}).
-								 success(function(labor_data){
-									 $scope.labor_vfd_motor = labor_data;
-									 for(i=0; i<labor_data.length; i++){
-										 $scope.total_labor_cost += labor_data[i].get_customer_price;
-									};
-							}).error(function(data){});
-					}).error(function(data){});
-			}).error(function(data){});
-			$scope.clients_filter = "all";
-			$scope.vfd_json = {'id': {{vfd_motor_obj.id}},
-							   'client': '',
-							   'vfd_name': '',
-							   'cost_per_kwh': 0,
-							   'motor_horse_pwr': 0,
-							   'existing_motor_efficiency': 0,
-							   'proposed_vfd_efficiency': 0,
-							   'motor_load': 0};
-			$scope.new_material = {};
-			$scope.submit_new_material = function(){
-				$scope.new_material.client_vfd = "http://127.0.0.1:8000/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/"
-				$http({method: 'POST',
-					   url: '/api_vfd/materials_vfd_motor/',
-					   data: $scope.new_material}).
-				success(function(data){
-					window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-				}).
-				error(function(data){
-				});
-				$('#add_material').modal('hide');
-				window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-			};
-			$scope.new_labor = {};
-			$scope.submit_new_labor = function(){
-				$scope.new_labor.client_vfd = "http://127.0.0.1:8000/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/"
-				$http({method: 'POST',
-					   url: '/api_vfd/labor_vfd_motor/',
-					   data: $scope.new_labor}).
-				success(function(data){
-					window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-				}).
-				error(function(data){
-				});
-				$('#add_labor').modal('hide');
-				window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-			};
-			$scope.submit_details = function(){
-				$scope.vfd_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.vfd_json.vfd_name = $("#vfd_name").val();
-				$scope.vfd_json.cost_per_kwh = $("#cost_per_kwh").val();
-				$scope.vfd_json.motor_horse_pwr = $("#motor_horse_pwr").val();
-				$scope.vfd_json.existing_motor_efficiency = $("#existing_motor_efficiency").val();
-				$scope.vfd_json.proposed_vfd_efficiency = $("#proposed_vfd_efficiency").val();
-				$scope.vfd_json.motor_load = $("#motor_load").val();
-				$http({method: 'PUT',
-					   url: '/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/',
-					   data: $scope.vfd_json}).
-				success(function(data){
-				}).
-				error(function(data){
-				});
-				var months_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-				for (i=0;i<months_list.length;i++){
-					$scope.monthly_json = {};
-					$scope.monthly_json.client_vfd = '/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/';
-					$scope.monthly_json.month = months_list[i].toUpperCase();
-					$scope.monthly_json.hours_of_operation = $scope.monthly[months_list[i]].hours;
-					var monthly_id = $scope.monthly[months_list[i]].id;
-					if(monthly_id){
-						$scope.monthly_json.id = monthly_id;
-						$http({method: 'PUT',
-							   url: '/api_vfd/vfd_motor_data_per_month/'+$scope.monthly_json.id+'/',
-							   data: $scope.monthly_json}).
-						success(function(data){
-						}).
-						error(function(data){
-						});
-					}else{
-							$http({method: 'POST',
-								   url: '/api_vfd/vfd_motor_data_per_month/',
-								   data: $scope.monthly_json}).
-							success(function(data){
-							}).
-							error(function(data){
-							});
-					}
-				}
-				for(i=0; i<$scope.vfd_motor_setpoint_selections.length; i++){
-					$http({method: 'PUT',
-						   url: '/api_vfd/vfd_motor_setpoint_selections/'+ $scope.vfd_motor_setpoint_selections[i].id+'/',
-						   data: $scope.vfd_motor_setpoint_selections[i]}).
-					success(function(data){
-					}).
-					error(function(data){
-					});
-				}
-				window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-			}
-			$scope.submit_delete = function(){
-				$http({method: 'DELETE',
-					   url: '/api_vfd/vfd/{{vfd_obj.id}}/'}).
-				success(function(data){
-					window.location.href = '/vfd/';
-				}).
-				error(function(data){
-				});
-				$('#add_vfd_setpoint').modal('hide');
-			}
-			$scope.delete_setpoint = function(setpoint_id){
-				$http({method: 'DELETE',
-					   url: '/api_vfd/vfd_motor_setpoint_selections/'+setpoint_id+'/'}).
-				success(function(data){
-					window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-				}).
-				error(function(data){
-				});
-			}
-			$scope.delete_material = function(material_id){
-				$http({method: 'DELETE',
-					   url: '/api_vfd/materials_vfd_motor/'+material_id+'/'}).
-				success(function(data){
-					window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-				}).
-				error(function(data){
-				});
-			}
-			$scope.delete_labor = function(labor_id){
-				$http({method: 'DELETE',
-					   url: '/api_vfd/labor_vfd_motor/'+labor_id+'/'}).
-				success(function(data){
-					window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
-				}).
-				error(function(data){
-				});
-			}
-		}]);
-	</script>
+                         $scope.monthly[data[i].get_ui_name] = {'hours':data[i].hours_of_operation,
+                                                                'id': data[i].id};
+                         $scope.total_hours += data[i].hours_of_operation;
+                         $scope.existing_total_kwh += data[i].get_existing_kwh;
+                         $scope.existing_cost_per_kwh += data[i].get_existing_cost_of_operation;
+                         added_list.push(data[i].get_ui_name);
+                    };
+                    for(i=0; i<months_list.length; i++){
+                        if(added_list.indexOf(months_list[i]) >= 0){
+                            continue;
+                        }else{
+                            $scope.monthly[months_list[i]] = {'hours':0,
+                                                              'id': null};
+                        };
+                    };
+                    $scope.total_extended_cost = 0;
+                    $scope.total_labor_cost = 0;
+                    $http({method: 'GET', url: "/api_vfd/vfd_motor_setpoint_selections/?client_vfd={{vfd_motor_obj.id}}"}).
+                         success(function(data){
+                             $scope.vfd_motor_setpoint_selections = data;
+                             for(i=0; i<data.length; i++){
+                                 $scope.proposed_total_kwh += data[i].get_proposed_kwh * $scope.total_hours;
+                                 $scope.proposed_cost_per_kwh += data[i].get_proposed_cost_of_operation * $scope.total_hours;
+                            };
+                            $http({method: 'GET', url: "/api_vfd/materials_vfd_motor/?client_vfd={{vfd_motor_obj.id}}"}).
+                                 success(function(material_data){
+                                     $scope.materials_vfd_motor = material_data;
+                                     for(i=0; i<material_data.length; i++){
+                                         $scope.total_extended_cost += material_data[i].get_extended_cost;
+                                    };
+                            }).error(function(data){});
+                            $http({method: 'GET', url: "/api_vfd/labor_vfd_motor/?client_vfd={{vfd_motor_obj.id}}"}).
+                                 success(function(labor_data){
+                                     $scope.labor_vfd_motor = labor_data;
+                                     for(i=0; i<labor_data.length; i++){
+                                         $scope.total_labor_cost += labor_data[i].get_customer_price;
+                                    };
+                            }).error(function(data){});
+                    }).error(function(data){});
+            }).error(function(data){});
+            $scope.clients_filter = "all";
+            $scope.vfd_json = {'id': {{vfd_motor_obj.id}},
+                               'client': '',
+                               'vfd_name': '',
+                               'cost_per_kwh': 0,
+                               'motor_horse_pwr': 0,
+                               'existing_motor_efficiency': 0,
+                               'proposed_vfd_efficiency': 0,
+                               'motor_load': 0};
+            $scope.new_material = {};
+            $scope.submit_new_material = function(){
+                $scope.new_material.client_vfd = "http://127.0.0.1:8000/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/"
+                $http({method: 'POST',
+                       url: '/api_vfd/materials_vfd_motor/',
+                       data: $scope.new_material}).
+                success(function(data){
+                    window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+                }).
+                error(function(data){
+                });
+                $('#add_material').modal('hide');
+                window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+            };
+            $scope.new_labor = {};
+            $scope.submit_new_labor = function(){
+                $scope.new_labor.client_vfd = "http://127.0.0.1:8000/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/"
+                $http({method: 'POST',
+                       url: '/api_vfd/labor_vfd_motor/',
+                       data: $scope.new_labor}).
+                success(function(data){
+                    window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+                }).
+                error(function(data){
+                });
+                $('#add_labor').modal('hide');
+                window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+            };
+            $scope.submit_details = function(){
+                $scope.vfd_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.vfd_json.vfd_name = $("#vfd_name").val();
+                $scope.vfd_json.cost_per_kwh = $("#cost_per_kwh").val();
+                $scope.vfd_json.motor_horse_pwr = $("#motor_horse_pwr").val();
+                $scope.vfd_json.existing_motor_efficiency = $("#existing_motor_efficiency").val();
+                $scope.vfd_json.proposed_vfd_efficiency = $("#proposed_vfd_efficiency").val();
+                $scope.vfd_json.motor_load = $("#motor_load").val();
+                $http({method: 'PUT',
+                       url: '/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/',
+                       data: $scope.vfd_json}).
+                success(function(data){
+                }).
+                error(function(data){
+                });
+                var months_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+                for (i=0;i<months_list.length;i++){
+                    $scope.monthly_json = {};
+                    $scope.monthly_json.client_vfd = '/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/';
+                    $scope.monthly_json.month = months_list[i].toUpperCase();
+                    $scope.monthly_json.hours_of_operation = $scope.monthly[months_list[i]].hours;
+                    var monthly_id = $scope.monthly[months_list[i]].id;
+                    if(monthly_id){
+                        $scope.monthly_json.id = monthly_id;
+                        $http({method: 'PUT',
+                               url: '/api_vfd/vfd_motor_data_per_month/'+$scope.monthly_json.id+'/',
+                               data: $scope.monthly_json}).
+                        success(function(data){
+                        }).
+                        error(function(data){
+                        });
+                    }else{
+                            $http({method: 'POST',
+                                   url: '/api_vfd/vfd_motor_data_per_month/',
+                                   data: $scope.monthly_json}).
+                            success(function(data){
+                            }).
+                            error(function(data){
+                            });
+                    }
+                }
+                for(i=0; i<$scope.vfd_motor_setpoint_selections.length; i++){
+                    $http({method: 'PUT',
+                           url: '/api_vfd/vfd_motor_setpoint_selections/'+ $scope.vfd_motor_setpoint_selections[i].id+'/',
+                           data: $scope.vfd_motor_setpoint_selections[i]}).
+                    success(function(data){
+                    }).
+                    error(function(data){
+                    });
+                }
+                window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+            }
+            $scope.submit_delete = function(){
+                $http({method: 'DELETE',
+                       url: '/api_vfd/vfd/{{vfd_obj.id}}/'}).
+                success(function(data){
+                    window.location.href = '/vfd/';
+                }).
+                error(function(data){
+                });
+                $('#add_vfd_setpoint').modal('hide');
+            }
+            $scope.delete_setpoint = function(setpoint_id){
+                $http({method: 'DELETE',
+                       url: '/api_vfd/vfd_motor_setpoint_selections/'+setpoint_id+'/'}).
+                success(function(data){
+                    window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+                }).
+                error(function(data){
+                });
+            }
+            $scope.delete_material = function(material_id){
+                $http({method: 'DELETE',
+                       url: '/api_vfd/materials_vfd_motor/'+material_id+'/'}).
+                success(function(data){
+                    window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+                }).
+                error(function(data){
+                });
+            }
+            $scope.delete_labor = function(labor_id){
+                $http({method: 'DELETE',
+                       url: '/api_vfd/labor_vfd_motor/'+labor_id+'/'}).
+                success(function(data){
+                    window.location.href = '/vfd_details/{{vfd_motor_obj.id}}/';
+                }).
+                error(function(data){
+                });
+            }
+        }]);
+    </script>
 </head>
 <body ng-app="app_vfd">
-	<div id="wrapper">
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			{% include "static_html/urls.html" %}
-		</nav>
-	</div>
-	<div id="page-wrapper">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="page-header">
-						VFD Motor Details
-					</h1>
-					<form class="form-horizontal" ng-controller="vfdMotorModifyController" role="form">
-					{% csrf_token %}
-						<div class="container-fluid">
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">ID</label>
-							  <div class="col-sm-4">
-								<label class="col-sm-5 bg-success">{{ vfd_motor_obj.id }}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">Start Date</label>
-							  <div class="col-sm-6">
-								<label class="col-sm-5 bg-success">{{ vfd_motor_obj.start_date }}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">Client</label>
-							  <div class="col-sm-3">
-								  <select class="form-control col-sm-6" id="client" name="client">
-									{% for client_id, client_name in clients_list %}
-									   <option {% if client_id == vfd_motor_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
-									{% endfor %}
-								  </select>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">VFD Motor Name</label>
-							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="vfd_name" name="vfd_name" value="{{ vfd_motor_obj.vfd_name}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">Cost (per kWh)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="cost_per_kwh" name="cost_per_kwh" value="{{ vfd_motor_obj.cost_per_kwh}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">Motor (HP)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="motor_horse_pwr" name="motor_horse_pwr" value="{{ vfd_motor_obj.motor_horse_pwr}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">Existing Motor Efficiency (%)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="existing_motor_efficiency" name="existing_motor_efficiency" value="{{ vfd_motor_obj.existing_motor_efficiency}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">Proposed Motor Efficiency (%)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="proposed_vfd_efficiency" name="proposed_vfd_efficiency" value="{{ vfd_motor_obj.proposed_vfd_efficiency}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-3 control-label">Motor Load (%)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="motor_load" name="motor_load" value="{{ vfd_motor_obj.motor_load}}">
-							  </div>
-							</div>
-							<div class="panel panel-info">
-								<div class="panel-heading">
-								  Standard Maximum Hours Of Operation
-								</div>
-								<div class="panel-body">
-									<table class="table table-striped">
-										<tr>
-											<th>JAN</th>
-											<th>FEB</th>
-											<th>MAR</th>
-											<th>APR</th>
-											<th>MAY</th>
-											<th>JUN</th>
-											<th>JUL</th>
-											<th>AUG</th>
-											<th>SEP</th>
-											<th>OCT</th>
-											<th>NOV</th>
-											<th>DEC</th>
-										</tr>
-										<tr>
-											<td><input disabled class="form-control input-sm" value="744"/></td>
-											<td><input disabled class="form-control input-sm" value="672"/></td>
-											<td><input disabled class="form-control input-sm" value="744"/></td>
-											<td><input disabled class="form-control input-sm" value="720"/></td>
-											<td><input disabled class="form-control input-sm" value="744"/></td>
-											<td><input disabled class="form-control input-sm" value="720"/></td>
-											<td><input disabled class="form-control input-sm" value="744"/></td>
-											<td><input disabled class="form-control input-sm" value="744"/></td>
-											<td><input disabled class="form-control input-sm" value="720"/></td>
-											<td><input disabled class="form-control input-sm" value="744"/></td>
-											<td><input disabled class="form-control input-sm" value="720"/></td>
-											<td><input disabled class="form-control input-sm" value="744"/></td>
-										</tr>
-									</table>
-								</div>
-							</div>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        VFD Motor Details
+                    </h1>
+                    <form class="form-horizontal" ng-controller="vfdMotorModifyController" role="form">
+                    {% csrf_token %}
+                        <div class="container-fluid">
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">ID</label>
+                              <div class="col-sm-4">
+                                <label class="col-sm-5 bg-success">{{ vfd_motor_obj.id }}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">Start Date</label>
+                              <div class="col-sm-6">
+                                <label class="col-sm-5 bg-success">{{ vfd_motor_obj.start_date }}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">Client</label>
+                              <div class="col-sm-3">
+                                  <select class="form-control col-sm-6" id="client" name="client">
+                                    {% for client_id, client_name in clients_list %}
+                                       <option {% if client_id == vfd_motor_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                    {% endfor %}
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">VFD Motor Name</label>
+                              <div class="col-sm-4">
+                                <input class="form-control" type="text" id="vfd_name" name="vfd_name" value="{{ vfd_motor_obj.vfd_name}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">Cost (per kWh)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="cost_per_kwh" name="cost_per_kwh" value="{{ vfd_motor_obj.cost_per_kwh}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">Motor (HP)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="motor_horse_pwr" name="motor_horse_pwr" value="{{ vfd_motor_obj.motor_horse_pwr}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">Existing Motor Efficiency (%)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="existing_motor_efficiency" name="existing_motor_efficiency" value="{{ vfd_motor_obj.existing_motor_efficiency}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">Proposed Motor Efficiency (%)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="proposed_vfd_efficiency" name="proposed_vfd_efficiency" value="{{ vfd_motor_obj.proposed_vfd_efficiency}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-3 control-label">Motor Load (%)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="motor_load" name="motor_load" value="{{ vfd_motor_obj.motor_load}}">
+                              </div>
+                            </div>
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                  Standard Maximum Hours Of Operation
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th>JAN</th>
+                                            <th>FEB</th>
+                                            <th>MAR</th>
+                                            <th>APR</th>
+                                            <th>MAY</th>
+                                            <th>JUN</th>
+                                            <th>JUL</th>
+                                            <th>AUG</th>
+                                            <th>SEP</th>
+                                            <th>OCT</th>
+                                            <th>NOV</th>
+                                            <th>DEC</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input disabled class="form-control input-sm" value="744"/></td>
+                                            <td><input disabled class="form-control input-sm" value="672"/></td>
+                                            <td><input disabled class="form-control input-sm" value="744"/></td>
+                                            <td><input disabled class="form-control input-sm" value="720"/></td>
+                                            <td><input disabled class="form-control input-sm" value="744"/></td>
+                                            <td><input disabled class="form-control input-sm" value="720"/></td>
+                                            <td><input disabled class="form-control input-sm" value="744"/></td>
+                                            <td><input disabled class="form-control input-sm" value="744"/></td>
+                                            <td><input disabled class="form-control input-sm" value="720"/></td>
+                                            <td><input disabled class="form-control input-sm" value="744"/></td>
+                                            <td><input disabled class="form-control input-sm" value="720"/></td>
+                                            <td><input disabled class="form-control input-sm" value="744"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
 
-							<div class="panel panel-info">
-								<div class="panel-heading">
-								  Proposed VFD Monthly Usage
-								</div>
-								<div class="panel-body">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                  Proposed VFD Monthly Usage
+                                </div>
+                                <div class="panel-body">
 
-									<table class="table table-striped">
-										<tr>
-											<th>JAN</th>
-											<th>FEB</th>
-											<th>MAR</th>
-											<th>APR</th>
-											<th>MAY</th>
-											<th>JUN</th>
-											<th>JUL</th>
-											<th>AUG</th>
-											<th>SEP</th>
-											<th>OCT</th>
-											<th>NOV</th>
-											<th>DEC</th>
-										</tr>
-										<tr>
-											<td><input class="form-control input-sm" ng-model="monthly.jan.hours " value="{$ monthly.jan.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.feb.hours " value="{$ monthly.feb.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.mar.hours " value="{$ monthly.mar.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.apr.hours " value="{$ monthly.apr.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.may.hours " value="{$ monthly.may.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.jun.hours " value="{$ monthly.jun.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.jul.hours " value="{$ monthly.jul.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.aug.hours " value="{$ monthly.aug.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.sep.hours " value="{$ monthly.sep.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.oct.hours " value="{$ monthly.oct.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.nov.hours " value="{$ monthly.nov.hours $}"/></td>
-											<td><input class="form-control input-sm" ng-model="monthly.dec.hours " value="{$ monthly.dec.hours $}"/></td>
-										</tr>
-									</table>
-									<div class="form-group form-group-sm">
-									  <label class="col-sm-2 col-sm-offset-9 control-label">Total hours</label>
-									  <label class="col-sm-1 bg-success control-label">{$ total_hours $}</label>
-									</div>
-									<div class="form-group form-group-sm">
-									  <label class="col-sm-5 col-sm-offset-6 control-label">Total Operating kWh For Existing Motor:</label>
-									  <label class="col-sm-1 bg-success control-label">{$ existing_total_kwh | currency:"":0 $}</label>
-									</div>
-									<div class="form-group form-group-sm">
-									  <label class="col-sm-5 col-sm-offset-6 control-label">Total Operating Cost For Existing Motor:</label>
-									  <label class="col-sm-1 bg-success control-label">{$ existing_cost_per_kwh | currency:"$":0 $}</label>
-									</div>
-								</div>
-							</div>
-							<div class="panel panel-info">
-							  <div class="panel-heading">
-								Proposed VFD - Speed Setpoint Ranges
-							  </div>
-							  <div class="panel-body">
-								  <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_vfd_setpoint">+ VFD Setpoint</button>
-								  <table class="table table-striped">
-									  <tr>
-										  <th>Delete<th>
-										  <th>VFD Speed</th>
-										  <th>% Of Time</th>
-										  <th>kWh</th>
-										  <th>Cost</th>
-									  </tr>
-									  {% verbatim %}
-										  <tr ng-repeat="x in vfd_motor_setpoint_selections">
-											<td><button type="button" class="btn btn-danger btn-sm" ng-click="delete_setpoint(x.id)">-</button><td>
-											<td><input class="form-control input-sm control-label" ng-model="x.speed_percent" value="{$ x.speed_percent $}"/></td>
-											<td><input class="form-control input-sm control-label" ng-model="x.percent_of_time" value="{$ x.percent_of_time $}"/></td>
-											<td><label class="col-sm-12 bg-success control-label">{$x.get_proposed_kwh * total_hours | currency:"":2 $}</label></td>
-											<td><label class="col-sm-12 bg-success control-label">{$x.get_proposed_cost_of_operation * total_hours | currency:"$":0 $}</label></td>
-										  </tr>
-									  {% endverbatim %}
-									  <tr>
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th>JAN</th>
+                                            <th>FEB</th>
+                                            <th>MAR</th>
+                                            <th>APR</th>
+                                            <th>MAY</th>
+                                            <th>JUN</th>
+                                            <th>JUL</th>
+                                            <th>AUG</th>
+                                            <th>SEP</th>
+                                            <th>OCT</th>
+                                            <th>NOV</th>
+                                            <th>DEC</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input class="form-control input-sm" ng-model="monthly.jan.hours " value="{$ monthly.jan.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.feb.hours " value="{$ monthly.feb.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.mar.hours " value="{$ monthly.mar.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.apr.hours " value="{$ monthly.apr.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.may.hours " value="{$ monthly.may.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.jun.hours " value="{$ monthly.jun.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.jul.hours " value="{$ monthly.jul.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.aug.hours " value="{$ monthly.aug.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.sep.hours " value="{$ monthly.sep.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.oct.hours " value="{$ monthly.oct.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.nov.hours " value="{$ monthly.nov.hours $}"/></td>
+                                            <td><input class="form-control input-sm" ng-model="monthly.dec.hours " value="{$ monthly.dec.hours $}"/></td>
+                                        </tr>
+                                    </table>
+                                    <div class="form-group form-group-sm">
+                                      <label class="col-sm-2 col-sm-offset-9 control-label">Total hours</label>
+                                      <label class="col-sm-1 bg-success control-label">{$ total_hours $}</label>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                      <label class="col-sm-5 col-sm-offset-6 control-label">Total Operating kWh For Existing Motor:</label>
+                                      <label class="col-sm-1 bg-success control-label">{$ existing_total_kwh | currency:"":0 $}</label>
+                                    </div>
+                                    <div class="form-group form-group-sm">
+                                      <label class="col-sm-5 col-sm-offset-6 control-label">Total Operating Cost For Existing Motor:</label>
+                                      <label class="col-sm-1 bg-success control-label">{$ existing_cost_per_kwh | currency:"$":0 $}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-info">
+                              <div class="panel-heading">
+                                Proposed VFD - Speed Setpoint Ranges
+                              </div>
+                              <div class="panel-body">
+                                  <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_vfd_setpoint">+ VFD Setpoint</button>
+                                  <table class="table table-striped">
+                                      <tr>
+                                          <th>Delete<th>
+                                          <th>VFD Speed</th>
+                                          <th>% Of Time</th>
+                                          <th>kWh</th>
+                                          <th>Cost</th>
+                                      </tr>
+                                      {% verbatim %}
+                                          <tr ng-repeat="x in vfd_motor_setpoint_selections">
+                                            <td><button type="button" class="btn btn-danger btn-sm" ng-click="delete_setpoint(x.id)">-</button><td>
+                                            <td><input class="form-control input-sm control-label" ng-model="x.speed_percent" value="{$ x.speed_percent $}"/></td>
+                                            <td><input class="form-control input-sm control-label" ng-model="x.percent_of_time" value="{$ x.percent_of_time $}"/></td>
+                                            <td><label class="col-sm-12 bg-success control-label">{$x.get_proposed_kwh * total_hours | currency:"":2 $}</label></td>
+                                            <td><label class="col-sm-12 bg-success control-label">{$x.get_proposed_cost_of_operation * total_hours | currency:"$":0 $}</label></td>
+                                          </tr>
+                                      {% endverbatim %}
+                                      <tr>
 
-									  </tr>
-									  <tr>
-										  <td><td>
-										  <td class="input-sm"></th>
-										  <td class="control-label">Totals</td>
-										  <td><label class="col-sm-12 bg-success control-label">{$ proposed_total_kwh | currency:"":2 $}</label></td>
-										  <td><label class="col-sm-12 bg-success control-label">{$ proposed_cost_per_kwh | currency:"$":0 $}</label></td>
-									  </tr>
-								  </table>
-							  </div>
-							</div>
+                                      </tr>
+                                      <tr>
+                                          <td><td>
+                                          <td class="input-sm"></th>
+                                          <td class="control-label">Totals</td>
+                                          <td><label class="col-sm-12 bg-success control-label">{$ proposed_total_kwh | currency:"":2 $}</label></td>
+                                          <td><label class="col-sm-12 bg-success control-label">{$ proposed_cost_per_kwh | currency:"$":0 $}</label></td>
+                                      </tr>
+                                  </table>
+                              </div>
+                            </div>
 
-							<!--  Material-->
-							<div class="panel panel-info">
-								<div class="panel-heading">
-								  <div class="row">
-									<div class="col-md-6">
-									  Materials Pricing
-									</div>
-									<div class="col-md-6 text-right">
-									  <button  type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_material">+</button>
-									  <!-- Modal -->
-									  <div class="modal fade" id="add_material" role="dialog">
-										<div class="modal-dialog modal-lg">
-										  <div class="modal-content">
-											<div class="modal-header">
-											  <button type="button" class="close" data-dismiss="modal">&times;</button>
-											  <h4 class="modal-title text-center">Add Material</h4>
-											</div>
-											<div class="modal-body">
-											  <div class="form-group">
-												<label class="col-sm-2 control-label">Item</label>
-												<div class="col-sm-10">
-												  <input type="text" class="form-control" name="item" placeholder="Item" ng-model="new_material.item">
-												</div>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-2 control-label">Supplier</label>
-												<div class="col-sm-10">
-												  <input type="text" class="form-control" name="supplier" placeholder="Supplier" ng-model="new_material.supplier">
-												</div>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-2 control-label">Description</label>
-												<div class="col-sm-10">
-												  <input type="text" class="form-control" name="description" placeholder="Description" ng-model="new_material.description">
-												</div>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-2 control-label">GES Cost Each</label>
-												<div class="col-sm-10">
-												  <input type="text" class="form-control" name="ges_cost_each" placeholder="0.00" ng-model="new_material.ges_cost_each">
-												</div>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-2 control-label">GES Markup</label>
-												<div class="col-sm-10">
-												  <input type="text" class="form-control" name="ges_markup" placeholder="1.00" ng-model="new_material.ges_markup">
-												</div>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-2 control-label">Quantity</label>
-												<div class="col-sm-10">
-												  <input type="text" class="form-control" name="quantity" placeholder="0" ng-model="new_material.quantity">
-												</div>
-											  </div>
-											</div>
-											<div class="modal-footer">
-											  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-											  <input type="submit" value="Save" class="btn btn-default"ng-click="submit_new_material()" >
-											</div>
-										  </div>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								</div>
-								<div class="panel-body">
-								  <table class="table table-striped">
-									  <tr>
-										  <th>Delete</th>
-										  <th>Quantity</th>
-										  <th>Item</th>
-										  <th>Supplier</th>
-										  <th>Description</th>
-										  <th>GES Cost Each</th>
-										  <th>GES Markup</th>
-										  <th>Customer Price Each</th>
-										  <th>Extended Cost</th>
-									  </tr>
-									  {% verbatim %}
-										  <tr ng-repeat="each_material in materials_vfd_motor">
-											   <td><button type="button" class="btn btn-danger btn-sm" ng-click="delete_material(each_material.id)">-</button></td>
-											   <td class="input-sm"> {$ each_material.quantity $}</th>
-											   <td class="input-sm"> {$ each_material.item $}</th>
-											   <td class="input-sm"> {$ each_material.supplier $}</th>
-											   <td class="input-sm"> {$ each_material.description $}</th>
-											   <td class="input-sm text-right"> {$ each_material.ges_cost_each | currency:"$":0 $}</th>
-											   <td class="input-sm"> {$ each_material.ges_markup | currency:"":2 $}</th>
-											   <td class="input-sm text-right"> {$ each_material.get_ges_each_cost | currency:"$":0 $}</th>
-											   <td class="input-sm text-right"> {$ each_material.get_extended_cost | currency:"$":0 $}</th>
-										   </tr>
-									 {% endverbatim %}
-									  <tr>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <th>Total Material Cost</th>
-										  <th class="text-right">{$ total_extended_cost | currency:"$":0 $}</th>
-									  </tr>
-									  <tr>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <th>Misc  Materials (%):</th>
-										  <th>10%</th>
-									  </tr>
-									  <tr>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <td></td>
-										  <th>Total Material Cost(including misc)</th>
-										  <th class="text-right">{$ total_extended_cost + (total_extended_cost * 0.1) | currency:"$":0 $}</th>
-									  </tr>
-								  </table>
-								</div>
-							  </div>
-							<!--  Material End-->
-							<!-- Labor  -->
-							<div class="panel panel-info">
-							<div class="panel-heading">
+                            <!--  Material-->
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      Materials Pricing
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                      <button  type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_material">+</button>
+                                      <!-- Modal -->
+                                      <div class="modal fade" id="add_material" role="dialog">
+                                        <div class="modal-dialog modal-lg">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              <h4 class="modal-title text-center">Add Material</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <div class="form-group">
+                                                <label class="col-sm-2 control-label">Item</label>
+                                                <div class="col-sm-10">
+                                                  <input type="text" class="form-control" name="item" placeholder="Item" ng-model="new_material.item">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="col-sm-2 control-label">Supplier</label>
+                                                <div class="col-sm-10">
+                                                  <input type="text" class="form-control" name="supplier" placeholder="Supplier" ng-model="new_material.supplier">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="col-sm-2 control-label">Description</label>
+                                                <div class="col-sm-10">
+                                                  <input type="text" class="form-control" name="description" placeholder="Description" ng-model="new_material.description">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="col-sm-2 control-label">GES Cost Each</label>
+                                                <div class="col-sm-10">
+                                                  <input type="text" class="form-control" name="ges_cost_each" placeholder="0.00" ng-model="new_material.ges_cost_each">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="col-sm-2 control-label">GES Markup</label>
+                                                <div class="col-sm-10">
+                                                  <input type="text" class="form-control" name="ges_markup" placeholder="1.00" ng-model="new_material.ges_markup">
+                                                </div>
+                                              </div>
+                                              <div class="form-group">
+                                                <label class="col-sm-2 control-label">Quantity</label>
+                                                <div class="col-sm-10">
+                                                  <input type="text" class="form-control" name="quantity" placeholder="0" ng-model="new_material.quantity">
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                              <input type="submit" value="Save" class="btn btn-default"ng-click="submit_new_material()" >
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="panel-body">
+                                  <table class="table table-striped">
+                                      <tr>
+                                          <th>Delete</th>
+                                          <th>Quantity</th>
+                                          <th>Item</th>
+                                          <th>Supplier</th>
+                                          <th>Description</th>
+                                          <th>GES Cost Each</th>
+                                          <th>GES Markup</th>
+                                          <th>Customer Price Each</th>
+                                          <th>Extended Cost</th>
+                                      </tr>
+                                      {% verbatim %}
+                                          <tr ng-repeat="each_material in materials_vfd_motor">
+                                               <td><button type="button" class="btn btn-danger btn-sm" ng-click="delete_material(each_material.id)">-</button></td>
+                                               <td class="input-sm"> {$ each_material.quantity $}</th>
+                                               <td class="input-sm"> {$ each_material.item $}</th>
+                                               <td class="input-sm"> {$ each_material.supplier $}</th>
+                                               <td class="input-sm"> {$ each_material.description $}</th>
+                                               <td class="input-sm text-right"> {$ each_material.ges_cost_each | currency:"$":0 $}</th>
+                                               <td class="input-sm"> {$ each_material.ges_markup | currency:"":2 $}</th>
+                                               <td class="input-sm text-right"> {$ each_material.get_ges_each_cost | currency:"$":0 $}</th>
+                                               <td class="input-sm text-right"> {$ each_material.get_extended_cost | currency:"$":0 $}</th>
+                                           </tr>
+                                     {% endverbatim %}
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <th>Total Material Cost</th>
+                                          <th class="text-right">{$ total_extended_cost | currency:"$":0 $}</th>
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <th>Misc  Materials (%):</th>
+                                          <th>10%</th>
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <th>Total Material Cost(including misc)</th>
+                                          <th class="text-right">{$ total_extended_cost + (total_extended_cost * 0.1) | currency:"$":0 $}</th>
+                                      </tr>
+                                  </table>
+                                </div>
+                              </div>
+                            <!--  Material End-->
+                            <!-- Labor  -->
+                            <div class="panel panel-info">
+                            <div class="panel-heading">
 
-							  <div class="row">
-								<div class="col-md-6">
-								  Labor Pricing
-								</div>
-								<div class="col-md-6 text-right">
-								  <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_new_labor">+</button>
-								  <!-- Modal -->
-								  <div class="modal fade" id="add_new_labor" role="dialog">
-									<div class="modal-dialog modal-lg">
-									  <div class="modal-content">
-										<div class="modal-header">
-										  <button type="button" class="close" data-dismiss="modal">&times;</button>
-										  <h4 class="modal-title text-center">Add Labor</h4>
-										</div>
-										<div class="modal-body">
-										  <div class="form-group">
-											<label class="col-sm-2 control-label">Item</label>
-											<div class="col-sm-10">
-											  <input type="text" class="form-control" name="item_labor" placeholder="Item" ng-model="new_labor.item">
-											</div>
-										  </div>
-										  <div class="form-group">
-											<label class="col-sm-2 control-label">Vendor</label>
-											<div class="col-sm-10">
-											  <input type="text" class="form-control" name="vendor" placeholder="Supplier" ng-model="new_labor.vendor">
-											</div>
-										  </div>
-										  <div class="form-group">
-											<label class="col-sm-2 control-label">Hourly Rate</label>
-											<div class="col-sm-10">
-											  <input type="text" class="form-control" name="hourly_rate" placeholder="0" ng-model="new_labor.hourly_rate">
-											</div>
-										  </div>
-										  <div class="form-group">
-											<label class="col-sm-2 control-label">Fixed Cost</label>
-											<div class="col-sm-10">
-											  <input type="text" class="form-control" name="fixed_cost" placeholder="0.00" ng-model="new_labor.fixed_cost">
-											</div>
-										  </div>
-										  <div class="form-group">
-											<label class="col-sm-2 control-label">GES Cost</label>
-											<div class="col-sm-10">
-											  <input type="text" class="form-control" name="ges_cost" placeholder="0.00" ng-model="new_labor.ges_cost">
-											</div>
-										  </div>
-										  <div class="form-group">
-											<label class="col-sm-2 control-label">GES Markup</label>
-											<div class="col-sm-10">
-											  <input type="text" class="form-control" name="ges_labor_markup" placeholder="1.00" ng-model="new_labor.ges_markup">
-											</div>
-										  </div>
-										  <div class="form-group">
-											<label class="col-sm-2 control-label">Quantity</label>
-											<div class="col-sm-10">
-											  <input type="text" class="form-control" name="quantity_labor" placeholder="0" ng-model="new_labor.quantity">
-											</div>
-										  </div>
-										</div>
-										<div class="modal-footer">
-										  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										  <input type="submit" value="Save" class="btn btn-default" ng-click="submit_new_labor()">
-										</div>
-									  </div>
-									</div>
-								  </div>
-								</div>
-							  </div>
-							</div>
-							<div class="panel-body">
-							  <table class="table table-striped">
-								  <tr>
-									  <td>Delete</td>
-									  <th>Quantity</th>
-									  <th>Item</th>
-									  <th>Vendor</th>
-									  <th>Hourly Rate</th>
-									  <th>Fixed Cost</th>
-									  <th>GES Cost</th>
-									  <th>GES Markup</th>
-									  <th>Customer Price</th>
-								  </tr>
-								  {% verbatim %}
-									  <tr ng-repeat="each_labor in labor_vfd_motor">
-										   <td><button type="button" class="btn btn-danger btn-sm" ng-click="delete_labor(each_labor.id)">-</button></td>
-										   <td class="input-sm"> {$ each_labor.quantity $}</th>
-										   <td class="input-sm"> {$ each_labor.item $}</th>
-										   <td class="input-sm"> {$ each_labor.vendor $}</th>
-										   <td class="input-sm"> {$ each_labor.hourly_rate | currency:"$":0 $}</th>
-										   <td class="input-sm text-right"> {$ each_labor.fixed_cost | currency:"$":0 $}</th>
-										   <td class="input-sm"> {$ each_labor.ges_cost | currency:"":2 $}</th>
-										   <td class="input-sm text-right"> {$ each_labor.ges_markup | currency:"":2 $}</th>
-										   <td class="input-sm text-right"> {$ each_labor.get_customer_price | currency:"$":0 $}</th>
-									   </tr>
-								 {% endverbatim %}
-								  <tr>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <th>Total Labor Cost</th>
-									  <th class="text-right">{$ total_labor_cost | currency:"$":0 $}</th>
-								  </tr>
-								  <tr>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <th>Misc  Materials (%):</th>
-									  <th>10%</th>
-								  </tr>
-								  <tr>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <th>Total Material Cost(including misc)</th>
-									  <th class="text-right">{$ total_labor_cost + (total_labor_cost * 0.1)| currency:"$":0 $}</th>
-								  </tr>
-								  <tr>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <td></td>
-									  <th>Total Project Cost</th>
-									  <th class="text-right">{$ (total_labor_cost + (total_labor_cost * 0.1)) + (total_extended_cost + (total_extended_cost * 0.1))| currency:"$":0 $}</th>
-								  </tr>
-							  </table>
-							</div>
-						  </div>
-							<!-- Labor End  -->
+                              <div class="row">
+                                <div class="col-md-6">
+                                  Labor Pricing
+                                </div>
+                                <div class="col-md-6 text-right">
+                                  <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_new_labor">+</button>
+                                  <!-- Modal -->
+                                  <div class="modal fade" id="add_new_labor" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h4 class="modal-title text-center">Add Labor</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="form-group">
+                                            <label class="col-sm-2 control-label">Item</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="item_labor" placeholder="Item" ng-model="new_labor.item">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-sm-2 control-label">Vendor</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="vendor" placeholder="Supplier" ng-model="new_labor.vendor">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-sm-2 control-label">Hourly Rate</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="hourly_rate" placeholder="0" ng-model="new_labor.hourly_rate">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-sm-2 control-label">Fixed Cost</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="fixed_cost" placeholder="0.00" ng-model="new_labor.fixed_cost">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-sm-2 control-label">GES Cost</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="ges_cost" placeholder="0.00" ng-model="new_labor.ges_cost">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-sm-2 control-label">GES Markup</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="ges_labor_markup" placeholder="1.00" ng-model="new_labor.ges_markup">
+                                            </div>
+                                          </div>
+                                          <div class="form-group">
+                                            <label class="col-sm-2 control-label">Quantity</label>
+                                            <div class="col-sm-10">
+                                              <input type="text" class="form-control" name="quantity_labor" placeholder="0" ng-model="new_labor.quantity">
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                          <input type="submit" value="Save" class="btn btn-default" ng-click="submit_new_labor()">
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="panel-body">
+                              <table class="table table-striped">
+                                  <tr>
+                                      <td>Delete</td>
+                                      <th>Quantity</th>
+                                      <th>Item</th>
+                                      <th>Vendor</th>
+                                      <th>Hourly Rate</th>
+                                      <th>Fixed Cost</th>
+                                      <th>GES Cost</th>
+                                      <th>GES Markup</th>
+                                      <th>Customer Price</th>
+                                  </tr>
+                                  {% verbatim %}
+                                      <tr ng-repeat="each_labor in labor_vfd_motor">
+                                           <td><button type="button" class="btn btn-danger btn-sm" ng-click="delete_labor(each_labor.id)">-</button></td>
+                                           <td class="input-sm"> {$ each_labor.quantity $}</th>
+                                           <td class="input-sm"> {$ each_labor.item $}</th>
+                                           <td class="input-sm"> {$ each_labor.vendor $}</th>
+                                           <td class="input-sm"> {$ each_labor.hourly_rate | currency:"$":0 $}</th>
+                                           <td class="input-sm text-right"> {$ each_labor.fixed_cost | currency:"$":0 $}</th>
+                                           <td class="input-sm"> {$ each_labor.ges_cost | currency:"":2 $}</th>
+                                           <td class="input-sm text-right"> {$ each_labor.ges_markup | currency:"":2 $}</th>
+                                           <td class="input-sm text-right"> {$ each_labor.get_customer_price | currency:"$":0 $}</th>
+                                       </tr>
+                                 {% endverbatim %}
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <th>Total Labor Cost</th>
+                                      <th class="text-right">{$ total_labor_cost | currency:"$":0 $}</th>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <th>Misc  Materials (%):</th>
+                                      <th>10%</th>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <th>Total Material Cost(including misc)</th>
+                                      <th class="text-right">{$ total_labor_cost + (total_labor_cost * 0.1)| currency:"$":0 $}</th>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <th>Total Project Cost</th>
+                                      <th class="text-right">{$ (total_labor_cost + (total_labor_cost * 0.1)) + (total_extended_cost + (total_extended_cost * 0.1))| currency:"$":0 $}</th>
+                                  </tr>
+                              </table>
+                            </div>
+                          </div>
+                            <!-- Labor End  -->
 
-							<div class="form-group form-group-sm">
-								<div class="col-sm-6 control-label">
-									<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
-									<input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-sm-6 control-label">
+                                    <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                    <input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="modal fade" id="add_vfd_setpoint" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Add New VFD Setpoint</h4>
-				</div>
-				<form class="form-horizontal" ng-controller="setpointAddController" role="form">
-				{% csrf_token %}
-					<div class="container-fluid">
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">VFD Speed (%)</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="speed_percent" ng-model="speed_percent">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">% of Time</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="percent_of_time" ng-model="percent_of_time">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-							<div class="col-sm-4">
-								<input type="submit" value="Save" class="btn btn-default" ng-click="submit_new_setpoint()">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+    <div class="modal fade" id="add_vfd_setpoint" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New VFD Setpoint</h4>
+                </div>
+                <form class="form-horizontal" ng-controller="setpointAddController" role="form">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">VFD Speed (%)</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="speed_percent" ng-model="speed_percent">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">% of Time</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="percent_of_time" ng-model="percent_of_time">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-4">
+                                <input type="submit" value="Save" class="btn btn-default" ng-click="submit_new_setpoint()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

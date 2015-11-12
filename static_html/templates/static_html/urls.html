@@ -1,17 +1,32 @@
-<div class="navbar-header">
-    <a class="navbar-brand" href="/">Home</a>
-    <a class="navbar-brand" href="/client">Clients</a>
-    <a class="navbar-brand" href="/steam_trap">Steam Trap</a>
-    <a class="navbar-brand" href="/steam_leak">Steam Leak</a>
-    <a class="navbar-brand" href="/boiler_blowdown">Boiler Blowdown</a>
-    <a class="navbar-brand" href="/stacked_economizer">Stacked Economizer</a>
-    <a class="navbar-brand" href="/premium_efficiency">Premium Efficiency</a>
-    <a class="navbar-brand" href="/air_compressors">Air Compressor</a>
-    <a class="navbar-brand" href="/vfd">VFD</a>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Home</a>
+    </div>
+    <div class="nav-collapse">
+      <ul class="nav navbar-nav top-nav">
+        <li><a href="/client">Clients</a></li>
+        <li><a href="/steam_trap">Steam Trap</a></li>
+        <li><a href="/steam_leak">Steam Leak</a></li>
+        <li><a href="/boiler_blowdown">Boiler Blowdown</a></li>
+        <li><a href="/stacked_economizer">Stacked Economizer</a></li>
+        <li><a href="/premium_efficiency">Premium Efficiency</a></li>
+        <li><a href="/air_compressors">Air Compressor</a></li>
+        <li><a href="/vfd">VFD</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools
+          <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/valve_insulation">Valve Insulation</a></li>
+            <li><a href="/">Pipe Insulation</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="pull-right">
+        <span class="navbar-brand">{{ username }}</span>
+        <a class="navbar-brand" href="/logout">Logout</a>
+    </div>
+  </div>
+    <!--
     <a class="navbar-brand" hres="/test_html">XYZ</a>
-    <a class="navbar-brand" href="http://54.215.143.7:8000/chiller_app">Chiller App</a>
-</div>
-<div class="pull-right">
-    <span class="navbar-brand">{{ username }}</span>
-    <a class="navbar-brand" href="/logout">Logout</a>
-</div>
+    <a class="navbar-brand" href="http://54.215.143.7:8000/chiller_app">Chiller App</a> -->

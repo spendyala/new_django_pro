@@ -42,13 +42,15 @@ INSTALLED_APPS = (
     'django_filters',  # Django filters
     'static_html',  # HTML Files goes here
     'clients',
+    # 'chiller',
     'steam_trap',
     'steam_leaks',
     'boiler_blowdown',
     'stacked_economizer',
     'air_compressors',
     'premium_efficiency',
-    'vfd'
+    'vfd',
+    'valve_insulation'
 )
 
 MIDDLEWARE_CLASSES = (

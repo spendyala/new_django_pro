@@ -2,344 +2,344 @@
 {% load staticfiles %}
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
-	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
-	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<script src="{% static "clients/js/angular.js"%}"></script>
-	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
-	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
-	<script>
-		var app_1 = angular.module("api_air_compressors", ['ui.bootstrap']);
-		app_1.config(['$httpProvider', function($httpProvider) {
-			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-		}]);
-		app_1.config(function($interpolateProvider) {
-			$interpolateProvider.startSymbol('{$');
-			$interpolateProvider.endSymbol('$}');
-		});
-		app_1.controller("airCompressorModifyController", ['$scope','$http', function($scope,$http){
-			$scope.air_compressor_json = {'id': {{air_compressor_obj.id}},
-									  'client': '',
-									  'air_compressor': '',
-									  'customer_name': '',
-									  'customer_site': '',
-									  'project_name': '',
-									  'electric_utility_rate':0,
-									  'compressor_name': '',
-									  'manufacturer': '',
-									  'model_info': '',
-									  'serial_info': '',
-									  'compressor_type': '',
-									  'vfd_speed_control': 1,
-									  'nameplate_horsepower': 0,
-									  'nameplate_max_flow': 0,
-									  'measured_actual_flow': 0,
-									  'measured_line_pressure': 0,
-									  'annual_hours_of_operation': 0,
-									  'vfd_90_t_fitting': 1,
-									  'reduce_line_pressure_to': 0};
-			$scope.submit_details = function(){
-				$scope.air_compressor_json.client = '/api_client/clients/'+$("#client").val()+'/';
-				$scope.air_compressor_json.air_compressor = $("#air_compressor").val();
-				$scope.air_compressor_json.customer_name = $("#customer_name").val();
-				$scope.air_compressor_json.customer_site = $("#customer_site").val();
-				$scope.air_compressor_json.project_name = $("#project_name").val();
-				$scope.air_compressor_json.electric_utility_rate = $("#electric_utility_rate").val();
-				$scope.air_compressor_json.compressor_name = $("#compressor_name").val();
-				$scope.air_compressor_json.manufacturer = $("#manufacturer").val();
-				$scope.air_compressor_json.model_info = $("#model_info").val();
-				$scope.air_compressor_json.serial_info = $("#serial_info").val();
-				$scope.air_compressor_json.compressor_type = $("#compressor_type").val();
-				$scope.air_compressor_json.vfd_speed_control = parseInt($("#vfd_speed_control").val());
-				$scope.air_compressor_json.nameplate_horsepower = $("#nameplate_horsepower").val();
-				$scope.air_compressor_json.nameplate_max_flow = $("#nameplate_max_flow").val();
-				$scope.air_compressor_json.measured_actual_flow = $("#measured_actual_flow").val();
-				$scope.air_compressor_json.measured_line_pressure = $("#measured_line_pressure").val();
-				$scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
-				$scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
-				$scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
-				$http({method: 'PUT',
-					   url: '/api_air_compressors/air_compressors/{{air_compressor_obj.id}}/',
-					   data: $scope.air_compressor_json}).
-				success(function(data){
-					window.location.href = '/air_compressors/';
-				}).
-				error(function(data){
-				});
-			}
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("api_air_compressors", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.config(function($interpolateProvider) {
+            $interpolateProvider.startSymbol('{$');
+            $interpolateProvider.endSymbol('$}');
+        });
+        app_1.controller("airCompressorModifyController", ['$scope','$http', function($scope,$http){
+            $scope.air_compressor_json = {'id': {{air_compressor_obj.id}},
+                                      'client': '',
+                                      'air_compressor': '',
+                                      'customer_name': '',
+                                      'customer_site': '',
+                                      'project_name': '',
+                                      'electric_utility_rate':0,
+                                      'compressor_name': '',
+                                      'manufacturer': '',
+                                      'model_info': '',
+                                      'serial_info': '',
+                                      'compressor_type': '',
+                                      'vfd_speed_control': 1,
+                                      'nameplate_horsepower': 0,
+                                      'nameplate_max_flow': 0,
+                                      'measured_actual_flow': 0,
+                                      'measured_line_pressure': 0,
+                                      'annual_hours_of_operation': 0,
+                                      'vfd_90_t_fitting': 1,
+                                      'reduce_line_pressure_to': 0};
+            $scope.submit_details = function(){
+                $scope.air_compressor_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.air_compressor_json.air_compressor = $("#air_compressor").val();
+                $scope.air_compressor_json.customer_name = $("#customer_name").val();
+                $scope.air_compressor_json.customer_site = $("#customer_site").val();
+                $scope.air_compressor_json.project_name = $("#project_name").val();
+                $scope.air_compressor_json.electric_utility_rate = $("#electric_utility_rate").val();
+                $scope.air_compressor_json.compressor_name = $("#compressor_name").val();
+                $scope.air_compressor_json.manufacturer = $("#manufacturer").val();
+                $scope.air_compressor_json.model_info = $("#model_info").val();
+                $scope.air_compressor_json.serial_info = $("#serial_info").val();
+                $scope.air_compressor_json.compressor_type = $("#compressor_type").val();
+                $scope.air_compressor_json.vfd_speed_control = parseInt($("#vfd_speed_control").val());
+                $scope.air_compressor_json.nameplate_horsepower = $("#nameplate_horsepower").val();
+                $scope.air_compressor_json.nameplate_max_flow = $("#nameplate_max_flow").val();
+                $scope.air_compressor_json.measured_actual_flow = $("#measured_actual_flow").val();
+                $scope.air_compressor_json.measured_line_pressure = $("#measured_line_pressure").val();
+                $scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
+                $scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
+                $scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
+                $http({method: 'PUT',
+                       url: '/api_air_compressors/air_compressors/{{air_compressor_obj.id}}/',
+                       data: $scope.air_compressor_json}).
+                success(function(data){
+                    window.location.href = '/air_compressors/';
+                }).
+                error(function(data){
+                });
+            }
 
-			$scope.submit_delete = function(){
-				$http({method: 'DELETE',
-					   url: '/api_air_compressors/air_compressors/{{air_compressor_obj.id}}/'}).
-				success(function(data){
-					window.location.href = '/air_compressors/';
-				}).
-				error(function(data){
-				});
-			}
-		}]);
-	</script>
+            $scope.submit_delete = function(){
+                $http({method: 'DELETE',
+                       url: '/api_air_compressors/air_compressors/{{air_compressor_obj.id}}/'}).
+                success(function(data){
+                    window.location.href = '/air_compressors/';
+                }).
+                error(function(data){
+                });
+            }
+        }]);
+    </script>
 </head>
 <body ng-app="api_air_compressors">
-	<div id="wrapper">
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			{% include "static_html/urls.html" %}
-		</nav>
-	</div>
-	<div id="page-wrapper">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="page-header">
-						Air Compressor Details
-					</h1>
-					<form class="form-horizontal" ng-controller="airCompressorModifyController" role="form">
-					{% csrf_token %}
-						<div class="container-fluid">
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Client</label>
-							  <div class="col-sm-4">
-								  <select class="form-control col-sm-6" id="client" name="client">
-									{% for client_id, client_name in clients_list %}
-									   <option {% if client_id == air_compressor_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
-									{% endfor %}
-								  </select>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Air Compressor</label>
-							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="air_compressor" name="air_compressor" value="{{air_compressor_obj.air_compressor}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-md bg-info">
-								<label class="col-md-offset-4 col-md-8 ">SITE INFORMATION</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Customer Name</label>
-							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="customer_name" name="customer_name" value="{{air_compressor_obj.customer_name}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Customer Site</label>
-							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="customer_site" name="customer_site" value="{{air_compressor_obj.customer_site}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Project Name</label>
-							  <div class="col-sm-4">
-								<input class="form-control" type="text" id="project_name" name="project_name" value="{{air_compressor_obj.project_name}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Electric Utility Rate (per kWh)</label>
-							  <div class="col-sm-4">
-								<input class="form-control control-label" type="text" id="electric_utility_rate" name="electric_utility_rate" value="{{air_compressor_obj.electric_utility_rate}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-md bg-info">
-								<label class="col-md-offset-4 col-md-8 ">AIR COMPRESSOR INFORMATION</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Compressor Name</label>
-							  <div class="col-sm-3">
-								<input class="form-control" type="text" id="compressor_name" name="compressor_name" value="{{air_compressor_obj.compressor_name}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Manufacturer</label>
-							  <div class="col-sm-3">
-								<input class="form-control" type="text" id="manufacturer" name="manufacturer" value="{{air_compressor_obj.manufacturer}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Model #</label>
-							  <div class="col-sm-3">
-								<input class="form-control" type="text" id="model_info" name="model_info" value="{{air_compressor_obj.model_info}}">
-							  </div>
-							</div>
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        Air Compressor Details
+                    </h1>
+                    <form class="form-horizontal" ng-controller="airCompressorModifyController" role="form">
+                    {% csrf_token %}
+                        <div class="container-fluid">
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Client</label>
+                              <div class="col-sm-4">
+                                  <select class="form-control col-sm-6" id="client" name="client">
+                                    {% for client_id, client_name in clients_list %}
+                                       <option {% if client_id == air_compressor_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                    {% endfor %}
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Air Compressor</label>
+                              <div class="col-sm-4">
+                                <input class="form-control" type="text" id="air_compressor" name="air_compressor" value="{{air_compressor_obj.air_compressor}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-md bg-info">
+                                <label class="col-md-offset-4 col-md-8 ">SITE INFORMATION</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Customer Name</label>
+                              <div class="col-sm-4">
+                                <input class="form-control" type="text" id="customer_name" name="customer_name" value="{{air_compressor_obj.customer_name}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Customer Site</label>
+                              <div class="col-sm-4">
+                                <input class="form-control" type="text" id="customer_site" name="customer_site" value="{{air_compressor_obj.customer_site}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Project Name</label>
+                              <div class="col-sm-4">
+                                <input class="form-control" type="text" id="project_name" name="project_name" value="{{air_compressor_obj.project_name}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Electric Utility Rate (per kWh)</label>
+                              <div class="col-sm-4">
+                                <input class="form-control control-label" type="text" id="electric_utility_rate" name="electric_utility_rate" value="{{air_compressor_obj.electric_utility_rate}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-md bg-info">
+                                <label class="col-md-offset-4 col-md-8 ">AIR COMPRESSOR INFORMATION</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Compressor Name</label>
+                              <div class="col-sm-3">
+                                <input class="form-control" type="text" id="compressor_name" name="compressor_name" value="{{air_compressor_obj.compressor_name}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Manufacturer</label>
+                              <div class="col-sm-3">
+                                <input class="form-control" type="text" id="manufacturer" name="manufacturer" value="{{air_compressor_obj.manufacturer}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Model #</label>
+                              <div class="col-sm-3">
+                                <input class="form-control" type="text" id="model_info" name="model_info" value="{{air_compressor_obj.model_info}}">
+                              </div>
+                            </div>
 
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Serial #</label>
-							  <div class="col-sm-3">
-								<input class="form-control" type="text" id="serial_info" name="serial_info" value="{{air_compressor_obj.serial_info}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Type</label>
-							  <div class="col-sm-3">
-								  <select class="form-control col-sm-6" id="compressor_type" name="compressor_type">
-									{% for type_id, type_name in compressor_type %}
-									   <option {% if type_id == air_compressor_obj.compressor_type %} selected {% endif %} value="{{ type_id }}">{{ type_name }}</option>
-									{% endfor %}
-								  </select>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">VFD Speed Control</label>
-							  <div class="col-sm-3">
-								  <select class="form-control col-sm-6" id="vfd_speed_control" name="vfd_speed_control">
-									{% for vfd_type_id, vfd_type_name in vfd_control_type %}
-									   <option {% if vfd_type_id == air_compressor_obj.vfd_speed_control %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
-									{% endfor %}
-								  </select>
-							  </div>
-							</div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Serial #</label>
+                              <div class="col-sm-3">
+                                <input class="form-control" type="text" id="serial_info" name="serial_info" value="{{air_compressor_obj.serial_info}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Type</label>
+                              <div class="col-sm-3">
+                                  <select class="form-control col-sm-6" id="compressor_type" name="compressor_type">
+                                    {% for type_id, type_name in compressor_type %}
+                                       <option {% if type_id == air_compressor_obj.compressor_type %} selected {% endif %} value="{{ type_id }}">{{ type_name }}</option>
+                                    {% endfor %}
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">VFD Speed Control</label>
+                              <div class="col-sm-3">
+                                  <select class="form-control col-sm-6" id="vfd_speed_control" name="vfd_speed_control">
+                                    {% for vfd_type_id, vfd_type_name in vfd_control_type %}
+                                       <option {% if vfd_type_id == air_compressor_obj.vfd_speed_control %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
+                                    {% endfor %}
+                                  </select>
+                              </div>
+                            </div>
 
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Nameplate Horsepower (HP)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="nameplate_horsepower" name="nameplate_horsepower" value="{{air_compressor_obj.nameplate_horsepower}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Nameplate Maximum Flow (CFM)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="nameplate_max_flow" name="nameplate_max_flow" value="{{air_compressor_obj.nameplate_max_flow}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Measured Actual Flow (GPM)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="measured_actual_flow" name="measured_actual_flow" value="{{air_compressor_obj.measured_actual_flow}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Measured Line Pressure (PSI)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="measured_line_pressure" name="measured_line_pressure" value="{{air_compressor_obj.measured_line_pressure}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Annual Hours Of Operation (Hours)</label>
-							  <div class="col-sm-3">
-								<input class="form-control control-label" type="text" id="annual_hours_of_operation" name="annual_hours_of_operation" value="{{air_compressor_obj.annual_hours_of_operation}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Hourly kWh Consumed (kWh)</label>
-							  <div class="col-sm-3">
-								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_hourly_kwh_consumed}} | number:2 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Hourly Cost Of Operation ($)</label>
-							  <div class="col-sm-3">
-								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_hourly_cost_of_operation}} | currency:"$":0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Annual Cost Of Operation ($)</label>
-							  <div class="col-sm-3">
-								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_annual_cost_of_operation}} | currency:"$":0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-md bg-info">
-								<label class="col-md-offset-4 col-md-8 ">ESTIMATED PRESSURE (PSI) SETBACK SAVINGS</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Reduced Line Pressure FROM (PSI)</label>
-							  <div class="col-sm-2">
-								<label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_reduced_line_pressure_from}} | number:1 $}</label>
-							  </div>
-							  <label class="col-sm-2 control-label">TO (PSI)</label>
-							  <div class="col-sm-2">
-								<input class="form-control control-label" type="text" id="reduce_line_pressure_to" name="reduce_line_pressure_to" value="{{air_compressor_obj.reduce_line_pressure_to}}">
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Proposed Pressure Decrease (PSI)</label>
-							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_proposed_pressure_decrease}} | number:1 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Estimated Annual Savings Per 2 PSI Reduction ($)</label>
-							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_estimated_ann_savings_per_2_psi_reduction}} | currency:"$":0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Annual Cost Before PSI Setback ($)</label>
-							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_before_psi_setback}} | currency:"$":0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Annual Cost After PSI Setback ($)</label>
-							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_after_psi_setback}} | currency:"$":0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-4 control-label">Annual Savings After PSI Setback ($)</label>
-							  <div class="col-sm-4">
-								<label class="bg-success col-md-8 control-label">{$ {{get_annual_savings_after_psi_setback}} | currency:"$":0 $}</label>
-							  </div>
-							</div>
-							<div class="form-group form-group-md bg-info">
-								<label class="col-md-offset-4 col-md-8 ">90° (T-FITTING) REPLACEMENT SAVINGS</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-6 col-sm-offset-2">"Are there any 90° T-Fittings in the air supply piping that could be replaced with 45° fittings?"</label>
-							</div>
-							<div class="form-group form-group-sm">
-								<div class="col-sm-2 col-sm-offset-2">
-								</div>
-							  <div class="col-sm-5">
-									  <label class="col-md-12"><pre>Estimated Savings
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Nameplate Horsepower (HP)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="nameplate_horsepower" name="nameplate_horsepower" value="{{air_compressor_obj.nameplate_horsepower}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Nameplate Maximum Flow (CFM)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="nameplate_max_flow" name="nameplate_max_flow" value="{{air_compressor_obj.nameplate_max_flow}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Measured Actual Flow (GPM)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="measured_actual_flow" name="measured_actual_flow" value="{{air_compressor_obj.measured_actual_flow}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Measured Line Pressure (PSI)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="measured_line_pressure" name="measured_line_pressure" value="{{air_compressor_obj.measured_line_pressure}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Annual Hours Of Operation (Hours)</label>
+                              <div class="col-sm-3">
+                                <input class="form-control control-label" type="text" id="annual_hours_of_operation" name="annual_hours_of_operation" value="{{air_compressor_obj.annual_hours_of_operation}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Hourly kWh Consumed (kWh)</label>
+                              <div class="col-sm-3">
+                                <label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_hourly_kwh_consumed}} | number:2 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Hourly Cost Of Operation ($)</label>
+                              <div class="col-sm-3">
+                                <label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_hourly_cost_of_operation}} | currency:"$":0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Annual Cost Of Operation ($)</label>
+                              <div class="col-sm-3">
+                                <label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_annual_cost_of_operation}} | currency:"$":0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-md bg-info">
+                                <label class="col-md-offset-4 col-md-8 ">ESTIMATED PRESSURE (PSI) SETBACK SAVINGS</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Reduced Line Pressure FROM (PSI)</label>
+                              <div class="col-sm-2">
+                                <label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_reduced_line_pressure_from}} | number:1 $}</label>
+                              </div>
+                              <label class="col-sm-2 control-label">TO (PSI)</label>
+                              <div class="col-sm-2">
+                                <input class="form-control control-label" type="text" id="reduce_line_pressure_to" name="reduce_line_pressure_to" value="{{air_compressor_obj.reduce_line_pressure_to}}">
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Proposed Pressure Decrease (PSI)</label>
+                              <div class="col-sm-4">
+                                <label class="bg-success col-md-8 control-label">{$ {{get_proposed_pressure_decrease}} | number:1 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Estimated Annual Savings Per 2 PSI Reduction ($)</label>
+                              <div class="col-sm-4">
+                                <label class="bg-success col-md-8 control-label">{$ {{get_estimated_ann_savings_per_2_psi_reduction}} | currency:"$":0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Annual Cost Before PSI Setback ($)</label>
+                              <div class="col-sm-4">
+                                <label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_before_psi_setback}} | currency:"$":0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Annual Cost After PSI Setback ($)</label>
+                              <div class="col-sm-4">
+                                <label class="bg-success col-md-8 control-label">{$ {{get_annual_cost_after_psi_setback}} | currency:"$":0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Annual Savings After PSI Setback ($)</label>
+                              <div class="col-sm-4">
+                                <label class="bg-success col-md-8 control-label">{$ {{get_annual_savings_after_psi_setback}} | currency:"$":0 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-md bg-info">
+                                <label class="col-md-offset-4 col-md-8 ">90° (T-FITTING) REPLACEMENT SAVINGS</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-6 col-sm-offset-2">"Are there any 90° T-Fittings in the air supply piping that could be replaced with 45° fittings?"</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-sm-2 col-sm-offset-2">
+                                </div>
+                              <div class="col-sm-5">
+                                      <label class="col-md-12"><pre>Estimated Savings
 (10 PSI Reduction)</pre></label>
-							  </div>
-							</div>
-							<div class="form-group form-group-sm">
-							  <div class="col-sm-2 col-sm-offset-2">
-								  <select class="form-control col-sm-6" id="vfd_90_t_fitting" name="vfd_90_t_fitting">
-									{% for vfd_type_id, vfd_type_name in vfd_control_type %}
-									   <option {% if vfd_type_id == air_compressor_obj.vfd_90_t_fitting %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
-									{% endfor %}
-								  </select>
-							  </div>
-							  <div class="col-sm-5">
-								  {% if air_compressor_obj.vfd_90_t_fitting == 1 %}
-									  <label class="bg-success col-md-3">{$ {{get_annual_savings_after_psi_setback}} | currency:"$":0 $}</label>
-								  {% else %}
-									  <label class="bg-success col-md-3">{$ 0 | currency:"$":0 $}</label>
-								  {% endif %}
-							  </div>
-							</div>
-							<div class="form-group form-group-md bg-info">
-								<label class="col-md-offset-4 col-md-8 ">ESTIMATED AIR LEAK SAVINGS</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-6 col-sm-offset-2">The current estimate in the field is that approximately 25%-40% of all compressed air is wasted through leaks.</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-2 col-sm-offset-2 control-label">25% of Costs</label>
-							  <label class="col-sm-2 col-sm-offset-2 control-label">40% of Costs</label>
-							</div>
-							<div class="form-group form-group-sm">
-							  <label class="col-sm-2 col-sm-offset-2 bg-success control-label">{$ {{get_estimated_air_leak_25_percent_of_costs}} | currency:"$":2 $}</label>
-							  <label class="col-sm-2 col-sm-offset-2 bg-success control-label">{$ {{get_estimated_air_leak_40_percent_of_costs}} | currency:"$":2 $}</label>
-							</div>
-							<div class="form-group form-group-sm">
-								<div class="col-sm-4 col-sm-offset-2 control-label">
-									<input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
-									<input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <div class="col-sm-2 col-sm-offset-2">
+                                  <select class="form-control col-sm-6" id="vfd_90_t_fitting" name="vfd_90_t_fitting">
+                                    {% for vfd_type_id, vfd_type_name in vfd_control_type %}
+                                       <option {% if vfd_type_id == air_compressor_obj.vfd_90_t_fitting %} selected {% endif %} value="{{ vfd_type_id }}">{{ vfd_type_name }}</option>
+                                    {% endfor %}
+                                  </select>
+                              </div>
+                              <div class="col-sm-5">
+                                  {% if air_compressor_obj.vfd_90_t_fitting == 1 %}
+                                      <label class="bg-success col-md-3">{$ {{get_annual_savings_after_psi_setback}} | currency:"$":0 $}</label>
+                                  {% else %}
+                                      <label class="bg-success col-md-3">{$ 0 | currency:"$":0 $}</label>
+                                  {% endif %}
+                              </div>
+                            </div>
+                            <div class="form-group form-group-md bg-info">
+                                <label class="col-md-offset-4 col-md-8 ">ESTIMATED AIR LEAK SAVINGS</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-6 col-sm-offset-2">The current estimate in the field is that approximately 25%-40% of all compressed air is wasted through leaks.</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-2 col-sm-offset-2 control-label">25% of Costs</label>
+                              <label class="col-sm-2 col-sm-offset-2 control-label">40% of Costs</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-2 col-sm-offset-2 bg-success control-label">{$ {{get_estimated_air_leak_25_percent_of_costs}} | currency:"$":2 $}</label>
+                              <label class="col-sm-2 col-sm-offset-2 bg-success control-label">{$ {{get_estimated_air_leak_40_percent_of_costs}} | currency:"$":2 $}</label>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                <div class="col-sm-4 col-sm-offset-2 control-label">
+                                    <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                    <input type="button" value="Delete" class="btn btn-default" ng-click="submit_delete()">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

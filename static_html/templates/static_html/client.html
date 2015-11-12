@@ -4,233 +4,233 @@
 
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
-	<link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
-	<link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
-	<!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static "vfd_app/css/font-awesome.min.css" %}"> -->
 
-	<script src="{% static "clients/js/jquery.js"%}"></script>
-	<script src="{% static "clients/js/angular.js"%}"></script>
-	<script src="{% static "clients/js/bootstrap.min.js"%}"></script>
-	<script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
-	<script>
-		var app_1 = angular.module("app_client", ['ui.bootstrap']);
-		app_1.config(['$httpProvider', function($httpProvider) {
-			$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-			$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-		}]);
-		app_1.controller("clientListController", ['$scope','$http', function($scope,$http){
-			$http({method: 'GET', url: "/api_client/clients/"}).
-				 success(function(data){
-					 $scope.client_list = data;
-			}).error(function(data){});
-		}]);
-		app_1.controller("clientAddController", ['$scope', '$http', function($scope, $http){
-			$http({method: 'GET', url: "/state_details/US"}).
-				 success(function(data){
-					 $scope.states_list = data;
-					 $scope.state = data[0].state_id;
-			}).error(function(data){});
-			$scope.country = "US";
-			$scope.client_json = {'client_name':'',
-								  'account_name':'',
-								  'project_name':'',
-								  'address':'',
-								  'country':'',
-								  'city':'',
-								  'state': '',
-								  'electric_rate': 0,
-								  'gas_rate': 0,
-								  'water_rate': 0,
-								  'sewer_rate': 0};
-			$scope.change_state = function(country){
-				$http({method: 'GET', url: "/state_details/".concat($scope.country)}).
-					 success(function(data){
-						 $scope.states_list = data;
-						 $scope.state = data[0].state_id;
-				}).error(function(data){});
-			};
-			$scope.submit_details = function(){
-				$scope.client_json.client_name = $("#client_name").val();
-				$scope.client_json.account_name = $("#account_name").val();
-				$scope.client_json.project_name = $("#project_name").val();
-				$scope.client_json.address = $("#address").val();
-				$scope.client_json.city = $("#city").val();
-				$scope.client_json.state = $("#state").val();
-				$scope.client_json.country = $("#country").val();
-				$scope.client_json.electric_rate = $("#electric_rate").val();
-				$scope.client_json.gas_rate = $("#gas_rate").val();
-				$scope.client_json.water_rate = $("#water_rate").val();
-				$scope.client_json.sewer_rate = $("#sewer_rate").val();
-				$http({method: 'POST',
-					   url: '/api_client/clients/',
-					//    data: JSON.stringify($scope.client_json)).
-					   data: $scope.client_json}).
-				success(function(data){
-					window.location.reload();
-				}).
-				error(function(data){
-				});
-				$('#add_new_client').modal('hide');
-			}
-		}]);
-	</script>
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("app_client", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.controller("clientListController", ['$scope','$http', function($scope,$http){
+            $http({method: 'GET', url: "/api_client/clients/"}).
+                 success(function(data){
+                     $scope.client_list = data;
+            }).error(function(data){});
+        }]);
+        app_1.controller("clientAddController", ['$scope', '$http', function($scope, $http){
+            $http({method: 'GET', url: "/state_details/US"}).
+                 success(function(data){
+                     $scope.states_list = data;
+                     $scope.state = data[0].state_id;
+            }).error(function(data){});
+            $scope.country = "US";
+            $scope.client_json = {'client_name':'',
+                                  'account_name':'',
+                                  'project_name':'',
+                                  'address':'',
+                                  'country':'',
+                                  'city':'',
+                                  'state': '',
+                                  'electric_rate': 0,
+                                  'gas_rate': 0,
+                                  'water_rate': 0,
+                                  'sewer_rate': 0};
+            $scope.change_state = function(country){
+                $http({method: 'GET', url: "/state_details/".concat($scope.country)}).
+                     success(function(data){
+                         $scope.states_list = data;
+                         $scope.state = data[0].state_id;
+                }).error(function(data){});
+            };
+            $scope.submit_details = function(){
+                $scope.client_json.client_name = $("#client_name").val();
+                $scope.client_json.account_name = $("#account_name").val();
+                $scope.client_json.project_name = $("#project_name").val();
+                $scope.client_json.address = $("#address").val();
+                $scope.client_json.city = $("#city").val();
+                $scope.client_json.state = $("#state").val();
+                $scope.client_json.country = $("#country").val();
+                $scope.client_json.electric_rate = $("#electric_rate").val();
+                $scope.client_json.gas_rate = $("#gas_rate").val();
+                $scope.client_json.water_rate = $("#water_rate").val();
+                $scope.client_json.sewer_rate = $("#sewer_rate").val();
+                $http({method: 'POST',
+                       url: '/api_client/clients/',
+                    //    data: JSON.stringify($scope.client_json)).
+                       data: $scope.client_json}).
+                success(function(data){
+                    window.location.reload();
+                }).
+                error(function(data){
+                });
+                $('#add_new_client').modal('hide');
+            }
+        }]);
+    </script>
 </head>
 <body ng-app="app_client">
-	<div id="wrapper">
-		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			{% include "static_html/urls.html" %}
-		</nav>
-	</div>
-	<div id="page-wrapper">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-lg-12" ng-app="app_client_list">
-					<h1 class="page-header">
-						Clients List
-					</h1>
-					<div ng-controller="clientListController">
-						<div class="container-fluid form-horizontal">
-							<div class="form-group form-group-sm">
-								 <div class="col-sm-6">
-									<button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_client">+ Client</button>
-								</div>
-							</div>
-							<table class="table table-striped">
-								<tr>
-									<th>Client Name</th>
-									<th>Country</th>
-									<th>State</th>
-									<th>City</th>
-									<th><pre class="pre">Electric Rate
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" ng-app="app_client_list">
+                    <h1 class="page-header">
+                        Clients List
+                    </h1>
+                    <div ng-controller="clientListController">
+                        <div class="container-fluid form-horizontal">
+                            <div class="form-group form-group-sm">
+                                 <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_client">+ Client</button>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Country</th>
+                                    <th>State</th>
+                                    <th>City</th>
+                                    <th><pre class="pre">Electric Rate
 ($/kWh)</pre></th>
-									<th><pre class="pre">Gas Rate
+                                    <th><pre class="pre">Gas Rate
 ($/Therms)</pre></th>
-									<th><pre class="pre">Water Rate
+                                    <th><pre class="pre">Water Rate
 ($/Gallons)</pre></th>
-									<th><pre class="pre">Sewer Rate
+                                    <th><pre class="pre">Sewer Rate
 ($/Gallons)</pre></th>
-								</tr>
-								{% verbatim %}
-									<tr ng-repeat="x in client_list">
-										<td><a href="/client_details/{{ x.id }}">{{ x.client_name }}</a></td>
-										<td>{{ x.country }}</td>
-										<td>{{ x.state }}</td>
-										<td>{{ x.city }}</td>
-										<td class="text-right">{{ x.electric_rate }}</td>
-										<td class="text-right">{{ x.gas_rate }}</td>
-										<td class="text-right">{{ x.water_rate }}</td>
-										<td class="text-right">{{ x.sewer_rate}}</td>
-									</tr>
-								{% endverbatim %}
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                </tr>
+                                {% verbatim %}
+                                    <tr ng-repeat="x in client_list">
+                                        <td><a href="/client_details/{{ x.id }}">{{ x.client_name }}</a></td>
+                                        <td>{{ x.country }}</td>
+                                        <td>{{ x.state }}</td>
+                                        <td>{{ x.city }}</td>
+                                        <td class="text-right">{{ x.electric_rate }}</td>
+                                        <td class="text-right">{{ x.gas_rate }}</td>
+                                        <td class="text-right">{{ x.water_rate }}</td>
+                                        <td class="text-right">{{ x.sewer_rate}}</td>
+                                    </tr>
+                                {% endverbatim %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="modal fade" id="add_new_client" role="dialog">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Add New Client</h4>
-				</div>
-				<form class="form-horizontal" ng-controller="clientAddController" role="form">
-				{% csrf_token %}
-					<div class="container-fluid">
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Client Name</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="client_name" name="client_name">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Account Name</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="account_name" name="account_name">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Project Name</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="project_name" name="project_name">
-						  </div>
-						</div>
+    <div class="modal fade" id="add_new_client" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Client</h4>
+                </div>
+                <form class="form-horizontal" ng-controller="clientAddController" role="form">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Client Name</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="client_name" name="client_name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Account Name</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="account_name" name="account_name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Project Name</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="project_name" name="project_name">
+                          </div>
+                        </div>
 
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Country</label>
-						  <div class="col-sm-6">
-							  <select class="form-control col-sm-6" id="country" name="country" ng-model="country" ng-change="change_state(country)">
-								{% for country_id, name in countries_list %}
-								   <option value="{{ country_id }}">{{ name }}</option>
-								{% endfor %}
-							  </select>
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">State</label>
-						  <div class="col-sm-6">
-							  {% verbatim %}
-								  <select class="form-control col-sm-6" id="state" name="state" ng-model="state">
-										  <option ng-repeat="x in states_list" value="{{x.state_id}}">{{x.state_name}}</option>
-								  </select>
-							  {% endverbatim %}
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">City</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="city" name="city">
-						  </div>
-						</div>
-						<div class="form-group">
-						  <label class="col-sm-4 control-label">Address</label>
-						  <div class="col-sm-5">
-							  <textarea class="col-sm-4 form-control" rows="3" id="address" name="address"></textarea>
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Electric Rate ($/kWh)</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="electric_rate" name="electric_rate">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Gas Rate ($/Therms)</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="gas_rate" name="gas_rate">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Water Rate ($/Gallons)</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="water_rate" name="water_rate">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-						  <label class="col-sm-4 control-label">Sewer Rate ($/Gallons)</label>
-						  <div class="col-sm-4">
-							<input class="form-control" type="text" id="sewer_rate" name="sewer_rate">
-						  </div>
-						</div>
-						<div class="form-group form-group-sm">
-							<div class="col-sm-4">
-								<input type="submit" value="Save" class="btn btn-default" ng-click="submit_details()">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-					<!-- <input id="save_client_app" name="save_client_app" type="text" value="0" hidden/> -->
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Country</label>
+                          <div class="col-sm-6">
+                              <select class="form-control col-sm-6" id="country" name="country" ng-model="country" ng-change="change_state(country)">
+                                {% for country_id, name in countries_list %}
+                                   <option value="{{ country_id }}">{{ name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">State</label>
+                          <div class="col-sm-6">
+                              {% verbatim %}
+                                  <select class="form-control col-sm-6" id="state" name="state" ng-model="state">
+                                          <option ng-repeat="x in states_list" value="{{x.state_id}}">{{x.state_name}}</option>
+                                  </select>
+                              {% endverbatim %}
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">City</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="city" name="city">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-4 control-label">Address</label>
+                          <div class="col-sm-5">
+                              <textarea class="col-sm-4 form-control" rows="3" id="address" name="address"></textarea>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Electric Rate ($/kWh)</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="electric_rate" name="electric_rate">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Gas Rate ($/Therms)</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="gas_rate" name="gas_rate">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Water Rate ($/Gallons)</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="water_rate" name="water_rate">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-4 control-label">Sewer Rate ($/Gallons)</label>
+                          <div class="col-sm-4">
+                            <input class="form-control" type="text" id="sewer_rate" name="sewer_rate">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-4">
+                                <input type="submit" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <input id="save_client_app" name="save_client_app" type="text" value="0" hidden/> -->
 
-				</form>
-			</div>
-		</div>
-	</div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

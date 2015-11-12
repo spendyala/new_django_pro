@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from boiler_blowdown.models import BoilerBlowdown
+from chiller.models import Chiller, ChillerLoopPump, CondensatePump
 from boiler_blowdown.serializers import BoilerBlowdownSerializer
 
 from django.contrib.auth.models import User

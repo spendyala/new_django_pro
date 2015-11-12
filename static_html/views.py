@@ -15,6 +15,7 @@ from stacked_economizer.models import StackedEconomizer
 from premium_efficiency.models import PremiumEfficiency
 from air_compressors.models import AirCompressor, COMPRESSOR_TYPE, VFD_CONTROL_TYPE
 from vfd.models import LaborVFDMotor, MaterialsVFDMotor, VfdMotorSetpointSelections, VfdMotorDataPerMonth, VfdMotor
+from valve_insulation.models import ValveInsulation, NPS_PIPE_SIZES, WORKING_FLUID, LOCATION_OPTIONS, BASE_METAL_CHOICES, INSULATION_CHOICES, INSULATION_THICKNESS_OPT
 
 from supporting_files import spreadsheet
 # New
@@ -373,7 +374,7 @@ def air_compressor_details(request, file_name=None, rec_id=None):
         return render(request, 'static_html/404.html')
 
 
-# Air Compressor
+# VFD
 def vfd(request, file_name=None, rec_id=None):
     if rec_id:
         return render(request, 'static_html/404.html')
@@ -404,6 +405,53 @@ def vfd_details(request, file_name=None, rec_id=None):
                 'vfd_control_type': VFD_CONTROL_TYPE}
         vfd_motor_obj = VfdMotor.objects.get(id=rec_id)
         data['vfd_motor_obj'] = vfd_motor_obj
+        return set_render_object(request, file_name=file_name, content=data)
+    except Exception as err:
+        return render(request, 'static_html/404.html')
+
+
+# Valve Insulation
+def valve_insulation(request, file_name=None, rec_id=None):
+    if rec_id:
+        return render(request, 'static_html/404.html')
+    try:
+        clients_obj = Client.objects.all()
+        clients_list = [(x.id, x.client_name) for x in clients_obj]
+        clients_filter = copy.deepcopy(clients_list)
+        clients_filter.append(('all', 'all'))
+
+        data = {'clients_list': clients_list,
+                'clients_filter': clients_filter,
+                'nps_pipe_size_options': NPS_PIPE_SIZES,
+                'working_fluid_options': WORKING_FLUID,
+                'location_options': LOCATION_OPTIONS,
+                'base_metal_choices': BASE_METAL_CHOICES,
+                'insulation_choices': INSULATION_CHOICES,
+                'insulation_thickness_options': INSULATION_THICKNESS_OPT}
+
+        return set_render_object(request, file_name=file_name, content=data)
+    except Exception as err:
+        return render(request, 'static_html/404.html')
+
+
+# Valve Insulation Details
+def valve_insulation_details(request, file_name=None, rec_id=None):
+    if not rec_id:
+        return render(request, 'static_html/404.html')
+
+    try:
+        clients_obj = Client.objects.all()
+        clients_list = [(x.id, x.client_name) for x in clients_obj]
+
+        data = {'clients_list': clients_list,
+                'nps_pipe_size_options': NPS_PIPE_SIZES,
+                'working_fluid_options': WORKING_FLUID,
+                'location_options': LOCATION_OPTIONS,
+                'base_metal_choices': BASE_METAL_CHOICES,
+                'insulation_choices': INSULATION_CHOICES,
+                'insulation_thickness_options': INSULATION_THICKNESS_OPT}
+        valve_insulation_obj = ValveInsulation.objects.get(id=rec_id)
+        data['valve_insulation_obj'] = valve_insulation_obj
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
         return render(request, 'static_html/404.html')
@@ -483,6 +531,8 @@ VIEW_METHODS = {# 'authenticate_user': authenticate_user,
                 'state_details': state_details,
                 'vfd': vfd,
                 'vfd_details': vfd_details,
+                'valve_insulation': valve_insulation,
+                'valve_insulation_details': valve_insulation_details,
                 'excel': excel,
                 'test_html': test_html}
 

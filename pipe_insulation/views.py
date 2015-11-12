@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from stacked_economizer.models import StackedEconomizer
-from stacked_economizer.serializers import StackedEconomizerSerializer
+from valve_insulation.models import ValveInsulation
+from valve_insulation.serializers import ValveInsulationSerializer
 # from clients.serializers import UserSerializer
 from django.contrib.auth.models import User
 
@@ -13,21 +13,21 @@ from rest_framework.reverse import reverse
 
 import django_filters
 
-class StackedEconomizerFilter(django_filters.FilterSet):
+class ValveInsulationFilter(django_filters.FilterSet):
     class Meta:
-        model = StackedEconomizer
+        model = ValveInsulation
         fields = ['client']
 
 # Create your views here.
-class StackedEconomizerViewSet(viewsets.ModelViewSet):
+class ValveInsulationViewSet(viewsets.ModelViewSet):
         """
         This viewset automatically provides `list`, `create`, `retrieve`,
         `update` and `destroy` actions.
         """
         filter_backends = (filters.DjangoFilterBackend,)
-        filter_class = StackedEconomizerFilter
-        queryset = StackedEconomizer.objects.all()
-        serializer_class = StackedEconomizerSerializer
+        filter_class = ValveInsulationFilter
+        queryset = ValveInsulation.objects.all()
+        serializer_class = ValveInsulationSerializer
         permission_classes = (permissions.IsAuthenticatedOrReadOnly,
                               IsOwnerOrReadOnly)
 
