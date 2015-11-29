@@ -51,7 +51,8 @@ INSTALLED_APPS = (
     'premium_efficiency',
     'vfd',
     'valve_insulation',
-    'pipe_insulation'
+    'pipe_insulation',
+    'boiler_stacked_economizer'
 )
 
 MIDDLEWARE_CLASSES = (
