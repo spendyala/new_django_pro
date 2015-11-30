@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        $(function () {
+            $('#steam_trap_audit_performed').datetimepicker();
+        });
+        var app_1 = angular.module("app_boiler_datacollection", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.controller("boilerDatacollectionListController", ['$scope','$http', function($scope,$http){
+            $http({method: 'GET', url: "/api_boiler_datacollection/boiler_datacollection/"}).
+                 success(function(data){
+                     $scope.boiler_datacollection_list = data;
+            }).error(function(data){});
+            $scope.clients_filter = "all";
+            $scope.filter_clients = function (clients_filter){
+                var url_str = "/api_boiler_datacollection/boiler_datacollection/";
+                var client_filter_str = "";
+                if ($scope.clients_filter != "all"){
+                    client_filter_str = "?client=".concat($scope.clients_filter);
+                };
+                $http({method: 'GET', url: url_str.concat(client_filter_str)}).
+                     success(function(data){
+                         $scope.boiler_datacollection_list = data;
+                }).error(function(data){});
+            };
+        }]);
+        app_1.controller("boilerDatacollectionAddController", ['$scope',
+                                                    '$http',
+                                                    function($scope, $http){
+            $scope.boiler_datacollection_json = {'client': '',
+                                            'name': '',
+                                            'boiler_capacity_mbh': 0,
+                                            'hours_of_operation': 0,
+                                            'separately_meter': 0,
+                                            'make_up_water_log_separate_bill': 0,
+                                            'no_of_steam_traps': 0,
+                                            'steam_trap_audit_performed': 0,
+                                            'is_the_header_insulated': 0,
+                                            'percentage_condensate_that_returns_to_boiler': 0,
+                                            'aerator_tank_temp': 0,
+                                            'aerator_tank_pressure': 0,
+                                            'production_pressure': 0};
+            $scope.submit_details = function(){
+                $scope.boiler_datacollection_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.boiler_datacollection_json.name = $("#name").val();
+                $scope.boiler_datacollection_json.boiler_capacity_mbh = $("#boiler_capacity_mbh").val();
+                $scope.boiler_datacollection_json.hours_of_operation = $("#hours_of_operation").val();
+                $scope.boiler_datacollection_json.separately_meter = $("#separately_meter").val();
+                $scope.boiler_datacollection_json.make_up_water_log_separate_bill = $("#make_up_water_log_separate_bill").val();
+                $scope.boiler_datacollection_json.no_of_steam_traps = $("#no_of_steam_traps").val();
+                $scope.boiler_datacollection_json.steam_trap_audit_performed = $("#steam_trap_audit_performed").val();
+                $scope.boiler_datacollection_json.is_the_header_insulated = $("#is_the_header_insulated").val();
+                $scope.boiler_datacollection_json.percentage_condensate_that_returns_to_boiler = $("#percentage_condensate_that_returns_to_boiler").val();
+                $scope.boiler_datacollection_json.aerator_tank_temp = $("#aerator_tank_temp").val();
+                $scope.boiler_datacollection_json.aerator_tank_pressure = $("#aerator_tank_pressure").val();
+                $scope.boiler_datacollection_json.production_pressure = $("#production_pressure").val();
+
+                $http({method: 'POST',
+                       url: '/api_boiler_datacollection/boiler_datacollection/',
+                       data: $scope.boiler_datacollection_json}).
+                success(function(data){
+                    window.location.reload();
+                }).
+                error(function(data){
+                });
+                $('#add_new_boiler_datacollection').modal('hide');
+            }
+        }]);
+    </script>
+</head>
+<body ng-app="app_boiler_datacollection">
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                         Boiler Data Collection List
+                    </h1>
+                    <div ng-controller="boilerDatacollectionListController">
+                        <div class="container-fluid form-horizontal">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-2 control-label">Client Filter</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
+                                        {% for filter_id, filter_name in clients_filter %}
+                                            <option value="{{ filter_id }}">{{ filter_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                 <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_boiler_datacollection">+ Boiler Data Collection</button>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Boiler capacity (MBH)</th>
+                                    <th>Separately Meter</th>
+                                    <th>Hours of Operationa</th>
+                                </tr>
+                                {% verbatim %}
+                                    <tr ng-repeat="x in boiler_datacollection_list">
+                                        <td><a href="/boiler_datacollection_details/{{ x.id }}">{{ x.name }}</a></td>
+                                        <td>{{ x.boiler_capacity_mbh}}</td>
+                                        <td>{{ x.separately_meter}}</td>
+                                        <td>{{ x.hours_of_operation}}</td>
+                                    </tr>
+                                {% endverbatim %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_new_boiler_datacollection" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Boiler Data Collection</h4>
+                </div>
+                <form class="form-horizontal" ng-controller="boilerDatacollectionAddController" role="form">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Client</label>
+                          <div class="col-sm-6">
+                              <select class="form-control col-sm-6" id="client" name="client">
+                                {% for client_id, client_name in clients_list %}
+                                    <option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Boiler Data Collection Name</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="text" id="name" name="name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Boiler capacity (MBH)</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="text" id="boiler_capacity_mbh" name="boiler_capacity_mbh">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Yearly Hours of Operation</label>
+                          <div class="col-sm-6">
+                            <input class="form-control" type="text" id="hours_of_operation" name="hours_of_operation">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Separately Meter</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="separately_meter" name="separately_meter">
+                                {% for key, value in choice_yes_no %}
+                                    <option {% if key == 0 %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Make Up Water Log/ Separate Bill</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="make_up_water_log_separate_bill" name="make_up_water_log_separate_bill">
+                                {% for key, value in choice_yes_no %}
+                                    <option {% if key == 0 %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Number of Steam Traps</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="no_of_steam_traps" name="no_of_steam_traps" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Date Last Steam Trap Audit Performed</label>
+                          <div class="col-sm-3">
+                              <input class="form-control" type="text" id="steam_trap_audit_performed" name="steam_trap_audit_performed" value="" placeholder="YYYY-MM-DD">
+                              <span class="help-block">Date in format YYYY-MM-DD</span>
+                          </div>
+                        </div>
+
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Is the Header Insulated</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="is_the_header_insulated" name="is_the_header_insulated">
+                                {% for key, value in choice_yes_no %}
+                                    <option {% if key == 0 %} selected {% endif %} value="{{ key }}">{{ value }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Percent of Condensate that returns to Boiler</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="percentage_condensate_that_returns_to_boiler" name="percentage_condensate_that_returns_to_boiler" value="0">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Aerator Tank Temperature</label>
+                          <div class="col-sm-3">
+                              <input class="form-control" type="text" id="aerator_tank_temp" name="aerator_tank_temp" value="0">
+                              <span class="help-block">Small tank near boiler</span>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Aerator Tank Pressure</label>
+                          <div class="col-sm-3">
+                              <input class="form-control" type="text" id="aerator_tank_pressure" name="aerator_tank_pressure" value="0">
+                              <span class="help-block">Small tank near boiler</span>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Production Pressure</label>
+                          <div class="col-sm-3">
+                                <input class="form-control" type="text" id="production_pressure" name="production_pressure" value="0">
+                                <span class="help-block">There could be multiple pressures</span>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-6 col-sm-offset-4">
+                                <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
