@@ -20,7 +20,7 @@ MONTHS = [('JAN', 'January'),
 class VfdMotor(models.Model):
     client = models.ForeignKey(Client)
     vfd_name = models.CharField('Client VFD Name', max_length=256)
-    cost_per_kwh = models.FloatField('Cost (per kWh)', default=0.00)
+    # client.electric_rate = models.FloatField('Cost (per kWh)', default=0.00)
     motor_horse_pwr = models.FloatField('Motor HP', default=0.00)
     existing_motor_efficiency = models.FloatField('Existing Motor Eff. %',
                                                   default=0)
@@ -48,7 +48,8 @@ class VfdMotorDataPerMonth(models.Model):
     hours_of_operation = models.FloatField('Hours of operation', default=0)
 
     start_date = models.DateTimeField('Registered Date')
-    owner = models.ForeignKey('auth.User', related_name='vfd_motor_data_per_month')
+    owner = models.ForeignKey('auth.User',
+                              related_name='vfd_motor_data_per_month')
 
     def get_existing_kwh(self):
         try:
@@ -63,7 +64,8 @@ class VfdMotorDataPerMonth(models.Model):
         return kwh
 
     def get_existing_cost_of_operation(self):
-        return round(self.get_existing_kwh() * self.client_vfd.cost_per_kwh, 2)
+        return round(self.get_existing_kwh() *
+                     self.client_vfd.client.electric_rate, 2)
 
     def get_ui_name(self):
         return '%s' % (self.month.lower())
@@ -108,7 +110,7 @@ class VfdMotorSetpointSelections(models.Model):
         return proposed_kwh
 
     def get_proposed_cost_of_operation(self):
-        return self.get_proposed_kwh() * self.client_vfd.cost_per_kwh
+        return self.get_proposed_kwh() * self.client_vfd.client.electric_rate
 
     def save(self, *args, **kwargs):
         # TODO: add owner

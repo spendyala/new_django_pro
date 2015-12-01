@@ -13,8 +13,8 @@ class BoilerBlowdown(models.Model):
     boiler_blowdown_name = models.CharField('Boiler Blowdown Reduction and Recovery',
                                             max_length=128,
                                             default='Boiler_')
-    gas_rate = models.FloatField('Gas Rate', default=0)
-    water_rate = models.FloatField('Water Rate', default=0)
+    # client.gas_rate = models.FloatField('Gas Rate', default=0)
+    # client.water_rate = models.FloatField('Water Rate', default=0)
     makeup_water_temperature = models.FloatField('Makeup Water Temperature',
                                                  default=0)
     # Reduce Blowdown Flow Rate
@@ -76,14 +76,14 @@ class BoilerBlowdown(models.Model):
 
     def get_existing_overflow_cost(self):
         return round(self.get_existing_blowdown_energy_loss_therm() *
-                     self.gas_rate, 2)
+                     self.client.gas_rate, 2)
 
     def get_existing_makeup_water_quantity(self):
         return self.get_existing_annual_quantity_gals()
 
     def get_existing_makeup_water_cost(self):
         return round(self.get_existing_makeup_water_quantity() *
-                     self.water_rate, 2)
+                     self.client.water_rate, 2)
 
     def get_existing_gas_and_water_cost(self):
         return round(self.get_existing_overflow_cost() +
@@ -95,7 +95,7 @@ class BoilerBlowdown(models.Model):
 
     def get_existing_total(self):
         return round(self.get_existing_blowdown_energy_recovery_therms() *
-                     self.gas_rate, 2)
+                     self.client.gas_rate, 2)
 
     # Proposed
     def get_proposed_blowdown_gallons_per_day(self):
@@ -120,14 +120,14 @@ class BoilerBlowdown(models.Model):
 
     def get_proposed_overflow_cost(self):
         return round(self.get_proposed_blowdown_energy_loss_therm() *
-                     self.gas_rate, 2)
+                     self.client.gas_rate, 2)
 
     def get_proposed_makeup_water_quantity(self):
         return self.get_proposed_annual_quantity_gals()
 
     def get_proposed_makeup_water_cost(self):
         return round(self.get_proposed_makeup_water_quantity() *
-                     self.water_rate, 2)
+                     self.client.water_rate, 2)
 
     def get_proposed_gas_and_water_cost(self):
         return round(self.get_proposed_overflow_cost() +
@@ -142,7 +142,7 @@ class BoilerBlowdown(models.Model):
 
     def get_proposed_total(self):
         return round(self.get_proposed_blowdown_energy_recovery_therms() *
-                     self.gas_rate, 2)
+                     self.client.gas_rate, 2)
 
     def get_savings_gas(self):
         return round(self.get_existing_overflow_cost() -

@@ -27,8 +27,8 @@ class Chiller(models.Model):
 
     client = models.ForeignKey(Client)
     project_name = models.CharField('Project Name', max_length=128)
-    electric_utility_rate = models.FloatField('Electric Utility Rate',
-                                              default=0)
+    # client.electric_rate = models.FloatField('Electric Utility Rate',
+    #                                           default=0)
 
     chiller_name = models.CharField('Chiller Name', max_length=256)
     chiller_model_number = models.CharField('Chiller Model #', max_length=256)
@@ -160,7 +160,7 @@ class Chiller(models.Model):
 
     def get_cost_of_chiller_operation_only_annual_cost(self):
         return (self.get_cost_of_chiller_operation_only_annualy() *
-                self.electric_utility_rate)
+                self.client.electric_rate)
 
     def __str__(self):
         return self.chiller_name
@@ -195,7 +195,7 @@ class ChillerLoopPump(models.Model):
         return self.chiller_loop_pump_name
 
     def get_chill_loop_info_cost(self, annual_flag=False):
-        return (self.chiller.electric_utility_rate *
+        return (self.chiller.client.electric_rate *
                 self.get_chill_loop_info_kwh(annual_flag))
 
     def save(self, *args, **kwargs):
@@ -229,7 +229,7 @@ class CondensatePump(models.Model):
         return round(val/365.0)
 
     def get_condensate_info_cost(self, annual_flag=False):
-        return (self.chiller.electric_utility_rate *
+        return (self.chiller.client.electric_rate *
                 self.get_condensate_info_kwh(annual_flag))
 
     def save(self, *args, **kwargs):

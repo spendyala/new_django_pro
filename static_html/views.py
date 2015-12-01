@@ -11,7 +11,6 @@ from clients.models import Client
 from steam_trap.models import SteamTrap, STEAM_TRAP_CHOICES, TRAP_SIZE_CHOICES
 from steam_leaks.models import SteamLeak
 from boiler_blowdown.models import BoilerBlowdown
-from boiler_stacked_economizer.models import BoilerStackedEconomizer
 from boiler_datacollection.models import BoilerDatacollection, CHOICES_YES_NO
 from stacked_economizer.models import StackedEconomizer
 from premium_efficiency.models import PremiumEfficiency
@@ -506,41 +505,6 @@ def pipe_insulation_details(request, file_name=None, rec_id=None):
     except Exception as err:
         return render(request, 'static_html/404.html')
 
-
-# Boiler Stacked Economizer
-def boiler_stacked_economizer(request, file_name=None, rec_id=None):
-    if rec_id:
-        return render(request, 'static_html/404.html')
-    try:
-        clients_obj = Client.objects.all()
-        clients_list = [(x.id, x.client_name) for x in clients_obj]
-        clients_filter = copy.deepcopy(clients_list)
-        clients_filter.append(('all', 'all'))
-
-        data = {'clients_list': clients_list,
-                'clients_filter': clients_filter}
-
-        return set_render_object(request, file_name=file_name, content=data)
-    except Exception as err:
-        return render(request, 'static_html/404.html')
-
-
-def boiler_stacked_economizer_details(request, file_name=None, rec_id=None):
-    if not rec_id:
-        return render(request, 'static_html/404.html')
-
-    try:
-        clients_obj = Client.objects.all()
-        clients_list = [(x.id, x.client_name) for x in clients_obj]
-
-        data = {'clients_list': clients_list}
-        boiler_stacked_economizer_obj = BoilerStackedEconomizer.objects.get(id=rec_id)
-        data['boiler_stacked_economizer_obj'] = boiler_stacked_economizer_obj
-        return set_render_object(request, file_name=file_name, content=data)
-    except Exception as err:
-        return render(request, 'static_html/404.html')
-
-
 # Boiler Data Collection
 def boiler_datacollection(request, file_name=None, rec_id=None):
     if rec_id:
@@ -656,8 +620,6 @@ VIEW_METHODS = {# 'authenticate_user': authenticate_user,
                 'valve_insulation_details': valve_insulation_details,
                 'pipe_insulation': pipe_insulation,
                 'pipe_insulation_details': pipe_insulation_details,
-                'boiler_stacked_economizer': boiler_stacked_economizer,
-                'boiler_stacked_economizer_details': boiler_stacked_economizer_details,
                 'boiler_datacollection': boiler_datacollection,
                 'boiler_datacollection_details': boiler_datacollection_details,
                 'excel': excel,

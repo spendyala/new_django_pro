@@ -57,8 +57,7 @@
                                       'pressure_in_psig':100,
                                       'hours_of_operation':8760,
                                       'boiler_efficiency':80,
-                                      'size_leak_in_inch':0.5,
-                                      'therm_rate':0};
+                                      'size_leak_in_inch':0.5};
             $scope.submit_details = function(){
                 $scope.steam_leak_json.client = '/api_client/clients/'+$("#client").val()+'/';
                 $scope.steam_leak_json.steam_leak_number = $("#steam_leak_number").val();
@@ -67,7 +66,6 @@
                 $scope.steam_leak_json.hours_of_operation = $("#hours_of_operation").val();
                 $scope.steam_leak_json.boiler_efficiency = $("#boiler_efficiency").val();
                 $scope.steam_leak_json.size_leak_in_inch = $("#trap_pipe_size").val();
-                $scope.steam_leak_json.therm_rate = $("#therm_rate").val();
                 $http({method: 'POST',
                        url: '/api_steam_leak/steam_leak/',
                        data: $scope.steam_leak_json}).
@@ -124,7 +122,6 @@
                                     <th>Boiler Efficiency</th>
                                     <th>Steam Energy (Btu/lb)</th>
                                     <th>Gas Usage (Therms/hour)</th>
-                                    <th>Therm Rate</th>
                                     <th>Cost / Hour</th>
                                     <th>Hours of Operation</th>
                                     <th>Cost / Year</th>
@@ -139,13 +136,11 @@
                                         <td>{{x.boiler_efficiency| currency:"":0}}</td>
                                         <td>{{x.get_steam_energy_btu_per_lb| currency:"":0}}</td>
                                         <td>{{x.get_gas_usage_therms_per_hour| currency:"":0}}</td>
-                                        <td>{{x.therm_rate| currency:"$":2}}</td>
                                         <td>{{x.get_cost_per_hour| currency:"$":2}}</td>
                                         <td>{{x.hours_of_operation | currency:"":0}}</td>
                                         <td>{{x.get_cost_per_year | currency:"$":0}}</td>
                                     </tr>
                                     <tr>
-                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -225,12 +220,6 @@
                           <label class="col-sm-4 control-label">Size Leak (inch)</label>
                           <div class="col-sm-4">
                             <input class="form-control" type="text" id="size_leak_in_inch" name="size_leak_in_inch">
-                          </div>
-                        </div>
-                        <div class="form-group form-group-sm">
-                          <label class="col-sm-4 control-label">Therms Rate $</label>
-                          <div class="col-sm-4">
-                            <input class="form-control" type="text" id="therm_rate" name="therm_rate">
                           </div>
                         </div>
                         <div class="form-group form-group-sm">

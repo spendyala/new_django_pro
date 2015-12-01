@@ -49,8 +49,6 @@ class BoilerBlowdownSerializer(serializers.HyperlinkedModelSerializer):
                   'start_date',
                   'client',
                   'boiler_blowdown_name',
-                  'gas_rate',
-                  'water_rate',
                   'makeup_water_temperature',
 
                   # Existing Inputs

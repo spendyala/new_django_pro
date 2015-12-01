@@ -13,7 +13,7 @@ class StackedEconomizer(models.Model):
                                                  default='',
                                                  max_length=128)
     start_date = models.DateTimeField('Registered Date')
-    gas_rate = models.FloatField('Gas Rate', default=0.5)
+    # client.gas_rate = models.FloatField('Gas Rate', default=0.5)
     hours_of_operations = models.FloatField('Hours of Operation', default=8760)
     boiler_size_hp = models.FloatField('Boiler Size (HP)',
                                        default=1000)
@@ -38,7 +38,7 @@ class StackedEconomizer(models.Model):
 
     def get_savings(self):
         return round(
-            self.get_recoverable_heat_therms_per_year() * self.gas_rate, 3)
+            self.get_recoverable_heat_therms_per_year() * self.client.gas_rate, 3)
 
     def was_recent(self):
         return self.start_date >= timezone.now() - datetime.timedelta(days=1)

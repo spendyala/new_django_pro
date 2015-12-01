@@ -13,7 +13,7 @@ class PremiumEfficiency(models.Model):
 
     motor_name = models.CharField('Motor Name', max_length=160)
     annual_operating_hours = models.FloatField('Annual Operating Hours', default=0)
-    energy_cost = models.FloatField('Energy Cost', default=0)
+    # client.electric_rate = models.FloatField('Energy Cost', default=0)
     motor_nameplate_hp = models.FloatField('Motor Nameplate Hp', default=0)
     existing_full_load_eff = models.FloatField('Existing Full Load Efficiency', default=0)
     existing_three_fourth_load_eff = models.FloatField('Existing 3/4 Load Efficiency', default=0)
@@ -30,7 +30,7 @@ class PremiumEfficiency(models.Model):
         try:
             val = (self.motor_nameplate_hp * 0.746 *
                    self.annual_operating_hours *
-                   self.energy_cost * load_val * 100)
+                   self.client.electric_rate * load_val * 100)
             val = round(val/load_efficiency)
             return val
         except Exception as exception:

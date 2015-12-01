@@ -47,7 +47,6 @@
                                       'customer_name': '',
                                       'customer_site': '',
                                       'project_name': '',
-                                      'electric_utility_rate':0,
                                       'compressor_name': '',
                                       'manufacturer': '',
                                       'model_info': '',
@@ -67,7 +66,6 @@
                 $scope.air_compressor_json.customer_name = $("#customer_name").val();
                 $scope.air_compressor_json.customer_site = $("#customer_site").val();
                 $scope.air_compressor_json.project_name = $("#project_name").val();
-                $scope.air_compressor_json.electric_utility_rate = $("#electric_utility_rate").val();
                 $scope.air_compressor_json.compressor_name = $("#compressor_name").val();
                 $scope.air_compressor_json.manufacturer = $("#manufacturer").val();
                 $scope.air_compressor_json.model_info = $("#model_info").val();
@@ -197,12 +195,6 @@
                           <label class="col-sm-6 control-label">Project Name</label>
                           <div class="col-sm-6">
                             <input class="form-control" type="text" id="project_name" name="project_name">
-                          </div>
-                        </div>
-                        <div class="form-group form-group-sm">
-                          <label class="col-sm-6 control-label">Electric Utility Rate (per kWh)</label>
-                          <div class="col-sm-6">
-                            <input class="form-control control-label" type="text" id="electric_utility_rate" name="electric_utility_rate">
                           </div>
                         </div>
                         <div class="form-group form-group-md bg-info">

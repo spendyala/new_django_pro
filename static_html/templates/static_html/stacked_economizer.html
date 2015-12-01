@@ -44,7 +44,6 @@
                                                     function($scope, $http){
             $scope.stacked_economizer_json = {'client': '',
                                       'boiler_stacked_economizer':'',
-                                      'gas_rate':0,
                                       'hours_of_operations':0,
                                       'boiler_size_hp':0,
                                       'initial_stack_gas_temp_f':0,
@@ -52,7 +51,6 @@
             $scope.submit_details = function(){
                 $scope.stacked_economizer_json.client = '/api_client/clients/'+$("#client").val()+'/';
                 $scope.stacked_economizer_json.boiler_stacked_economizer = $("#boiler_stacked_economizer").val();
-                $scope.stacked_economizer_json.gas_rate = $("#gas_rate").val();
                 $scope.stacked_economizer_json.hours_of_operations = $("#hours_of_operations").val();
                 $scope.stacked_economizer_json.boiler_size_hp = $("#boiler_size_hp").val();
                 $scope.stacked_economizer_json.initial_stack_gas_temp_f = $("#initial_stack_gas_temp_f").val();
@@ -150,12 +148,6 @@
                           <label class="col-sm-4 control-label">Stacked Economizer</label>
                           <div class="col-sm-4">
                             <input class="form-control" type="text" id="boiler_stacked_economizer" name="boiler_stacked_economizer">
-                          </div>
-                        </div>
-                        <div class="form-group form-group-sm">
-                          <label class="col-sm-4 control-label">Gas Rate</label>
-                          <div class="col-sm-4">
-                            <input class="form-control control-label" type="text" id="gas_rate" name="gas_rate">
                           </div>
                         </div>
                         <div class="form-group form-group-sm">

@@ -28,7 +28,6 @@
                                       'client': '',
                                       'motor_name':'',
                                       'annual_operating_hours':0,
-                                      'energy_cost':0,
                                       'motor_nameplate_hp':0,
                                       'existing_full_load_eff':0,
                                       'existing_three_fourth_load_eff':0,
@@ -43,7 +42,6 @@
                 $scope.premium_efficiency_json.client = '/api_client/clients/'+$("#client").val()+'/';
                 $scope.premium_efficiency_json.motor_name = $("#motor_name").val();
                 $scope.premium_efficiency_json.annual_operating_hours = $("#annual_operating_hours").val();
-                $scope.premium_efficiency_json.energy_cost = $("#energy_cost").val();
                 $scope.premium_efficiency_json.motor_nameplate_hp = $("#motor_nameplate_hp").val();
                 $scope.premium_efficiency_json.existing_full_load_eff = $("#existing_full_load_eff").val();
                 $scope.premium_efficiency_json.existing_three_fourth_load_eff = $("#existing_three_fourth_load_eff").val();
@@ -112,12 +110,6 @@
                               <label class="col-sm-4 control-label">Annual Operating Hours</label>
                               <div class="col-sm-4">
                                 <input class="form-control control-label" type="text" id="annual_operating_hours" name="annual_operating_hours" value="{{premium_efficiency_obj.annual_operating_hours}}">
-                              </div>
-                            </div>
-                            <div class="form-group form-group-sm">
-                              <label class="col-sm-4 control-label">Energy Cost ($)</label>
-                              <div class="col-sm-4">
-                                <input class="form-control control-label" type="text" id="energy_cost" name="energy_cost" value="{{premium_efficiency_obj.energy_cost}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">

@@ -52,7 +52,6 @@ INSTALLED_APPS = (
     'vfd',
     'valve_insulation',
     'pipe_insulation',
-    'boiler_stacked_economizer',
     'boiler_datacollection'
 )
 

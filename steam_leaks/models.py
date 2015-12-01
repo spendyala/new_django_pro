@@ -33,7 +33,7 @@ class SteamLeak(models.Model):
     hours_of_operation = models.IntegerField('Hours of Operation', default=8760)
     boiler_efficiency = models.FloatField('Boiler Efficiency %', default=80.0)
 
-    therm_rate = models.FloatField('Therms Rate $', default=0.0)
+    # client.gas_rate = models.FloatField('Therms Rate $', default=0.0)
     owner = models.ForeignKey('auth.User', related_name='steam_leaks')
 
     def absolute_pressure_psia(self):
@@ -57,7 +57,7 @@ class SteamLeak(models.Model):
 
     def get_cost_per_hour(self):
         return round(float(self.get_gas_usage_therms_per_hour() *
-                     self.therm_rate), 2)
+                     self.client.gas_rate), 2)
 
     def get_cost_per_year(self):
         return round(float(self.hours_of_operation *

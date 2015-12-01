@@ -45,8 +45,6 @@
                                                     function($scope, $http){
             $scope.boiler_blowdown_json = {'client': '',
                                       'boiler_blowdown_name':'',
-                                      'gas_rate':0,
-                                      'water_rate':0,
                                       'makeup_water_temperature':0,
                                       'existing_blowdown_frequency_per_day':0,
                                       'existing_blowdown_rate_gpm':0,
@@ -63,8 +61,6 @@
             $scope.submit_details = function(){
                 $scope.boiler_blowdown_json.client = '/api_client/clients/'+$("#client").val()+'/';
                 $scope.boiler_blowdown_json.boiler_blowdown_name = $("#boiler_blowdown_name").val();
-                $scope.boiler_blowdown_json.gas_rate = $("#gas_rate").val();
-                $scope.boiler_blowdown_json.water_rate = $("#water_rate").val();
                 $scope.boiler_blowdown_json.makeup_water_temperature = $("#makeup_water_temperature").val();
                 $scope.boiler_blowdown_json.existing_blowdown_frequency_per_day = $("#existing_blowdown_frequency_per_day").val();
                 $scope.boiler_blowdown_json.existing_blowdown_rate_gpm = $("#existing_blowdown_rate_gpm").val();
@@ -125,16 +121,12 @@
                                 <tr>
                                     <th>Boiler Blowdown</th>
                                     <!-- <th>Client</th> -->
-                                    <th>Gas Rate</th>
-                                    <th>Water Rate</th>
                                     <th>Makeup Water Temperature</th>
                                 </tr>
                                 {% verbatim %}
                                     <tr ng-repeat="x in boiler_blowdown_list">
                                         <td><a href="/boiler_blowdown_details/{{ x.id }}">{{ x.boiler_blowdown_name }}</a></td>
                                         <!-- <td>{{ x.client }}</td> -->
-                                        <td>{{ x.gas_rate }}</td>
-                                        <td>{{ x.water_rate }}</td>
                                         <td>{{ x.makeup_water_temperature }}</td>
                                     </tr>
                                 {% endverbatim %}
@@ -169,18 +161,6 @@
                           <label class="col-sm-4 control-label">Boiler Blowdown Reduction and Recovery</label>
                           <div class="col-sm-4">
                             <input class="form-control" type="text" id="boiler_blowdown_name" name="boiler_blowdown_name">
-                          </div>
-                        </div>
-                        <div class="form-group form-group-sm">
-                          <label class="col-sm-4 control-label">Gas Rate</label>
-                          <div class="col-sm-4">
-                            <input class="form-control control-label" type="text" id="gas_rate" name="gas_rate">
-                          </div>
-                        </div>
-                        <div class="form-group form-group-sm">
-                          <label class="col-sm-4 control-label">Water Rate</label>
-                          <div class="col-sm-4">
-                            <input class="form-control control-label" type="text" id="water_rate" name="water_rate">
                           </div>
                         </div>
                         <div class="form-group form-group-sm">

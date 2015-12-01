@@ -28,9 +28,9 @@ class AirCompressor(models.Model):
     project_name = models.CharField('Project Name',
                                     default='',
                                     max_length=128)
-    electric_utility_rate = models.FloatField(
-        'Electric Utility Rate (per kWh)',
-        default=0)
+    # electric_utility_rate = models.FloatField(
+    #     'Electric Utility Rate (per kWh)',
+    #     default=0)
     compressor_name = models.CharField('Compressor Name',
                                        default='',
                                        max_length=128)
@@ -75,7 +75,7 @@ class AirCompressor(models.Model):
 
     def get_hourly_cost_of_operation(self):
         return round(self.get_hourly_kwh_consumed() *
-                     self.electric_utility_rate, 2)
+                     self.client.electric_rate, 2)
 
     def get_annual_cost_of_operation(self):
         return round(

@@ -21,5 +21,5 @@ class SteamTrapSerializer(serializers.HyperlinkedModelSerializer):
                   'location_description', 'pressure_in_psig', 'trap_pipe_size',
                   'get_steam_energy_btu_per_lb', 'get_steam_loss_pph',
                   'get_gas_usage_therms_per_hour', 'absolute_pressure_psia',
-                  'size_trap_orifice', 'therm_rate', 'get_cost_per_hour',
+                  'size_trap_orifice', 'get_cost_per_hour',
                   'get_cost_per_year')

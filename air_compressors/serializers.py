@@ -23,7 +23,7 @@ class AirCompressorSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'url', 'client', 'start_date',
                   'air_compressor', 'customer_name',
                   'customer_site', 'owner', 'project_name',
-                  'electric_utility_rate', 'compressor_name',
+                  'compressor_name',
                   'manufacturer', 'model_info', 'serial_info',
                   'compressor_type',
                   'vfd_speed_control', 'nameplate_horsepower',

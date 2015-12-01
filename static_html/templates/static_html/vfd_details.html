@@ -97,7 +97,6 @@
             $scope.vfd_json = {'id': {{vfd_motor_obj.id}},
                                'client': '',
                                'vfd_name': '',
-                               'cost_per_kwh': 0,
                                'motor_horse_pwr': 0,
                                'existing_motor_efficiency': 0,
                                'proposed_vfd_efficiency': 0,
@@ -133,7 +132,6 @@
             $scope.submit_details = function(){
                 $scope.vfd_json.client = '/api_client/clients/'+$("#client").val()+'/';
                 $scope.vfd_json.vfd_name = $("#vfd_name").val();
-                $scope.vfd_json.cost_per_kwh = $("#cost_per_kwh").val();
                 $scope.vfd_json.motor_horse_pwr = $("#motor_horse_pwr").val();
                 $scope.vfd_json.existing_motor_efficiency = $("#existing_motor_efficiency").val();
                 $scope.vfd_json.proposed_vfd_efficiency = $("#proposed_vfd_efficiency").val();
@@ -264,12 +262,6 @@
                               <label class="col-sm-3 control-label">VFD Motor Name</label>
                               <div class="col-sm-4">
                                 <input class="form-control" type="text" id="vfd_name" name="vfd_name" value="{{ vfd_motor_obj.vfd_name}}">
-                              </div>
-                            </div>
-                            <div class="form-group form-group-sm">
-                              <label class="col-sm-3 control-label">Cost (per kWh)</label>
-                              <div class="col-sm-3">
-                                <input class="form-control control-label" type="text" id="cost_per_kwh" name="cost_per_kwh" value="{{ vfd_motor_obj.cost_per_kwh}}">
                               </div>
                             </div>
                             <div class="form-group form-group-sm">

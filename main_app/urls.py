@@ -28,8 +28,6 @@ urlpatterns = [
     url(r'^api_vfd/', include('vfd.urls')),
     url(r'^api_valve_insulation/', include('valve_insulation.urls')),
     url(r'^api_pipe_insulation/', include('pipe_insulation.urls')),
-    url(r'^api_boiler_stacked_economizer/',
-        include('boiler_stacked_economizer.urls')),
     url(r'^api_boiler_datacollection/',
         include('boiler_datacollection.urls')),
     url(r'^authenticate_user(|/)$', 'static_html.views.authenticate_user'),

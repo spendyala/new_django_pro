@@ -21,7 +21,7 @@ class PremiumEfficiencySerializer(serializers.HyperlinkedModelSerializer):
         model = PremiumEfficiency
         fields = ('id', 'url', 'client', 'start_date',
                   'motor_name', 'annual_operating_hours',
-                  'owner', 'energy_cost', 'motor_nameplate_hp',
+                  'owner', 'motor_nameplate_hp',
                   'existing_full_load_eff', 'existing_three_fourth_load_eff',
                   'existing_half_load_eff', 'existing_motor_purchase_price',
                   'proposed_full_load_eff', 'proposed_three_fourth_load_eff',

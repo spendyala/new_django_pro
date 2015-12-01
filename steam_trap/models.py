@@ -32,7 +32,7 @@ class SteamTrap(models.Model):
     trap_pipe_size = models.FloatField('Trap Pipe Size (inch)',
                                     #    choices=TRAP_SIZE_CHOICES,
                                        default=0.5)
-    therm_rate = models.FloatField('Therms Rate $', default=0.0)
+    # client.gas_rate = models.FloatField('Therms Rate $', default=0.0)
     owner = models.ForeignKey('auth.User', related_name='steam_trap')
 
     def get_steam_energy_btu_per_lb(self):
@@ -59,7 +59,7 @@ class SteamTrap(models.Model):
 
     def get_cost_per_hour(self):
         return round(float(self.get_gas_usage_therms_per_hour() *
-                     self.therm_rate), 2)
+                     self.client.gas_rate), 2)
 
     def get_cost_per_year(self):
         return round(float(self.hours_of_operation *

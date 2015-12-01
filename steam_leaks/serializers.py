@@ -21,4 +21,4 @@ class SteamLeakSerializer(serializers.HyperlinkedModelSerializer):
                   'size_leak_in_inch', 'absolute_pressure_psia',
                   'get_steam_loss_pph', 'get_steam_energy_btu_per_lb',
                   'get_gas_usage_therms_per_hour', 'get_cost_per_hour',
-                  'get_cost_per_year', 'therm_rate')
+                  'get_cost_per_year')
