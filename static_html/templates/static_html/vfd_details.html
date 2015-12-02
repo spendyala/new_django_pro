@@ -182,7 +182,7 @@
             }
             $scope.submit_delete = function(){
                 $http({method: 'DELETE',
-                       url: '/api_vfd/vfd/{{vfd_obj.id}}/'}).
+                       url: '/api_vfd/vfd_motor/{{vfd_motor_obj.id}}/'}).
                 success(function(data){
                     window.location.href = '/vfd/';
                 }).

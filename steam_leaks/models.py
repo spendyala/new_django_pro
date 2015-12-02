@@ -42,6 +42,9 @@ class SteamLeak(models.Model):
         else:
             return 0
 
+    def get_therm_rate(self):
+        return self.client.gas_rate
+
     def get_steam_loss_pph(self):
         return round(24.24 * self.absolute_pressure_psia() *
                      pow(self.size_leak_in_inch, 2), 2)

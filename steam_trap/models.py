@@ -35,6 +35,9 @@ class SteamTrap(models.Model):
     # client.gas_rate = models.FloatField('Therms Rate $', default=0.0)
     owner = models.ForeignKey('auth.User', related_name='steam_trap')
 
+    def get_therm_rate(self):
+        return self.client.gas_rate
+
     def get_steam_energy_btu_per_lb(self):
         return STEAM_TRAP_CHOICES[self.pressure_in_psig]
 

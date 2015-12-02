@@ -13,6 +13,7 @@ class SteamTrapSerializer(serializers.HyperlinkedModelSerializer):
     size_trap_orifice = serializers.ReadOnlyField()
     get_cost_per_hour = serializers.ReadOnlyField()
     get_cost_per_year = serializers.ReadOnlyField()
+    get_therm_rate = serializers.ReadOnlyField()
 
     class Meta:
         model = SteamTrap
@@ -22,4 +23,4 @@ class SteamTrapSerializer(serializers.HyperlinkedModelSerializer):
                   'get_steam_energy_btu_per_lb', 'get_steam_loss_pph',
                   'get_gas_usage_therms_per_hour', 'absolute_pressure_psia',
                   'size_trap_orifice', 'get_cost_per_hour',
-                  'get_cost_per_year')
+                  'get_cost_per_year', 'get_therm_rate')
