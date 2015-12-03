@@ -24,6 +24,7 @@ from supporting_files import spreadsheet
 from steam_leaks.serializers import SteamLeakSerializer
 from steam_trap.serializers import SteamTrapSerializer
 from boiler_datacollection.serializers import BoilerDatacollectionSerializer
+from stacked_economizer.serializers import StackedEconomizerSerializer
 
 import copy
 import datetime
@@ -558,12 +559,15 @@ def excel(request, file_name=None, obj=None, rec_id=None):
     # Logout
     model_obj = {'steam_leak': SteamLeak,
                  'steam_trap': SteamTrap,
+                 'stacked_economizer': StackedEconomizer,
                  'boiler_datacollection': BoilerDatacollection}
     serializer_obj = {'steam_leak': SteamLeakSerializer,
                       'steam_trap': SteamTrapSerializer,
+                      'stacked_economizer': StackedEconomizerSerializer,
                       'boiler_datacollection': BoilerDatacollectionSerializer}
     excel_obj = {'steam_leak': spreadsheet.SteamLeakExcel,
                  'steam_trap': spreadsheet.SteamTrapExcel,
+                 'stacked_economizer': spreadsheet.StackedEconomizerExcel,
                  'boiler_datacollection': spreadsheet.BoilerDatacollectionExcel}
     if rec_id == 'all':
         models_objects = model_obj[obj].objects.all()

@@ -211,3 +211,61 @@ class BoilerDatacollectionExcel(object):
         response['Content-Disposition'] = ('attachment; filename="%s"'
                                            % 'BoilerDatacollection.xlsx')
         return response
+
+
+class StackedEconomizerExcel(object):
+    def __init__(self, stacked_economizer=None):
+        self.stacked_economizer = stacked_economizer
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A1': 'Stacked Economizer',
+            'B1': 'Hours of Operation',
+            'C1': 'Boiler Size (HP)',
+            'D1': 'Boiler size, MMBtu/hr',
+            'E1': 'Initial Stack Gas Temp (F)',
+            'F1': 'Average Fire Rate',
+            'G1': 'Recoverable Heat, MMBtu/hr',
+            'H1': 'Recoverable Heat, Therms/yr',
+            'I1': 'Savings'
+        }
+        self.data_column = {
+            'A': 'boiler_stacked_economizer',
+            'B': 'hours_of_operations',
+            'C': 'boiler_size_hp',
+            'D': 'get_boiler_size_mmbtu_per_hr',
+            'E': 'initial_stack_gas_temp_f',
+            'F': 'average_fire_rate',
+            'G': 'get_recoverable_heat_mmbtu_per_hr',
+            'H': 'get_recoverable_heat_therms_per_year',
+            'I': 'get_savings'
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            column = each_cell.replace('1', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 2
+        for each_stacked_economizer in self.stacked_economizer:
+            for each_column in self.data_column:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column[each_column]
+                self.ws[cell_val] = each_stacked_economizer.get(column_val)
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'StackedEconomizer.xlsx')
+        return response
