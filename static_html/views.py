@@ -23,6 +23,7 @@ from supporting_files import spreadsheet
 # New
 from steam_leaks.serializers import SteamLeakSerializer
 from steam_trap.serializers import SteamTrapSerializer
+from boiler_datacollection.serializers import BoilerDatacollectionSerializer
 
 import copy
 import datetime
@@ -35,7 +36,7 @@ countries_list = [(each_country.alpha2, each_country.name) for each_country in p
 
 def set_render_object(request, file_name=None, content=None):
     if not content:
-        content={}
+        content = {}
     content.update({'username': request.user.username})
 
     return render(request, 'static_html/%s.html' % (file_name, ), content)
@@ -44,7 +45,7 @@ def set_render_object(request, file_name=None, content=None):
 # Clients
 def client(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     data = {}
     data['countries_list'] = countries_list
     return set_render_object(request, file_name=file_name, content=data)
@@ -72,7 +73,7 @@ def state_details(request, file_name=None, rec_id=None):
 
 def client_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         client_obj = Client.objects.get(id=rec_id)
@@ -92,13 +93,13 @@ def client_details(request, file_name=None, rec_id=None):
         data['countries_list'] = countries_list
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Steam Trap
 def steam_trap(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -113,12 +114,12 @@ def steam_trap(request, file_name=None, rec_id=None):
                 'trap_pipe_size_list': trap_pipe_size_list}
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def steam_trap_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -140,13 +141,13 @@ def steam_trap_details(request, file_name=None, rec_id=None):
         data['get_cost_per_year'] = steam_trap_obj.get_cost_per_year()
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Steam Leak
 def steam_leak(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -159,12 +160,12 @@ def steam_leak(request, file_name=None, rec_id=None):
                 'pressure_in_psig_list': pressure_in_psig_list}
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def steam_leak_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -183,13 +184,13 @@ def steam_leak_details(request, file_name=None, rec_id=None):
         data['get_cost_per_year'] = steam_leak_obj.get_cost_per_year()
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Boiler Blowdown
 def boiler_blowdown(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -200,12 +201,12 @@ def boiler_blowdown(request, file_name=None, rec_id=None):
                 'clients_filter': clients_filter}
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def boiler_blowdown_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -244,13 +245,13 @@ def boiler_blowdown_details(request, file_name=None, rec_id=None):
         data['get_savings_total'] = boiler_blowdown_obj.get_savings_total()
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Stack Economizer
 def stacked_economizer(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -261,12 +262,12 @@ def stacked_economizer(request, file_name=None, rec_id=None):
                 'clients_filter': clients_filter}
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def stacked_economizer_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -281,13 +282,13 @@ def stacked_economizer_details(request, file_name=None, rec_id=None):
         data['get_savings'] = stacked_economizer_obj.get_savings()
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Premium Efficiency
 def premium_efficiency(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -298,12 +299,12 @@ def premium_efficiency(request, file_name=None, rec_id=None):
                 'clients_filter': clients_filter}
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def premium_efficiency_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -324,13 +325,13 @@ def premium_efficiency_details(request, file_name=None, rec_id=None):
         data['get_energy_cost_half_load_diff'] = premium_efficiency_obj.get_energy_cost_half_load_diff()
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Air Compressor
 def air_compressors(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -344,12 +345,12 @@ def air_compressors(request, file_name=None, rec_id=None):
 
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def air_compressor_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -373,13 +374,13 @@ def air_compressor_details(request, file_name=None, rec_id=None):
         data['get_estimated_air_leak_40_percent_of_costs'] = air_compressor_obj.get_estimated_air_leak_40_percent_of_costs()
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # VFD
 def vfd(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -391,12 +392,12 @@ def vfd(request, file_name=None, rec_id=None):
 
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def vfd_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -409,13 +410,13 @@ def vfd_details(request, file_name=None, rec_id=None):
         data['vfd_motor_obj'] = vfd_motor_obj
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Valve Insulation
 def valve_insulation(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -433,13 +434,13 @@ def valve_insulation(request, file_name=None, rec_id=None):
 
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Valve Insulation Details
 def valve_insulation_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -456,13 +457,13 @@ def valve_insulation_details(request, file_name=None, rec_id=None):
         data['valve_insulation_obj'] = valve_insulation_obj
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Pipe Insulation
 def pipe_insulation(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -480,13 +481,13 @@ def pipe_insulation(request, file_name=None, rec_id=None):
 
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 # Pipe Insulation Details
 def pipe_insulation_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -503,12 +504,12 @@ def pipe_insulation_details(request, file_name=None, rec_id=None):
         data['pipe_insulation_obj'] = pipe_insulation_obj
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 # Boiler Data Collection
 def boiler_datacollection(request, file_name=None, rec_id=None):
     if rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
     try:
         clients_obj = Client.objects.all()
         clients_list = [(x.id, x.client_name) for x in clients_obj]
@@ -522,12 +523,12 @@ def boiler_datacollection(request, file_name=None, rec_id=None):
 
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 
 def boiler_datacollection_details(request, file_name=None, rec_id=None):
     if not rec_id:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
     try:
         clients_obj = Client.objects.all()
@@ -539,7 +540,7 @@ def boiler_datacollection_details(request, file_name=None, rec_id=None):
         data['boiler_datacollection_obj'] = boiler_datacollection_obj
         return set_render_object(request, file_name=file_name, content=data)
     except Exception as err:
-        return render(request, 'static_html/404.html')
+        return set_render_object(request, file_name='404', content={})
 
 # Login and Logout
 def login(request, file_name=None, rec_id=None):
@@ -556,15 +557,20 @@ def logout(request, file_name=None, rec_id=None):
 def excel(request, file_name=None, obj=None, rec_id=None):
     # Logout
     model_obj = {'steam_leak': SteamLeak,
-                 'steam_trap': SteamTrap}
+                 'steam_trap': SteamTrap,
+                 'boiler_datacollection': BoilerDatacollection}
     serializer_obj = {'steam_leak': SteamLeakSerializer,
-                      'steam_trap': SteamTrapSerializer}
+                      'steam_trap': SteamTrapSerializer,
+                      'boiler_datacollection': BoilerDatacollectionSerializer}
     excel_obj = {'steam_leak': spreadsheet.SteamLeakExcel,
-                 'steam_trap': spreadsheet.SteamTrapExcel}
+                 'steam_trap': spreadsheet.SteamTrapExcel,
+                 'boiler_datacollection': spreadsheet.BoilerDatacollectionExcel}
     if rec_id == 'all':
         models_objects = model_obj[obj].objects.all()
     else:
         models_objects = model_obj[obj].objects.filter(client=rec_id)
+    if not models_objects:
+        return set_render_object(request, file_name='404', content={})
     model_serializer = serializer_obj[obj](models_objects,
                                            many=True,
                                            context={'request': request})
@@ -642,5 +648,4 @@ def index(request, file_name=None, rec_id=None, obj=None):
         elif method_obj:
             return method_obj(request, file_name, rec_id)
         else:
-            # return HttpResponse(json.dumps({'Error': 'Page Not found 404'}))
-            return render(request, 'static_html/404.html')
+            return set_render_object(request, file_name='404', content={})

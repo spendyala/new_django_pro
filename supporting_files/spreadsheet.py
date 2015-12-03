@@ -137,3 +137,78 @@ class SteamTrapExcel(object):
         response['Content-Disposition'] = ('attachment; filename="%s"'
                                            % 'SteamTrap.xlsx')
         return response
+
+
+class BoilerDatacollectionExcel(object):
+    def __init__(self, boiler_datacollection=None):
+        self.boiler_datacollection = boiler_datacollection
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A1': 'Boiler Data Collection Name',
+            'B1': 'Boiler capacity (MBH)',
+            'C1': 'Yearly Hours of Operation',
+            'D1': 'Separately Meter',
+            'E1': 'Make Up Water Log/ Separate Bill',
+            'F1': 'Number of Steam Traps',
+            'G1': 'Date Last Steam Trap\nAudit Performed',
+            'H1': 'Is the Header Insulated',
+            'I1': 'Percent of Condensate\nthat returns to Boiler',
+            'J1': 'Aerator Tank Temperature',
+            'K1': 'Aerator Tank Pressure',
+            'L1': 'Production Pressure',
+        }
+        self.data_column = {
+            'A': 'name',
+            'B': 'boiler_capacity_mbh',
+            'C': 'hours_of_operation',
+            'D': 'separately_meter',
+            'E': 'make_up_water_log_separate_bill',
+            'F': 'no_of_steam_traps',
+            'G': 'steam_trap_audit_performed',
+            'H': 'is_the_header_insulated',
+            'I': 'percentage_condensate_that_returns_to_boiler',
+            'J': 'aerator_tank_temp',
+            'K': 'aerator_tank_pressure',
+            'L': 'production_pressure',
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            column = each_cell.replace('1', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 2
+        for each_boiler_datacollection in self.boiler_datacollection:
+            for each_column in self.data_column:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column[each_column]
+                if column_val in [
+                        'separately_meter',
+                        'make_up_water_log_separate_bill',
+                        'is_the_header_insulated']:
+                    import pdb; pdb.set_trace()
+                    self.ws[cell_val] = ('Yes' if
+                                         each_boiler_datacollection.get(
+                                            column_val)
+                                         else 'No')
+                else:
+                    self.ws[cell_val] = each_boiler_datacollection.get(
+                        column_val)
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'BoilerDatacollection.xlsx')
+        return response
