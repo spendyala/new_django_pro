@@ -193,7 +193,6 @@ class BoilerDatacollectionExcel(object):
                         'separately_meter',
                         'make_up_water_log_separate_bill',
                         'is_the_header_insulated']:
-                    import pdb; pdb.set_trace()
                     self.ws[cell_val] = ('Yes' if
                                          each_boiler_datacollection.get(
                                             column_val)
