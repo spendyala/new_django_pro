@@ -38,6 +38,9 @@
                          $scope.valve_insulation_list = data;
                 }).error(function(data){});
             };
+            $scope.download_valve_insulation = function(){
+                window.location.href = '/excel/valve_insulation/'.concat($scope.clients_filter);
+            }
         }]);
         app_1.controller("valveInsulationAddController", ['$scope',
                                                     '$http',
@@ -112,6 +115,9 @@
                                             <option value="{{ filter_id }}">{{ filter_name }}</option>
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="button" class="btn btn-success btn-sm col-sm-6" value="Download Valve Insulation" ng-click="download_valve_insulation()">
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">

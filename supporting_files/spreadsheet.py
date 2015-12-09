@@ -3,6 +3,7 @@
 from openpyxl import Workbook
 import StringIO
 from django.http import HttpResponse
+from valve_insulation.models import INSULATION_CHOICES
 
 
 class SteamLeakExcel(object):
@@ -268,4 +269,156 @@ class StackedEconomizerExcel(object):
                                 content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = ('attachment; filename="%s"'
                                            % 'StackedEconomizer.xlsx')
+        return response
+
+
+class ValveInsulationExcel(object):
+    def __init__(self, valve_insulation=None):
+        self.valve_insulation = valve_insulation
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A1': 'Valve Insulation Name',
+            'B1': 'Valve Type',
+            'C1': 'Quantity',
+            'D1': 'NPS Pipe Size (inches)',
+            'E1': 'Working Fluid',
+            'F1': 'Process Temp or Pressure',
+            'G1': 'System Efficiency (%)',
+            'H1': 'Ambient Temp',
+            'I1': 'System Hours / Year',
+            'J1': 'Wind Speed (MPH)',
+            'K1': 'Location',
+            'L1': 'Base Metal',
+            'M1': 'Insulation',
+            'N1': 'Insulation Thickness',
+            'O1': 'Jacket Material',
+        }
+        self.data_column = {
+            'A': 'name',
+            'B': 'valve_type',
+            'C': 'quantity',
+            'D': 'nps_pipe_size_inches',
+            'E': 'working_fluid',
+            'F': 'process_temp_or_pressure',
+            'G': 'system_efficiency',
+            'H': 'ambient_temp',
+            'I': 'system_hours_per_year',
+            'J': 'wind_speed_mph',
+            'K': 'location',
+            'L': 'base_metal',
+            'M': 'insulation',
+            'N': 'insulation_thickness',
+            'O': 'jacket_material',
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            column = each_cell.replace('1', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 2
+        for each_valve_insulation in self.valve_insulation:
+            for each_column in self.data_column:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column[each_column]
+                self.ws[cell_val] = each_valve_insulation.get(column_val)
+                # import pdb; pdb.set_trace()
+                insulation_choices_dict = dict(INSULATION_CHOICES)
+                if column_val in ['insulation']:
+                    val = insulation_choices_dict[
+                        each_valve_insulation.get(column_val)]
+                    self.ws[cell_val] = val
+                    self.ws.column_dimensions[each_column].width = len(val)
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'ValveInsulation.xlsx')
+        return response
+
+
+class PipeInsulationExcel(object):
+    def __init__(self, pipe_insulation=None):
+        self.pipe_insulation = pipe_insulation
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A1': 'Pipe Insulation Description',
+            'B1': 'Length of Pipe (feet)',
+            'C1': 'NPS Pipe Size (inches)',
+            'D1': 'Working Fluid',
+            'E1': 'Process Temp or Pressure',
+            'F1': 'System Efficiency (%)',
+            'G1': 'Ambient Temp',
+            'H1': 'System Hours / Year',
+            'I1': 'Wind Speed (MPH)',
+            'J1': 'Location',
+            'K1': 'Base Metal',
+            'L1': 'Insulation',
+            'M1': 'Insulation Thickness',
+            'N1': 'Jacket Material',
+        }
+        self.data_column = {
+            'A': 'name',
+            'B': 'length_of_pipe',
+            'C': 'nps_pipe_size_inches',
+            'D': 'working_fluid',
+            'E': 'process_temp_or_pressure',
+            'F': 'system_efficiency',
+            'G': 'ambient_temp',
+            'H': 'system_hours_per_year',
+            'I': 'wind_speed_mph',
+            'J': 'location',
+            'K': 'base_metal',
+            'L': 'insulation',
+            'M': 'insulation_thickness',
+            'N': 'jacket_material',
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            column = each_cell.replace('1', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 2
+        for each_pipe_insulation in self.pipe_insulation:
+            for each_column in self.data_column:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column[each_column]
+                self.ws[cell_val] = each_pipe_insulation.get(column_val)
+                # import pdb; pdb.set_trace()
+                insulation_choices_dict = dict(INSULATION_CHOICES)
+                if column_val in ['insulation']:
+                    val = insulation_choices_dict[
+                        each_pipe_insulation.get(column_val)]
+                    self.ws[cell_val] = val
+                    self.ws.column_dimensions[each_column].width = len(val)
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'ValveInsulation.xlsx')
         return response

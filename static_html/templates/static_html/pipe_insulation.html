@@ -38,6 +38,9 @@
                          $scope.pipe_insulation_list = data;
                 }).error(function(data){});
             };
+            $scope.download_pipe_insulation = function(){
+                window.location.href = '/excel/pipe_insulation/'.concat($scope.clients_filter);
+            }
         }]);
         app_1.controller("pipeInsulationAddController", ['$scope',
                                                     '$http',
@@ -110,6 +113,9 @@
                                             <option value="{{ filter_id }}">{{ filter_name }}</option>
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="button" class="btn btn-success btn-sm col-sm-6" value="Download Pipe Insulation" ng-click="download_pipe_insulation()">
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">
