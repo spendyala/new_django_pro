@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from chiller.models import Chiller, ChillerLoopPump, CondensatePump
-from boiler_blowdown.serializers import BoilerBlowdownSerializer
+from chiller.serializers import ChillerSerializer
 
 from django.contrib.auth.models import User
 
@@ -15,24 +15,24 @@ from rest_framework.reverse import reverse
 import django_filters
 
 # Boiler Blowdown Filter
-class BoilerBlowdownFilter(django_filters.FilterSet):
+class ChillerFilter(django_filters.FilterSet):
     class Meta:
-        model = BoilerBlowdown
+        model = Chiller
         fields = ['client']
 
 
 # Create your views here.
-class BoilerBlowdownViewSet(viewsets.ModelViewSet):
-        """
-        This viewset automatically provides `list`, `create`, `retrieve`,
-        `update` and `destroy` actions.
-        """
-        filter_backends = (filters.DjangoFilterBackend,)
-        filter_class = BoilerBlowdownFilter
-        queryset = BoilerBlowdown.objects.all()
-        serializer_class = BoilerBlowdownSerializer
-        permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                              IsOwnerOrReadOnly)
+class ChillerViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = ChillerFilter
+    queryset = Chiller.objects.all()
+    serializer_class = ChillerSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly)
 
-        def perform_create(self, serializer):
-            serializer.save(owner=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

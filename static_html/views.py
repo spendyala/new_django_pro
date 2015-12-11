@@ -27,6 +27,7 @@ from boiler_datacollection.serializers import BoilerDatacollectionSerializer
 from stacked_economizer.serializers import StackedEconomizerSerializer
 from valve_insulation.serializers import ValveInsulationSerializer
 from pipe_insulation.serializers import PipeInsulationSerializer
+from premium_efficiency.serializers import PremiumEfficiencySerializer
 
 import copy
 import datetime
@@ -564,19 +565,22 @@ def excel(request, file_name=None, obj=None, rec_id=None):
                  'stacked_economizer': StackedEconomizer,
                  'boiler_datacollection': BoilerDatacollection,
                  'valve_insulation': ValveInsulation,
-                 'pipe_insulation': PipeInsulation}
+                 'pipe_insulation': PipeInsulation,
+                 'premium_efficiency': PremiumEfficiency}
     serializer_obj = {'steam_leak': SteamLeakSerializer,
                       'steam_trap': SteamTrapSerializer,
                       'stacked_economizer': StackedEconomizerSerializer,
                       'boiler_datacollection': BoilerDatacollectionSerializer,
                       'valve_insulation': ValveInsulationSerializer,
-                      'pipe_insulation': PipeInsulationSerializer}
+                      'pipe_insulation': PipeInsulationSerializer,
+                      'premium_efficiency': PremiumEfficiencySerializer}
     excel_obj = {'steam_leak': spreadsheet.SteamLeakExcel,
                  'steam_trap': spreadsheet.SteamTrapExcel,
                  'stacked_economizer': spreadsheet.StackedEconomizerExcel,
                  'boiler_datacollection': spreadsheet.BoilerDatacollectionExcel,
                  'valve_insulation': spreadsheet.ValveInsulationExcel,
-                 'pipe_insulation': spreadsheet.PipeInsulationExcel}
+                 'pipe_insulation': spreadsheet.PipeInsulationExcel,
+                 'premium_efficiency': spreadsheet.PremiumEfficiencyExcel}
     if rec_id == 'all':
         models_objects = model_obj[obj].objects.all()
     else:

@@ -3,7 +3,7 @@ from chiller.models import Chiller, ChillerLoopPump, CondensatePump
 from django.contrib.auth.models import User
 
 
-class BoilerBlowdownSerializer(serializers.HyperlinkedModelSerializer):
+class ChillerSerializer(serializers.HyperlinkedModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     start_date = serializers.ReadOnlyField()
     id = serializers.ReadOnlyField()
@@ -100,4 +100,4 @@ class BoilerBlowdownSerializer(serializers.HyperlinkedModelSerializer):
                   'get_savings_gas',
                   'get_savings_gas_and_water',
                   'get_savings_total',
-                  'get_savings_water',)
+                  'get_savings_water')

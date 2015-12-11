@@ -1,6 +1,7 @@
 # import openpyxl
 
 from openpyxl import Workbook
+from openpyxl.styles import Style, Alignment, Font, PatternFill, Color, Fill
 import StringIO
 from django.http import HttpResponse
 from valve_insulation.models import INSULATION_CHOICES
@@ -404,7 +405,6 @@ class PipeInsulationExcel(object):
                 cell_val = '%s%s' % (each_column, count)
                 column_val = self.data_column[each_column]
                 self.ws[cell_val] = each_pipe_insulation.get(column_val)
-                # import pdb; pdb.set_trace()
                 insulation_choices_dict = dict(INSULATION_CHOICES)
                 if column_val in ['insulation']:
                     val = insulation_choices_dict[
@@ -414,11 +414,113 @@ class PipeInsulationExcel(object):
             count += 1
 
     def get_excel_raw(self):
-        # self.wb.read_only = True
         self.wb.save(self.out)
         self.out.seek(0)
         response = HttpResponse(self.out,
                                 content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = ('attachment; filename="%s"'
                                            % 'ValveInsulation.xlsx')
+        return response
+
+
+class PremiumEfficiencyExcel(object):
+    def __init__(self, premium_efficiency=None):
+        self.premium_efficiency = premium_efficiency
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A2': 'Premium Efficiency Name',
+            'B2': 'Annual Operating Hours',
+            'C2': 'Motor Nameplate HP',
+            'D2': 'Motor Nameplate RPM',
+            'E2': 'Full load efficiency (%)',
+            'F2': '3/4 load efficiency (%)',
+            'G2': '1/2 load efficiency (%)',
+            'H2': 'Energy cost @ Full Load(annual operating cost)',
+            'I2': 'Energy cost @ 3/4(annual operating cost)',
+            'J2': 'Energy cost @ 1/2(annual operating cost)',
+            'K2': 'Motor Purchase Price ($)',
+            'L2': 'Full load efficiency (%)',
+            'M2': '3/4 load efficiency (%)',
+            'N2': '1/2 load efficiency (%)',
+            'O2': 'Energy cost @ Full Load(annual operating cost)',
+            'P2': 'Energy cost @ 3/4(annual operating cost)',
+            'Q2': 'Energy cost @ 1/2(annual operating cost)',
+            'R2': 'Motor Purchase Price ($)',
+            'S2': 'Purchase Price Differential',
+            'T2': 'Annual Operating Cost Differiential @ Full Load',
+            'U2': 'Annual Operating Cost Differiential @ 3/4',
+            'V2': 'Annual Operating Cost Differiential @ 1/2'
+        }
+        self.data_column = {
+            'A': 'motor_name',
+            'B': 'annual_operating_hours',
+            'C': 'motor_nameplate_hp',
+            'D': 'motor_nameplate_rpm',
+            'E': 'existing_full_load_eff',
+            'F': 'existing_three_fourth_load_eff',
+            'G': 'existing_half_load_eff',
+            'H': 'get_existing_energy_cost_full_load',
+            'I': 'get_existing_energy_cost_three_fourth_load',
+            'J': 'get_existing_energy_cost_half_load',
+            'K': 'existing_motor_purchase_price',
+            'L': 'proposed_full_load_eff',
+            'M': 'proposed_three_fourth_load_eff',
+            'N': 'proposed_half_load_eff',
+            'O': 'get_proposed_energy_cost_full_load',
+            'P': 'get_proposed_energy_cost_three_fourth_load',
+            'Q': 'get_proposed_energy_cost_half_load',
+            'R': 'proposed_motor_purchase_price',
+            'S': 'get_purchase_price_diff',
+            'T': 'get_energy_cost_full_load_diff',
+            'U': 'get_energy_cost_three_fourth_load_diff',
+            'V': 'get_energy_cost_half_load_diff',
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        # Cell Properties
+        cell_existing = {'alignment': Alignment(horizontal='center'),
+                         'font': Font(bold=True),
+                         'fill': PatternFill(patternType='solid',
+                                             fgColor=Color('90909000'))}
+        self.ws['E1'] = "Existing Motor"
+        self.ws['E1'].style = Style(**cell_existing)
+        # Mergeing Cells
+        self.ws.merge_cells('E1:K1')
+        # Cell Properties
+        cell_proposed = {'alignment': Alignment(horizontal='center'),
+                         'font': Font(bold=True),
+                         'fill': PatternFill(patternType='solid',
+                                             fgColor=Color('90909099'))}
+        self.ws['L1'] = "Proposed Premium Efficiency Motor"
+        self.ws['L1'].style = Style(**cell_proposed)
+        # Mergeing Cells
+        self.ws.merge_cells('L1:R1')
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            column = each_cell.replace('2', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 3
+        for each_premium_efficiency in self.premium_efficiency:
+            for each_column in self.data_column:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column[each_column]
+                self.ws[cell_val] = each_premium_efficiency.get(column_val)
+
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'PremiumEfficiency.xlsx')
         return response

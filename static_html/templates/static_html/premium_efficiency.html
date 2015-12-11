@@ -39,6 +39,9 @@
                          $scope.premium_efficiency_list = data;
                 }).error(function(data){});
             };
+            $scope.download_premium_efficiency = function(){
+                window.location.href = '/excel/premium_efficiency/'.concat($scope.clients_filter);
+            }
         }]);
         app_1.controller("premiumEfficiencyAddController", ['$scope',
                                                     '$http',
@@ -106,6 +109,9 @@
                                             <option value="{{ filter_id }}">{{ filter_name }}</option>
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="button" class="btn btn-success btn-sm col-sm-6" value="Download Premium Efficiency" ng-click="download_premium_efficiency()">
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">

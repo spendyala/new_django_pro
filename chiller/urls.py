@@ -1,4 +1,4 @@
-from boiler_blowdown import views
+from chiller import views
 
 from django.conf.urls import url, include
 
@@ -8,7 +8,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'boiler_blowdown', views.BoilerBlowdownViewSet)
+router.register(r'chiller', views.BoilerBlowdownViewSet)
 
 urlpatterns = [
         url(r'^', include(router.urls))
