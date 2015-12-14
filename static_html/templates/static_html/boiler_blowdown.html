@@ -39,6 +39,9 @@
                          $scope.boiler_blowdown_list = data;
                 }).error(function(data){});
             };
+            $scope.download_boiler_blowdown = function(){
+                window.location.href = '/excel/boiler_blowdown/'.concat($scope.clients_filter);
+            }
         }]);
         app_1.controller("boilerBlowdownAddController", ['$scope',
                                                     '$http',
@@ -110,6 +113,9 @@
                                             <option value="{{ filter_id }}">{{ filter_name }}</option>
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="button" class="btn btn-success btn-sm col-sm-6" value="Download Boiler Blowdown" ng-click="download_boiler_blowdown()">
                                 </div>
                             </div>
                             <div class="form-group form-group-sm">

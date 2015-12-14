@@ -5,6 +5,7 @@ from openpyxl.styles import Style, Alignment, Font, PatternFill, Color, Fill
 import StringIO
 from django.http import HttpResponse
 from valve_insulation.models import INSULATION_CHOICES
+from air_compressors.models import COMPRESSOR_TYPE, VFD_CONTROL_TYPE
 
 
 class SteamLeakExcel(object):
@@ -47,8 +48,10 @@ class SteamLeakExcel(object):
         self.make_excel_data()
 
     def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
         for each_cell in self.headers_dict:
             self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
             column = each_cell.replace('1', '')
             self.ws.column_dimensions[column].width = len(
                 self.headers_dict[each_cell])
@@ -115,8 +118,10 @@ class SteamTrapExcel(object):
         self.make_excel_data()
 
     def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
         for each_cell in self.headers_dict:
             self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
             column = each_cell.replace('1', '')
             self.ws.column_dimensions[column].width = len(
                 self.headers_dict[each_cell])
@@ -179,8 +184,10 @@ class BoilerDatacollectionExcel(object):
         self.make_excel_data()
 
     def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
         for each_cell in self.headers_dict:
             self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
             column = each_cell.replace('1', '')
             self.ws.column_dimensions[column].width = len(
                 self.headers_dict[each_cell])
@@ -247,8 +254,10 @@ class StackedEconomizerExcel(object):
         self.make_excel_data()
 
     def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
         for each_cell in self.headers_dict:
             self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
             column = each_cell.replace('1', '')
             self.ws.column_dimensions[column].width = len(
                 self.headers_dict[each_cell])
@@ -317,8 +326,10 @@ class ValveInsulationExcel(object):
         self.make_excel_data()
 
     def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
         for each_cell in self.headers_dict:
             self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
             column = each_cell.replace('1', '')
             self.ws.column_dimensions[column].width = len(
                 self.headers_dict[each_cell])
@@ -392,20 +403,22 @@ class PipeInsulationExcel(object):
         self.make_excel_data()
 
     def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
         for each_cell in self.headers_dict:
             self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
             column = each_cell.replace('1', '')
             self.ws.column_dimensions[column].width = len(
                 self.headers_dict[each_cell])
 
     def make_excel_data(self):
         count = 2
+        insulation_choices_dict = dict(INSULATION_CHOICES)
         for each_pipe_insulation in self.pipe_insulation:
             for each_column in self.data_column:
                 cell_val = '%s%s' % (each_column, count)
                 column_val = self.data_column[each_column]
                 self.ws[cell_val] = each_pipe_insulation.get(column_val)
-                insulation_choices_dict = dict(INSULATION_CHOICES)
                 if column_val in ['insulation']:
                     val = insulation_choices_dict[
                         each_pipe_insulation.get(column_val)]
@@ -481,6 +494,7 @@ class PremiumEfficiencyExcel(object):
         self.make_excel_data()
 
     def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
         # Cell Properties
         cell_existing = {'alignment': Alignment(horizontal='center'),
                          'font': Font(bold=True),
@@ -501,6 +515,7 @@ class PremiumEfficiencyExcel(object):
         self.ws.merge_cells('L1:R1')
         for each_cell in self.headers_dict:
             self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
             column = each_cell.replace('2', '')
             self.ws.column_dimensions[column].width = len(
                 self.headers_dict[each_cell])
@@ -523,4 +538,218 @@ class PremiumEfficiencyExcel(object):
                                 content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = ('attachment; filename="%s"'
                                            % 'PremiumEfficiency.xlsx')
+        return response
+
+
+class BoilerBlowdownExcel(object):
+    def __init__(self, boiler_blowdown=None):
+        self.boiler_blowdown = boiler_blowdown
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A1': 'Boiler Blowdown Reduction and Recovery',
+            'B1': 'Makeup Water Temperature',
+            'C1': 'Blowdown Frequency (Per Day)',
+            'D1': 'Blowdown Rate (GPM)',
+            'E1': 'Blowdown Duration (minutes)',
+            'F1': 'Blowdown (Gallons Per Day)',
+            'G1': 'Days of Operation',
+            'H1': 'Annual Quantity (Gals)',
+            'I1': 'Annual Quantity (lbs)',
+            'J1': 'Discharge Temp (F)',
+            'K1': 'Blowdown Energy Loss (BTUH)',
+            'L1': 'Blowdown Energy Loss (THERM)',
+            'M1': 'Blowdown Energy Cost ($)',
+            'N1': 'Make-up Water Quantity',
+            'O1': 'Make-up Water Cost ($)',
+            'P1': 'Gas and Water Cost ($)',
+            'Q1': 'Blowdown Energy Loss (Therms)',
+            'R1': 'Heat Recovery Efficiency',
+            'S1': 'Blowdown Energy Recovery (Therms)',
+            'T1': 'Total Savings ($)',
+        }
+        self.data_column_existing = {
+            'A': 'boiler_blowdown_name',
+            'B': 'makeup_water_temperature',
+            'C': 'existing_blowdown_frequency_per_day',
+            'D': 'existing_blowdown_rate_gpm',
+            'E': 'existing_blowdown_duration_mins',
+            'F': 'get_existing_blowdown_gallons_per_day',
+            'G': 'existing_days_of_operation',
+            'H': 'get_existing_annual_quantity_gals',
+            'I': 'get_existing_annual_quantity_lbs',
+            'J': 'existing_discharge_temp_in_f',
+            'K': 'get_existing_blowdown_energy_loss_btuh',
+            'L': 'get_existing_energy_loss_therm',
+            'M': 'get_existing_overflow_cost',
+            'N': 'get_existing_makeup_water_quantity',
+            'O': 'get_existing_makeup_water_cost',
+            'P': 'get_existing_gas_and_water_cost',
+            'Q': 'get_existing_blowdown_energy_loss_therm',
+            'R': 'existing_heat_recovery_efficiency_perc',
+            'S': 'get_existing_blowdown_energy_recovery_therms',
+            'T': 'get_existing_total'
+        }
+        self.data_column_proposed = {
+            'A': 'boiler_blowdown_name',
+            'B': 'makeup_water_temperature',
+            'C': 'proposed_blowdown_frequency_per_day',
+            'D': 'proposed_blowdown_rate_gpm',
+            'E': 'proposed_blowdown_duration_mins',
+            'F': 'get_proposed_blowdown_gallons_per_day',
+            'G': 'proposed_days_of_operation',
+            'H': 'get_proposed_annual_quantity_gals',
+            'I': 'get_proposed_annual_quantity_lbs',
+            'J': 'proposed_discharge_temp_in_f',
+            'K': 'get_proposed_blowdown_energy_loss_btuh',
+            'L': 'get_proposed_energy_loss_therm',
+            'M': 'get_proposed_overflow_cost',
+            'N': 'get_proposed_makeup_water_quantity',
+            'O': 'get_proposed_makeup_water_cost',
+            'P': 'get_proposed_gas_and_water_cost',
+            'Q': 'get_proposed_blowdown_energy_loss_therm',
+            'R': 'proposed_heat_recovery_efficiency_perc',
+            'S': 'get_proposed_blowdown_energy_recovery_therms',
+            'T': 'get_proposed_total'
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
+            column = each_cell.replace('1', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 2
+        cell_proposed = {'alignment': Alignment(horizontal='right'),
+                         'font': Font(bold=True),
+                         'fill': PatternFill(patternType='solid',
+                                             fgColor=Color('90909000'))}
+        for each_boiler_blowdown in self.boiler_blowdown:
+            for each_column in self.data_column_existing:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column_existing[each_column]
+                self.ws[cell_val] = each_boiler_blowdown.get(column_val)
+            count += 1
+            for each_column in self.data_column_proposed:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column_proposed[each_column]
+                self.ws[cell_val] = each_boiler_blowdown.get(column_val)
+            self.ws['A%s' % (count,)] = "Proposed Blowdown"
+            self.ws['A%s' % (count,)].style = Style(**cell_proposed)
+            self.ws.merge_cells('A%s:B%s' % (count, count))
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'BoilerBlowdown.xlsx')
+        return response
+
+
+class AirCompressorExcel(object):
+    def __init__(self, air_compressors=None):
+        self.air_compressors = air_compressors
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A1': 'Compressor Name',
+            'B1': 'Customer Name',
+            'C1': 'Project Name',
+            'D1': 'Manufacturer',
+            'E1': 'Model #',
+            'F1': 'Serial #',
+            'G1': 'Type',
+            'H1': 'VFD Speed Control',
+            'I1': 'Nameplate Horsepower (HP)',
+            'J1': 'Nameplate Maximum Flow (CFM)',
+            'K1': 'Measured Actual Flow (GPM)',
+            'L1': 'Measured Line Pressure (PSI)',
+            'M1': 'Annual Hours Of Operation (Hours)',
+            'N1': 'Hourly kWh Consumed (kWh)',
+            'O1': 'Hourly Cost Of Operation ($)',
+            'P1': 'Annual Cost Of Operation ($)',
+            'Q1': 'Reduced Line Pressure TO (PSI)',
+            'R1': 'Proposed Pressure Decrease (PSI)',
+            'S1': 'Estimated Annual Savings Per 2 PSI Reduction ($)',
+            'T1': 'Annual Cost Before PSI Setback ($)',
+            'U1': 'Annual Cost After PSI Setback ($)',
+            'V1': 'Annual Savings After PSI Setback ($)'
+        }
+        self.data_column = {
+            'A': 'compressor_name',
+            'B': 'customer_name',
+            'C': 'project_name',
+            'D': 'manufacturer',
+            'E': 'model_info',
+            'F': 'serial_info',
+            'G': 'compressor_type',
+            'H': 'vfd_speed_control',
+            'I': 'nameplate_horsepower',
+            'J': 'nameplate_max_flow',
+            'K': 'measured_actual_flow',
+            'L': 'measured_line_pressure',
+            'M': 'annual_hours_of_operation',
+            'N': 'get_hourly_kwh_consumed',
+            'O': 'get_hourly_cost_of_operation',
+            'P': 'get_annual_cost_of_operation',
+            'Q': 'reduce_line_pressure_to',
+            'R': 'get_proposed_pressure_decrease',
+            'S': 'get_estimated_ann_savings_per_2_psi_reduction',
+            'T': 'get_annual_cost_before_psi_setback',
+            'U': 'get_annual_cost_after_psi_setback',
+            'V': 'get_annual_savings_after_psi_setback',
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
+        # Mergeing Cells
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
+            column = each_cell.replace('1', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 2
+        yes_no_dict = dict(VFD_CONTROL_TYPE)
+        compressor_type_dict = dict(COMPRESSOR_TYPE)
+        for each_air_compressors in self.air_compressors:
+            for each_column in self.data_column:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column[each_column]
+                self.ws[cell_val] = each_air_compressors.get(column_val)
+                if column_val in ['vfd_speed_control']:
+                    val = yes_no_dict[each_air_compressors.get(column_val)]
+                    self.ws[cell_val] = val
+                if column_val in ['compressor_type']:
+                    val = compressor_type_dict[
+                        each_air_compressors.get(column_val)]
+                    self.ws[cell_val] = val
+                    self.ws.column_dimensions[each_column].width = len(val)
+
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'AirCompressor.xlsx')
         return response
