@@ -223,6 +223,12 @@
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Electric Rate ($/kWh)</label>
+                              <div class="col-sm-3">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ air_compressor_obj.client.electric_rate }}| currency:"$":3 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
                               <label class="col-sm-4 control-label">Hourly Cost Of Operation ($)</label>
                               <div class="col-sm-3">
                                 <label class="col-md-offset-4 bg-success col-md-8 control-label">{$ {{get_hourly_cost_of_operation}} | currency:"$":0 $}</label>

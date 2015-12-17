@@ -158,6 +158,12 @@
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Gas Rate ($/Therms)</label>
+                              <div class="col-sm-4">
+                                <label class="col-sm-5 bg-success">{$ {{ steam_leak_obj.client.gas_rate }} | currency:"$":3 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
                               <label class="col-sm-4 control-label">Cost / Hour</label>
                               <div class="col-sm-4">
                                 <label class="col-sm-5 bg-success">{{ get_cost_per_hour }}</label>

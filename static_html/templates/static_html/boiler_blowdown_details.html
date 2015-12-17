@@ -116,6 +116,18 @@
                                 <input class="form-control control-label" type="text" id="makeup_water_temperature" name="makeup_water_temperature" value="{{boiler_blowdown_obj.makeup_water_temperature}}">
                               </div>
                             </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Gas Rate ($/Therms)</label>
+                              <div class="col-sm-4">
+                                <label class="col-sm-5 bg-success">{$ {{ boiler_blowdown_obj.client.gas_rate }} | currency:"$":3 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Water Rate ($/Gallons)</label>
+                              <div class="col-sm-4">
+                                <label class="col-sm-5 bg-success">{$ {{ boiler_blowdown_obj.client.water_rate }} | currency:"$":3 $}</label>
+                              </div>
+                            </div>
                             <div class="form-group form-group-md bg-info">
                                 <label class="col-md-offset-4 col-md-8 ">Reduce Blowdown Flowrate</label>
                             </div>

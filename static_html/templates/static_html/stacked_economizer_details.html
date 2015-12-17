@@ -136,6 +136,12 @@
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
+                              <label class="col-sm-4 control-label">Gas Rate ($/Therms)</label>
+                              <div class="col-sm-3">
+                                <label class="col-sm-12 bg-success control-label">{$ {{ stacked_economizer_obj.client.gas_rate }}| currency:"$":3 $}</label>
+                              </div>
+                            </div>
+                            <div class="form-group form-group-sm">
                               <label class="col-sm-4 control-label">Savings</label>
                               <div class="col-sm-3">
                                 <label class="col-sm-12 bg-success control-label">{$ {{ get_savings }}| currency:"$":0 $}</label>
