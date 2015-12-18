@@ -122,7 +122,7 @@
                             <div class="form-group form-group-sm">
                               <label class="col-sm-3 control-label">Date Leak found</label>
                               <div class="col-sm-3">
-                                  <input class="form-control" type="text" id="datetime_time_leak_found" name="datetime_time_leak_found" value="{{air_leak_obj.datetime_time_leak_found}}" placeholder="YYYY-MM-DD">
+                                  <input class="form-control" type="text" id="datetime_time_leak_found" name="datetime_time_leak_found" value="{{air_leak_obj.datetime_time_leak_found.year}}-{{air_leak_obj.datetime_time_leak_found.month}}-{{air_leak_obj.datetime_time_leak_found.day}}" placeholder="YYYY-MM-DD">
                                   <span class="help-block">Date in format YYYY-MM-DD</span>
                               </div>
                             </div>
