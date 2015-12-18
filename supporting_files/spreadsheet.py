@@ -753,3 +753,77 @@ class AirCompressorExcel(object):
         response['Content-Disposition'] = ('attachment; filename="%s"'
                                            % 'AirCompressor.xlsx')
         return response
+
+
+class AirLeakExcel(object):
+    def __init__(self, air_leak=None):
+        self.air_leak = air_leak
+        self.wb = Workbook()
+        self.ws = self.wb.active
+        self.out = StringIO.StringIO()
+        self.headers_dict = {
+            'A1': 'Air Leak',
+            'B1': 'Project Name',
+            'C1': 'Leak Tag Number',
+            'D1': 'Date Leak found',
+            'E1': 'Leak Area Description',
+            'F1': 'Leak Equipment Description',
+            'G1': 'Leak Type',
+            'H1': 'Annual Hours of Operation (Hours)',
+            'I1': 'Leak DB Reading',
+            'J1': 'Leak Repaired?',
+            'K1': 'Convert DB to CFM',
+            'L1': 'Annual Cost Of Leak'
+        }
+        self.data_column = {
+            'A': 'air_leak',
+            'B': 'project_name',
+            'C': 'leak_tag_number',
+            'D': 'datetime_time_leak_found',
+            'E': 'leak_area_description',
+            'F': 'leak_equipment_desc',
+            'G': 'leak_type',
+            'H': 'annual_hours_of_operation',
+            'I': 'leak_db_reading',
+            'J': 'leak_reparied_flag',
+            'K': 'get_convert_db_to_cmf',
+            'L': 'get_annual_cost_of_leak',
+        }
+        self.make_excel_headers()
+        self.make_excel_data()
+
+    def make_excel_headers(self):
+        cell_bold = {'font': Font(bold=True)}
+        # Mergeing Cells
+        for each_cell in self.headers_dict:
+            self.ws[each_cell] = self.headers_dict[each_cell]
+            self.ws[each_cell].style = Style(**cell_bold)
+            column = each_cell.replace('1', '')
+            self.ws.column_dimensions[column].width = len(
+                self.headers_dict[each_cell])
+
+    def make_excel_data(self):
+        count = 2
+        yes_no_dict = dict(VFD_CONTROL_TYPE)
+        for each_air_leak in self.air_leak:
+            for each_column in self.data_column:
+                cell_val = '%s%s' % (each_column, count)
+                column_val = self.data_column[each_column]
+                self.ws[cell_val] = each_air_leak.get(column_val)
+                if column_val in ['leak_reparied_flag']:
+                    val = yes_no_dict[
+                        each_air_leak.get(column_val)]
+                    self.ws[cell_val] = val
+                    # self.ws.column_dimensions[each_column].width = len(val)
+
+            count += 1
+
+    def get_excel_raw(self):
+        # self.wb.read_only = True
+        self.wb.save(self.out)
+        self.out.seek(0)
+        response = HttpResponse(self.out,
+                                content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = ('attachment; filename="%s"'
+                                           % 'AirLeak.xlsx')
+        return response

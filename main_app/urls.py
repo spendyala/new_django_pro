@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^api_boiler_blowdown/', include('boiler_blowdown.urls')),
     url(r'^api_stacked_economizer/', include('stacked_economizer.urls')),
     url(r'^api_air_compressors/', include('air_compressors.urls')),
+    url(r'^api_air_leak/', include('air_leak.urls')),
     url(r'^api_premium_efficiency/', include('premium_efficiency.urls')),
     url(r'^api_vfd/', include('vfd.urls')),
     url(r'^api_valve_insulation/', include('valve_insulation.urls')),

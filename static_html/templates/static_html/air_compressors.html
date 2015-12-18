@@ -82,15 +82,11 @@
                 $scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
                 $scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
                 $scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
-                debugger;
-                console.log($scope.air_compressor)
                 $http({method: 'POST',
                        url: '/api_air_compressors/air_compressors/',
                        data: $scope.air_compressor_json}).
                 success(function(data){
-                    console.log(data);
-                    debugger;
-                    // window.location.reload();
+                    window.location.reload();
                 }).
                 error(function(data){
                 });

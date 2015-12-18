@@ -52,7 +52,8 @@ INSTALLED_APPS = (
     'vfd',
     'valve_insulation',
     'pipe_insulation',
-    'boiler_datacollection'
+    'boiler_datacollection',
+    'air_leak'
 )
 
 MIDDLEWARE_CLASSES = (

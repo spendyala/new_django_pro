@@ -10,6 +10,7 @@ from clients.models import Client
 
 from steam_trap.models import SteamTrap, STEAM_TRAP_CHOICES, TRAP_SIZE_CHOICES
 from steam_leaks.models import SteamLeak
+from air_leak.models import AirLeak, LEAK_DB_CHOICES, LEAK_REPAIR_TYPE
 from boiler_blowdown.models import BoilerBlowdown
 from boiler_datacollection.models import BoilerDatacollection, CHOICES_YES_NO
 from stacked_economizer.models import StackedEconomizer
@@ -30,6 +31,7 @@ from valve_insulation.serializers import ValveInsulationSerializer
 from pipe_insulation.serializers import PipeInsulationSerializer
 from premium_efficiency.serializers import PremiumEfficiencySerializer
 from air_compressors.serializers import AirCompressorSerializer
+from air_leak.serializers import AirLeakSerializer
 
 import copy
 import datetime
@@ -548,6 +550,50 @@ def boiler_datacollection_details(request, file_name=None, rec_id=None):
     except Exception as err:
         return set_render_object(request, file_name='404', content={})
 
+
+# Air Compressor
+def air_leak(request, file_name=None, rec_id=None):
+    if rec_id:
+        return set_render_object(request, file_name='404', content={})
+    try:
+        clients_obj = Client.objects.all()
+        clients_list = [(x.id, x.client_name) for x in clients_obj]
+        clients_filter = copy.deepcopy(clients_list)
+        clients_filter.append(('all', 'all'))
+        leaked_db_choices = [(x[0], x[0]) for x in LEAK_DB_CHOICES]
+
+        data = {'clients_list': clients_list,
+                'clients_filter': clients_filter,
+                'leaked_db_choices': leaked_db_choices,
+                'leak_repair_type': LEAK_REPAIR_TYPE}
+
+        return set_render_object(request, file_name=file_name, content=data)
+    except Exception as err:
+        return set_render_object(request, file_name='404', content={})
+
+
+def air_leak_details(request, file_name=None, rec_id=None):
+    if not rec_id:
+        return set_render_object(request, file_name='404', content={})
+
+    try:
+        clients_obj = Client.objects.all()
+        clients_list = [(x.id, x.client_name) for x in clients_obj]
+        leaked_db_choices = [(x[0], x[0]) for x in LEAK_DB_CHOICES]
+        data = {'clients_list': clients_list,
+                'leaked_db_choices': leaked_db_choices,
+                'leak_repair_type': LEAK_REPAIR_TYPE}
+        air_leak_obj = AirLeak.objects.get(id=rec_id)
+        data['air_leak_obj'] = air_leak_obj
+        data['get_convert_db_to_cmf'] = air_leak_obj.get_convert_db_to_cmf()
+        data['get_annual_cost_of_leak'] = air_leak_obj.get_annual_cost_of_leak()
+        return set_render_object(request, file_name=file_name, content=data)
+    except Exception as err:
+        return set_render_object(request, file_name='404', content={})
+
+
+
+
 # Login and Logout
 def login(request, file_name=None, rec_id=None):
     # if rec_id:
@@ -570,7 +616,8 @@ def excel(request, file_name=None, obj=None, rec_id=None):
                  'valve_insulation': ValveInsulation,
                  'pipe_insulation': PipeInsulation,
                  'premium_efficiency': PremiumEfficiency,
-                 'boiler_blowdown': BoilerBlowdown}
+                 'boiler_blowdown': BoilerBlowdown,
+                 'air_leak': AirLeak}
     serializer_obj = {'air_compressors': AirCompressorSerializer,
                       'steam_leak': SteamLeakSerializer,
                       'steam_trap': SteamTrapSerializer,
@@ -579,7 +626,8 @@ def excel(request, file_name=None, obj=None, rec_id=None):
                       'valve_insulation': ValveInsulationSerializer,
                       'pipe_insulation': PipeInsulationSerializer,
                       'premium_efficiency': PremiumEfficiencySerializer,
-                      'boiler_blowdown': BoilerBlowdownSerializer}
+                      'boiler_blowdown': BoilerBlowdownSerializer,
+                      'air_leak': AirLeakSerializer}
     excel_obj = {'air_compressors': spreadsheet.AirCompressorExcel,
                  'steam_leak': spreadsheet.SteamLeakExcel,
                  'steam_trap': spreadsheet.SteamTrapExcel,
@@ -588,7 +636,8 @@ def excel(request, file_name=None, obj=None, rec_id=None):
                  'valve_insulation': spreadsheet.ValveInsulationExcel,
                  'pipe_insulation': spreadsheet.PipeInsulationExcel,
                  'premium_efficiency': spreadsheet.PremiumEfficiencyExcel,
-                 'boiler_blowdown': spreadsheet.BoilerBlowdownExcel}
+                 'boiler_blowdown': spreadsheet.BoilerBlowdownExcel,
+                 'air_leak': spreadsheet.AirLeakExcel}
     if rec_id == 'all':
         models_objects = model_obj[obj].objects.all()
     else:
@@ -643,6 +692,8 @@ VIEW_METHODS = {# 'authenticate_user': authenticate_user,
                 'premium_efficiency_details': premium_efficiency_details,
                 'air_compressors': air_compressors,
                 'air_compressor_details': air_compressor_details,
+                'air_leak': air_leak,
+                'air_leak_details': air_leak_details,
                 'state_details': state_details,
                 'vfd': vfd,
                 'vfd_details': vfd_details,

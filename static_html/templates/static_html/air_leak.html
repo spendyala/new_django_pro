@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/bootstrap.min.css" %}">
+    <link rel="stylesheep" type="text/css" href="{% static "static_html/css/bootstrap-rtl.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/sb-admin-rtl.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/morris.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/print.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "static_html/css/ges.css" %}">
+
+    <script src="{% static "clients/js/jquery.js"%}"></script>
+    <!-- <script src="{% static "clients/js/jquery.cookie.js"%}"></script> -->
+    <script src="{% static "clients/js/angular.js"%}"></script>
+    <script src="{% static "clients/js/bootstrap.min.js"%}"></script>
+    <script src="{% static "clients/js/ui-bootstrap.js"%}"></script>
+    <script>
+        var app_1 = angular.module("app_air_leak", ['ui.bootstrap']);
+        app_1.config(['$httpProvider', function($httpProvider) {
+            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+        }]);
+        app_1.controller("airLeakListController", ['$scope','$http', function($scope,$http){
+            $http({method: 'GET', url: "/api_air_leak/air_leak/"}).
+                 success(function(data){
+                     $scope.air_leak_list = data;
+            }).error(function(data){});
+            $scope.clients_filter = "all";
+            $scope.filter_clients = function (clients_filter){
+                var url_str = "/api_air_leak/air_leak/";
+                var client_filter_str = "";
+                if ($scope.clients_filter != "all"){
+                    client_filter_str = "?client=".concat($scope.clients_filter);
+                };
+                $http({method: 'GET', url: url_str.concat(client_filter_str)}).
+                     success(function(data){
+                         $scope.air_leak_list = data;
+                }).error(function(data){});
+            };
+            $scope.download_air_leak = function(){
+                window.location.href = '/excel/air_leak/'.concat($scope.clients_filter);
+            }
+        }]);
+        app_1.controller("airLeakAddController", ['$scope',
+                                                    '$http',
+                                                    function($scope, $http){
+            $scope.air_leak_json = {'client': '',
+                                      'air_leak': '',
+                                      'project_name': '',
+                                      'leak_tag_number': '',
+                                      'datetime_time_leak_found': null,
+                                      'leak_area_description': '',
+                                      'leak_equipment_desc': '',
+                                      'leak_type': '',
+                                      'annual_hours_of_operation': 8760,
+                                      'leak_db_reading': 10,
+                                      'leak_reparied_flag': 1};
+            $scope.submit_details = function(){
+                $scope.air_leak_json.client = '/api_client/clients/'+$("#client").val()+'/';
+                $scope.air_leak_json.air_leak = $("#air_leak").val();
+                $scope.air_leak_json.project_name = $("#project_name").val();
+                $scope.air_leak_json.leak_tag_number = $("#leak_tag_number").val();
+                $scope.air_leak_json.datetime_time_leak_found = $("#datetime_time_leak_found").val();
+                $scope.air_leak_json.leak_area_description = $("#leak_area_description").val();
+                $scope.air_leak_json.leak_equipment_desc = $("#leak_equipment_desc").val();
+                $scope.air_leak_json.leak_type = $("#leak_type").val();
+                $scope.air_leak_json.annual_hours_of_operation = parseInt($("#annual_hours_of_operation").val());
+                $scope.air_leak_json.leak_db_reading = parseInt($("#leak_db_reading").val());
+                $scope.air_leak_json.leak_reparied_flag = parseInt($("#leak_reparied_flag").val());
+                $http({method: 'POST',
+                       url: '/api_air_leak/air_leak/',
+                       data: $scope.air_leak_json}).
+                success(function(data){
+                    window.location.reload();
+                }).
+                error(function(data){
+                });
+                $('#add_new_air_leak').modal('hide');
+            }
+        }]);
+    </script>
+</head>
+<body ng-app="app_air_leak">
+    <div id="wrapper">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "static_html/urls.html" %}
+        </nav>
+    </div>
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                         Air Leak List
+                    </h1>
+                    <div ng-controller="airLeakListController">
+                        <div class="container-fluid form-horizontal">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-2 control-label">Client Filter</label>
+                                <div class="col-sm-2">
+                                    <select class="form-control col-sm-3" ng-model="clients_filter" id="clients_filter" name="clients_filter" ng-change="filter_clients(clients_filter)">
+                                        {% for filter_id, filter_name in clients_filter %}
+                                            <option value="{{ filter_id }}">{{ filter_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-sm-5">
+                                    <input type="button" class="btn btn-success btn-sm col-sm-6" value="Download Air Leak" ng-click="download_air_leak()">
+                                </div>
+                            </div>
+                            <div class="form-group form-group-sm">
+                                 <div class="col-sm-6">
+                                    <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_new_air_leak">+ Air Leak</button>
+                                </div>
+                            </div>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Air Leak</th>
+                                    <th>Project Name</th>
+                                    <th>Leak Tag Number</th>
+                                </tr>
+                                {% verbatim %}
+                                    <tr ng-repeat="x in air_leak_list">
+                                        <td><a href="/air_leak_details/{{ x.id }}">{{ x.air_leak }}</a></td>
+                                        <td>{{ x.project_name }}</td>
+                                        <td>{{ x.leak_tag_number }}</td>
+                                    </tr>
+                                {% endverbatim %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_new_air_leak" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add New Air Leak</h4>
+                </div>
+                <form class="form-horizontal" ng-controller="airLeakAddController" role="form">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Client</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="client" name="client">
+                                {% for client_id, client_name in clients_list %}
+                                    <option {% if client_id == 1 %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Air Leak</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="air_leak" name="air_leak">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Project Name</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="project_name" name="project_name">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Leak Tag Number</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="leak_tag_number" name="leak_tag_number">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Date Leak found</label>
+                          <div class="col-sm-3">
+                              <input class="form-control" type="text" id="datetime_time_leak_found" name="datetime_time_leak_found" placeholder="YYYY-MM-DD">
+                              <span class="help-block">Date in format YYYY-MM-DD</span>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Leak Area Description</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="leak_area_description" name="leak_area_description">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Leak Equipment Description</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="leak_equipment_desc" name="leak_equipment_desc">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Leak Type</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="leak_type" name="leak_type">
+                          </div>
+                        </div>
+
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Annual Hours of Operation (Hours)</label>
+                          <div class="col-sm-3">
+                            <input class="form-control" type="text" id="annual_hours_of_operation" name="annual_hours_of_operation">
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Leak DB Reading</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="leak_db_reading" name="leak_db_reading">
+                                {% for type_id, type_name in leaked_db_choices %}
+                                   <option {% if type_id == 10 %} selected {% endif %} value="{{ type_id }}">{{ type_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                          <label class="col-sm-3 control-label">Leak Repaired?</label>
+                          <div class="col-sm-3">
+                              <select class="form-control col-sm-6" id="leak_reparied_flag" name="leak_reparied_flag">
+                                {% for leak_repair_id, leak_repair_name in leak_repair_type %}
+                                   <option {% if leak_repair_id == 1 %} selected {% endif %} value="{{ leak_repair_id }}">{{ leak_repair_name }}</option>
+                                {% endfor %}
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-3">
+                                <input type="button" value="Save" class="btn btn-default" ng-click="submit_details()">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
