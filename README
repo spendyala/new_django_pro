@@ -24,6 +24,7 @@ python manage.py dumpdata <your_app> > temp_data.json
 python manage.py sqlclear <your_app> | python manage.py dbshell
 python manage.py syncdb
 python manage.py loaddata temp_data.json
+INSERT INTO django_migrations(app, name, applied) VALUES('air_leak', '0001_initial', '2015-10-08 09:22:56.823965');
 
 
 

@@ -118,6 +118,7 @@ class PipeInsulation(models.Model):
     jacket_material = models.CharField('Jacket Material',
                                        default='',
                                        max_length=128)
+    notes = models.TextField('Notes', default='')
 
     owner = models.ForeignKey('auth.User', related_name='pipe_insulation')
 

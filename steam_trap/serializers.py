@@ -18,7 +18,7 @@ class SteamTrapSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SteamTrap
         fields = ('id', 'url', 'client', 'start_date', 'steam_trap_number',
-                  'hours_of_operation', 'owner', 'boiler_efficiency',
+                  'hours_of_operation', 'owner', 'boiler_efficiency', 'notes',
                   'location_description', 'pressure_in_psig', 'trap_pipe_size',
                   'get_steam_energy_btu_per_lb', 'get_steam_loss_pph',
                   'get_gas_usage_therms_per_hour', 'absolute_pressure_psia',

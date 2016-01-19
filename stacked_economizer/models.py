@@ -20,6 +20,7 @@ class StackedEconomizer(models.Model):
     initial_stack_gas_temp_f = models.FloatField('Initial Stack Gas Temp (F)',
                                                  default=500)
     average_fire_rate = models.FloatField('Average Fire Rate', default=0)
+    notes = models.TextField('Notes', default='')
     owner = models.ForeignKey('auth.User', related_name='stacked_economizer')
 
     def get_boiler_size_mmbtu_per_hr(self):

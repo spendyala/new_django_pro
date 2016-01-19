@@ -29,6 +29,7 @@ class VfdMotor(models.Model):
     motor_load = models.FloatField('Motor Load %', default=0)
 
     start_date = models.DateTimeField('Registered Date')
+    notes = models.TextField('Notes', default='')
     owner = models.ForeignKey('auth.User', related_name='vfd_motor')
 
     def __str__(self):

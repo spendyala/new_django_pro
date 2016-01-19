@@ -56,6 +56,7 @@ class BoilerDatacollection(models.Model):
         default='',
         max_length=128,
         help_text='There could be multiple pressures')
+    notes = models.TextField('Notes', default='')
 
     def __str__(self):
         return self.name

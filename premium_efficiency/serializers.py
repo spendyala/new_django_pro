@@ -19,7 +19,7 @@ class PremiumEfficiencySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = PremiumEfficiency
-        fields = ('id', 'url', 'client', 'start_date',
+        fields = ('id', 'url', 'client', 'start_date', 'notes',
                   'motor_name', 'annual_operating_hours',
                   'owner', 'motor_nameplate_hp',
                   'existing_full_load_eff', 'existing_three_fourth_load_eff',

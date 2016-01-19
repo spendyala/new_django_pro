@@ -9,12 +9,9 @@ from supporting_files import read_steam_trap
 
 
 STEAM_TRAP_DATA = read_steam_trap.get_steam_trap_data()
-# TRAP_SIZE_DATA = read_steam_trap.get_trap_size_data()
 
-STEAM_TRAP_CHOICES = {x:STEAM_TRAP_DATA[x].get('total')
+STEAM_TRAP_CHOICES = {x: STEAM_TRAP_DATA[x].get('total')
                       for x in STEAM_TRAP_DATA}
-# TRAP_SIZE_CHOICES = {x:TRAP_SIZE_DATA[x].get('trap_orifice_size')
-# 					 for x in TRAP_SIZE_DATA}
 
 
 class SteamLeak(models.Model):
@@ -25,13 +22,13 @@ class SteamLeak(models.Model):
     location_description = models.CharField('Location/Description', default='',
                                             max_length=255)
     pressure_in_psig = models.FloatField('Pressure (psig)',
-                                        #  choices=STEAM_TRAP_CHOICES,
                                          default=100)
     size_leak_in_inch = models.FloatField('Size Leak (inch)',
-                                    #    choices=TRAP_SIZE_CHOICES,
-                                       default=0.125)
-    hours_of_operation = models.IntegerField('Hours of Operation', default=8760)
+                                          default=0.125)
+    hours_of_operation = models.IntegerField('Hours of Operation',
+                                             default=8760)
     boiler_efficiency = models.FloatField('Boiler Efficiency %', default=80.0)
+    notes = models.TextField('Notes', default='')
 
     # client.gas_rate = models.FloatField('Therms Rate $', default=0.0)
     owner = models.ForeignKey('auth.User', related_name='steam_leaks')

@@ -9,7 +9,7 @@ class BoilerDatacollectionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = BoilerDatacollection
-        fields = ('id', 'url', 'client', 'start_date', 'owner',
+        fields = ('id', 'url', 'client', 'start_date', 'owner', 'notes',
                   'name', 'boiler_capacity_mbh', 'hours_of_operation',
                   'separately_meter', 'make_up_water_log_separate_bill',
                   'no_of_steam_traps', 'steam_trap_audit_performed',

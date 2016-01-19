@@ -10,7 +10,7 @@ class VfdMotorSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = VfdMotor
-        fields = ('id', 'url', 'client', 'start_date',
+        fields = ('id', 'url', 'client', 'start_date', 'notes',
                   'vfd_name', 'motor_horse_pwr', 'owner',
                   'existing_motor_efficiency',
                   'proposed_vfd_efficiency', 'motor_load', 'was_recent')

@@ -68,6 +68,7 @@ class AirCompressor(models.Model):
     reduce_line_pressure_to = models.FloatField(
         'Reduced Line Pressure: To (PSI)',
         default=0)
+    notes = models.TextField('Notes', default='')
     owner = models.ForeignKey('auth.User', related_name='air_compressor')
 
     def get_hourly_kwh_consumed(self):

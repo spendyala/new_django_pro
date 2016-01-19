@@ -17,7 +17,7 @@ class SteamLeakSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SteamLeak
         fields = ('id', 'url', 'client', 'start_date', 'steam_leak_number',
-                  'hours_of_operation', 'owner', 'boiler_efficiency',
+                  'hours_of_operation', 'owner', 'boiler_efficiency', 'notes',
                   'location_description', 'pressure_in_psig',
                   'size_leak_in_inch', 'absolute_pressure_psia',
                   'get_steam_loss_pph', 'get_steam_energy_btu_per_lb',

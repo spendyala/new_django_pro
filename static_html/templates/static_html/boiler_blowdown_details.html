@@ -26,6 +26,7 @@
         app_1.controller("boilerBlowdownModifyController", ['$scope','$http', function($scope,$http){
             $scope.boiler_blowdown_json = {'id': {{boiler_blowdown_obj.id}},
                                       'client': '',
+                                      'notes': '',
                                       'boiler_blowdown_name':'',
                                       'makeup_water_temperature':0,
                                       'existing_blowdown_frequency_per_day':0,
@@ -56,6 +57,7 @@
                 $scope.boiler_blowdown_json.proposed_discharge_temp_in_f = $("#proposed_discharge_temp_in_f").val();
                 $scope.boiler_blowdown_json.existing_heat_recovery_efficiency_perc = $("#existing_heat_recovery_efficiency_perc").val();
                 $scope.boiler_blowdown_json.proposed_heat_recovery_efficiency_perc = $("#proposed_heat_recovery_efficiency_perc").val();
+                $scope.boiler_blowdown_json.notes = $("#notes").val();
                 $http({method: 'PUT',
                        url: '/api_boiler_blowdown/boiler_blowdown/{{boiler_blowdown_obj.id}}/',
                        data: $scope.boiler_blowdown_json}).
@@ -102,6 +104,9 @@
                                        <option {% if client_id == boiler_blowdown_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
                                     {% endfor %}
                                   </select>
+                              </div>
+                              <div class="col-sm-3">
+                                 <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_boiler_blowdown_notes">Notes</button>
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -363,6 +368,26 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_boiler_blowdown_notes" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Boiler Blowdown Notes</h4>
+                </div>
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" id="notes" name="notes">{{boiler_blowdown_obj.notes}}</textarea>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

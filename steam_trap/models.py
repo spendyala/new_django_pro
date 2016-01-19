@@ -27,12 +27,10 @@ class SteamTrap(models.Model):
     location_description = models.CharField('Location/Description', default='',
                                             max_length=255)
     pressure_in_psig = models.FloatField('Pressure (psig)',
-                                        #  choices=STEAM_TRAP_CHOICES,
                                          default=100)
     trap_pipe_size = models.FloatField('Trap Pipe Size (inch)',
-                                    #    choices=TRAP_SIZE_CHOICES,
                                        default=0.5)
-    # client.gas_rate = models.FloatField('Therms Rate $', default=0.0)
+    notes = models.TextField('Notes', default='')
     owner = models.ForeignKey('auth.User', related_name='steam_trap')
 
     def get_therm_rate(self):

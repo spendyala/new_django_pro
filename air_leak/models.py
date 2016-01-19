@@ -53,7 +53,7 @@ class AirLeak(models.Model):
     leak_reparied_flag = models.IntegerField('Leak Repaired?',
                                              choices=LEAK_REPAIR_TYPE,
                                              default=1)
-
+    notes = models.TextField('Notes', default='')
     owner = models.ForeignKey('auth.User', related_name='air_leak')
 
     def get_convert_db_to_cmf(self):

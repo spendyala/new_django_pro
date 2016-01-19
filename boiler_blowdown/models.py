@@ -47,6 +47,7 @@ class BoilerBlowdown(models.Model):
                                                                default=0)
 
     start_date = models.DateTimeField('Registered Date')
+    notes = models.TextField('Notes', default='')
     owner = models.ForeignKey('auth.User', related_name='boiler_blowdown')
 
     # Methods

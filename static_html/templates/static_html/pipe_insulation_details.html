@@ -33,6 +33,7 @@
                                             'jacket_material': '',
                                             'location': '',
                                             'nps_pipe_size_inches': 0.5,
+                                            'notes': '',
                                             'process_temp_or_pressure': 10,
                                             'system_efficiency': 80.0,
                                             'system_hours_per_year': 8760.0,
@@ -54,6 +55,7 @@
                 $scope.pipe_insulation_json.system_hours_per_year = $("#system_hours_per_year").val();
                 $scope.pipe_insulation_json.wind_speed_mph = $("#wind_speed_mph").val();
                 $scope.pipe_insulation_json.working_fluid = $("#working_fluid").val();
+                $scope.pipe_insulation_json.notes = $("#notes").val();
 
                 $http({method: 'PUT',
                        url: '/api_pipe_insulation/pipe_insulation/{{pipe_insulation_obj.id}}/',
@@ -96,8 +98,11 @@
                         <div class="container-fluid">
                             <div class="form-group form-group-sm">
                               <label class="col-sm-4 control-label">Start Date</label>
-                              <div class="col-sm-8">
+                              <div class="col-sm-5">
                                 <label class="col-sm-5 bg-success">{{ pipe_insulation_obj.start_date }}</label>
+                              </div>
+                              <div class="col-sm-3">
+                                 <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_pipe_insulation_notes">Notes</button>
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -235,6 +240,26 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_pipe_insulation_notes" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Pipe Insulation Notes</h4>
+                </div>
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" id="notes" name="notes">{{pipe_insulation_obj.notes}}</textarea>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

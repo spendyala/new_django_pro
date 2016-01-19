@@ -38,6 +38,7 @@
                                       'vfd_speed_control': 1,
                                       'nameplate_horsepower': 0,
                                       'nameplate_max_flow': 0,
+                                      'notes': '',
                                       'measured_actual_flow': 0,
                                       'measured_line_pressure': 0,
                                       'annual_hours_of_operation': 0,
@@ -62,6 +63,7 @@
                 $scope.air_compressor_json.annual_hours_of_operation = $("#annual_hours_of_operation").val();
                 $scope.air_compressor_json.reduce_line_pressure_to = $("#reduce_line_pressure_to").val();
                 $scope.air_compressor_json.vfd_90_t_fitting = $("#vfd_90_t_fitting").val();
+                $scope.air_compressor_json.notes = $("#notes").val();
                 $http({method: 'PUT',
                        url: '/api_air_compressors/air_compressors/{{air_compressor_obj.id}}/',
                        data: $scope.air_compressor_json}).
@@ -108,6 +110,9 @@
                                        <option {% if client_id == air_compressor_obj.client.id %} selected {% endif %} value="{{ client_id }}">{{ client_name }}</option>
                                     {% endfor %}
                                   </select>
+                              </div>
+                              <div class="col-sm-3">
+                                 <button type="button" class="btn btn-success btn-sm col-sm-4" data-toggle="modal" data-target="#add_air_compressor_notes">Notes</button>
                               </div>
                             </div>
                             <div class="form-group form-group-sm">
@@ -335,6 +340,26 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_air_compressor_notes" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Air Compressor Notes</h4>
+                </div>
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" id="notes" name="notes">{{air_compressor_obj.notes}}</textarea>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

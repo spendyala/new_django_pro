@@ -9,7 +9,7 @@ class ValveInsulationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ValveInsulation
-        fields = ('id', 'url', 'client', 'start_date', 'owner',
+        fields = ('id', 'url', 'client', 'start_date', 'owner', 'notes',
                   'name', 'valve_type', 'quantity', 'nps_pipe_size_inches',
                   'working_fluid', 'process_temp_or_pressure',
                   'system_efficiency', 'ambient_temp', 'system_hours_per_year',

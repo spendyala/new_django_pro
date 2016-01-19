@@ -11,7 +11,7 @@ class AirLeakSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = AirLeak
-        fields = ('id', 'url', 'client', 'start_date',
+        fields = ('id', 'url', 'client', 'start_date', 'notes',
                   'air_leak', 'owner', 'project_name',
                   'leak_tag_number', 'datetime_time_leak_found',
                   'leak_area_description', 'leak_equipment_desc', 'leak_type',

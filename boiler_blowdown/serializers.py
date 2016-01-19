@@ -47,6 +47,7 @@ class BoilerBlowdownSerializer(serializers.HyperlinkedModelSerializer):
                   'url',
                   'owner',
                   'start_date',
+                  'notes',
                   'client',
                   'boiler_blowdown_name',
                   'makeup_water_temperature',

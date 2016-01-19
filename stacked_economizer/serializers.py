@@ -13,7 +13,7 @@ class StackedEconomizerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = StackedEconomizer
-        fields = ('id', 'url', 'client', 'start_date',
+        fields = ('id', 'url', 'client', 'start_date', 'notes',
                   'boiler_stacked_economizer',
                   'hours_of_operations', 'owner', 'boiler_size_hp',
                   'initial_stack_gas_temp_f', 'average_fire_rate',
