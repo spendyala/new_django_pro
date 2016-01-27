@@ -121,10 +121,10 @@
                                         <td>{{ x.country }}</td>
                                         <td>{{ x.state }}</td>
                                         <td>{{ x.city }}</td>
-                                        <td class="text-right">{{ x.electric_rate }}</td>
-                                        <td class="text-right">{{ x.gas_rate }}</td>
-                                        <td class="text-right">{{ x.water_rate }}</td>
-                                        <td class="text-right">{{ x.sewer_rate}}</td>
+                                        <td class="text-right">{{ x.electric_rate | number:3}}</td>
+                                        <td class="text-right">{{ x.gas_rate | number:3}}</td>
+                                        <td class="text-right">{{ x.water_rate | number:3}}</td>
+                                        <td class="text-right">{{ x.sewer_rate | number:3}}</td>
                                     </tr>
                                 {% endverbatim %}
                             </table>
