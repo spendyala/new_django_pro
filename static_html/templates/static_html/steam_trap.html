@@ -123,6 +123,7 @@
                                     <th>Steam Energy (Btu/lb)</th>
                                     <th>Cost / Hour</th>
                                     <th>Hours of Operation</th>
+                                    <th>Gas Usage (Therms/year)</th>
                                     <th>Cost / Year</th>
                                 </tr>
                                 {% verbatim %}
@@ -136,6 +137,7 @@
                                         <td>{{x.get_steam_energy_btu_per_lb| currency:"":0 }}</td>
                                         <td>{{x.get_cost_per_hour| currency:"$":2}}</td>
                                         <td>{{x.hours_of_operation| currency:"":2}}</td>
+                                        <td>{{x.get_gas_usage_therms_per_hour * x.hours_of_operation | currency:"":2}}</td>
                                         <td>{{x.get_cost_per_year| currency:"$":0}}</td>
                                     </tr>
                                     <tr>
